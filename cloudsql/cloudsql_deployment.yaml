@@ -1,0 +1,50 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: wordpress
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wordpress
+    spec:
+      containers: 
+        - image: wordpress:4.4.2-apache
+          name: web
+          env:
+            - name: WORDPRESS_DB_HOST
+              # Connect to the SQL proxy over the local network on a fixed port.
+              value: 127.0.0.1:3306
+            # These secrets are required to start the pod. 
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql
+                  key: password
+            - name: WORDPRESS_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql
+                  key: username
+          ports:
+            - containerPort: 80
+              name: wordpress
+        - image: b.gcr.io/cloudsql-docker/gce-proxy@sha256:fd32b1236155ce833971a95f190987e522a60f768aa12eeb91e344f823d6450c
+          name: cloudsql-proxy
+          # Change the "-instances=" flag here to include your GCP project, the region of your Cloud SQL instance
+          # and the name of your Cloud SQL instance. The format is -instances=$PROJECT:$REGION:INSTANCE=tcp:3306.
+          command: ["/cloud_sql_proxy", "--dir=/cloudsql", "-instances=<PROJECT>:<REGION>:<INSTANCE>=tcp:3306", "-credential_file=/secrets/cloudsql/credentials.json"]
+          volumeMounts:
+            - name: cloudsql-oauth-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+            - name: ssl-certs
+              mountPath: /etc/ssl/certs
+      volumes:
+        - name: cloudsql-oauth-credentials
+          secret:
+            secretName: cloudsql-oauth-credentials
+        - name: ssl-certs
+          hostPath:
+            path: /etc/ssl/certs
