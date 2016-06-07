@@ -16,14 +16,14 @@ for how to get started. As noted above, if you have a Google Container Engine cl
 To check your version, run `kubectl version` and make sure both the client and server report a version of at least 1.2.
 
 You'll also need a running Cloud SQL instance, and a Service Account that can access the instance.
-See the [Cloud SQL getting started](https://cloud.google.com/sql/docs/access-control) page for more information.
+See the [Cloud SQL access control](https://cloud.google.com/sql/docs/access-control) page for more information.
 
 #### Create Secrets
 
 You'll need to create several `Secret` resources to allow the SQL proxy to connect with your SQL instance. First, you'll need to
 create a secret resource containing the Service Account credentials to allow the proxy to communicate with the Cloud SQL API.
 
-First, download the JSON Service Account credentials.
+First, create and download the JSON Service Account credentials following [these steps](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount).
 Then run this command, making sure to replace PATH_TO_CREDENTIAL_FILE with the correct location of the JSON file:
 
 ```
@@ -39,13 +39,13 @@ kubectl create secret generic cloudsql --from-literal=username=<USERNAME> --from
 
 #### Create Pod
 
-Next, open the cloudsqlpod.yaml file in this repository and replace the values `$PROJECT`, `REGION` and `$INSTANCE`
+Next, open the cloudsql_deployment.yaml file in this repository and replace the values `$PROJECT`, `REGION` and `$INSTANCE`
 with the correct values for your SQL instance.
 
 Then, run:
 
 ```
-kubectl create -f cloudsqlpod.yaml
+kubectl create -f cloudsql_deployment.yaml
 ```
 
 to bring up the pod.
