@@ -1,8 +1,8 @@
 ## CloudSQL Example
 
 This example shows how to build an application that uses
-[Google Cloud SQL](https://cloud.google.com/sql/docs/introduction)
-using Kubernetes and [Docker](https://www.docker.com/).
+[Google Cloud SQL](https://cloud.google.com/sql/docs/) using
+Kubernetes and [Docker](https://www.docker.com/).
 
 The example consists of a single pod containing two containers:
 
@@ -26,8 +26,8 @@ client and server report a version of at least 1.2.
 
 You'll also need a running Cloud SQL instance, and a Service Account
 that can access the instance.  See the
-[Cloud SQL access control](https://cloud.google.com/sql/docs/access-control)
-page for more information.
+[Cloud SQL Proxy documentation](https://cloud.google.com/sql/docs/mysql-connect-proxy#service-account)
+for more information.
 
 #### Create Secrets
 
@@ -36,11 +36,8 @@ proxy to connect with your SQL instance. First, you'll need to create
 a secret resource containing the Service Account credentials to allow
 the proxy to communicate with the Cloud SQL API.
 
-First, create and download the JSON Service Account credentials
-following
-[these steps](https://developers.google.com/identity/protocols/OAuth2ServiceAccount#creatinganaccount).
-Then run this command, making sure to replace PATH_TO_CREDENTIAL_FILE
-with the correct location of the JSON file:
+Run this command, making sure to replace `<PATH_TO_CREDENTIAL_FILE>`
+with the correct location of the JSON file of your service account:
 
 ```
 kubectl create secret generic cloudsql-oauth-credentials --from-file=credentials.json=<PATH_TO_CREDENTIAL_FILE>
@@ -58,8 +55,10 @@ kubectl create secret generic cloudsql --from-literal=username=<USERNAME> --from
 #### Create Pod
 
 Next, open the cloudsql_deployment.yaml file in this repository and
-replace the values `$PROJECT`, `REGION` and `$INSTANCE` with the
-correct values for your SQL instance.
+replace `[INSTANCE_CONNECTION_NAME]` with the connection name. You can
+access the connection name from the Google Cloud Platform Console in
+the Instance details page, or construct it using
+`[PROJECT_ID]:[REGION]:[INSTANCE_NAME]`.
 
 Then, run:
 
