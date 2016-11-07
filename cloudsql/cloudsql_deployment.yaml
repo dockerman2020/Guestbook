@@ -48,6 +48,8 @@ spec:
               readOnly: true
             - name: ssl-certs
               mountPath: /etc/ssl/certs
+            - name: cloudsql
+              mountPath: /cloudsql
         # [END proxy_container]
       # [START volumes]
       volumes:
@@ -57,4 +59,6 @@ spec:
         - name: ssl-certs
           hostPath:
             path: /etc/ssl/certs
+        - name: cloudsql
+          emptyDir:
       # [END volumes]
