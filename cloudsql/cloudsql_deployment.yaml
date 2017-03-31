@@ -15,7 +15,8 @@ spec:
           env:
             - name: WORDPRESS_DB_HOST
               # Connect to the SQL proxy over the local network on a fixed port.
-              # Insert the port number used by your database. 
+              # Change the [PORT] to the port number used by your database
+              # (e.g. 3306).
               value: 127.0.0.1:[PORT]
             # These secrets are required to start the pod.
             # [START cloudsql_secrets]
@@ -39,7 +40,7 @@ spec:
         # $PROJECT:$REGION:$INSTANCE
         # Insert the port number used by your database.
         # [START proxy_container]
-        - image: b.gcr.io/cloudsql-docker/gce-proxy:1.05
+        - image: gcr.io/cloudsql-docker/gce-proxy:1.08
           name: cloudsql-proxy
           command: ["/cloud_sql_proxy", "--dir=/cloudsql",
                     "-instances=[INSTANCE_CONNECTION_NAME]=tcp:[PORT]",
