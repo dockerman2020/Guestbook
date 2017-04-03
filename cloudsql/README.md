@@ -40,7 +40,7 @@ Run this command, making sure to replace `<PATH_TO_CREDENTIAL_FILE>`
 with the correct location of the JSON file of your service account:
 
 ```
-kubectl create secret generic cloudsql-oauth-credentials --from-file=credentials.json=<PATH_TO_CREDENTIAL_FILE>
+kubectl create secret generic cloudsql-instance-credentials --from-file=credentials.json=<PATH_TO_CREDENTIAL_FILE>
 ```
 
 Next, you'll need to create another pair of secrets to allow the proxy
@@ -49,7 +49,7 @@ username and password you'd like to connect as. Make sure to replace
 the USERNAME and PASSWORD values.
 
 ```
-kubectl create secret generic cloudsql --from-literal=username=<USERNAME> --from-literal=password=<PASSWORD>
+kubectl create secret generic cloudsql-db-credentials --from-literal=username=<USERNAME> --from-literal=password=<PASSWORD>
 ```
 
 #### Create Pod
