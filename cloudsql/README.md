@@ -1,91 +1,90 @@
-## CloudSQL Example
+## Using Google Cloud SQL from a WordPress Deployment
 
-This example shows how to build an application that uses
-[Google Cloud SQL](https://cloud.google.com/sql/docs/) using
-Kubernetes and [Docker](https://www.docker.com/).
+This example shows how to connect to
+[Google Cloud SQL](https://cloud.google.com/sql/docs/) from an application
+running on [Google Container Engine](https://cloud.google.com/container-engine).
 
-The example consists of a single pod containing two containers:
+The [`mysql_wordpress_deployment.yaml` manifest file](mysql_wordpress_deployment.yaml)
+that consists of two containers:
 
-- A web frontend container running Wordpress.
-- A
+- A web frontend container running WordPress.
+- A sidecar container for
   [Cloud SQL Proxy](https://github.com/GoogleCloudPlatform/cloudsql-proxy/)
   container providing connectivity to Cloud SQL.
 
+> :warning: **NOTE:** This example does not provide a WordPress example that is
+ready to use in production, as it does not configure a persistent disk for the
+WordPress set up and may yield in data loss.
+> Follow the [Using Persistent Disks with WordPress and
+MySQL](https://cloud.google.com/container-engine/docs/tutorials/persistent-disk) for an example that is ready to use.
+
+If you are looking for a PostgreSQL example, see [`postgres_deployment.yaml`](postgres_deployment.yaml).
+
 ### Prerequisites
 
-This example requires a running Kubernetes cluster at version 1.2 or
-higher. See the
-[Getting Started guides](https://cloud.google.com/container-engine/docs/before-you-begin)
-for how to get started. As noted above, if you have a Google Container
-Engine cluster set up, go
-[here](https://cloud.google.com/container-engine/docs/tutorials/guestbook)
-instead.
+Follow the tutorial at [Connecting from Google Container
+Engine](https://cloud.google.com/sql/docs/mysql/connect-container-engine).
 
-To check your version, run `kubectl version` and make sure both the
-client and server report a version of at least 1.2.
-
-You'll also need a running Cloud SQL instance, and a Service Account
-that can access the instance.  See the
-[Cloud SQL Proxy documentation](https://cloud.google.com/sql/docs/mysql-connect-proxy#service-account)
-for more information.
-
-#### Create Secrets
-
-You'll need to create several `Secret` resources to allow the SQL
-proxy to connect with your SQL instance. First, you'll need to create
-a secret resource containing the Service Account credentials to allow
-the proxy to communicate with the Cloud SQL API.
-
-Run this command, making sure to replace `<PATH_TO_CREDENTIAL_FILE>`
-with the correct location of the JSON file of your service account:
+After you follow the tutorial, you must have Secrets named
+`cloudsql-instance-credentials` and `cloudsql-db-credentials` in your cluster:
 
 ```
-kubectl create secret generic cloudsql-instance-credentials --from-file=credentials.json=<PATH_TO_CREDENTIAL_FILE>
+$ kubectl get secrets
+NAME                            TYPE                                  DATA      AGE
+cloudsql-db-credentials         Opaque                                2         33m
+cloudsql-instance-credentials   Opaque                                1         35m
 ```
 
-Next, you'll need to create another pair of secrets to allow the proxy
-to connect to the actual SQL instance. This will contain the SQL
-username and password you'd like to connect as. Make sure to replace
-the USERNAME and PASSWORD values.
+### Deploy WordPress with Cloud SQL
 
-```
-kubectl create secret generic cloudsql-db-credentials --from-literal=username=<USERNAME> --from-literal=password=<PASSWORD>
-```
+Open `mysql_wordpress_deployment.yaml` and modify `<INSTANCE_CONNECTION_NAME>` with
+your the connection name of your Cloud SQL instance.
 
-#### Create Pod
+Then apply the manifest:
 
-Next, open the cloudsql_deployment.yaml file in this repository and
-replace `[INSTANCE_CONNECTION_NAME]` with the connection name. You can
-access the connection name from the Google Cloud Platform Console in
-the Instance details page, or construct it using
-`[PROJECT_ID]:[REGION]:[INSTANCE_NAME]`.
-
-Then, run:
-
-```
-kubectl create -f cloudsql_deployment.yaml
+```sh
+$ kubectl apply -f mysql_wordpress_deployment.yaml
+deployment "wordpress" created
 ```
 
-to bring up the pod.
+After a while, you should see a Pod with two containers is "Running":
 
-#### Access the Wordpress Installation
-
-You can setup port-forwarding to your wordpress installation to access
-it over localhost.
-
-First find the pod name:
-
-```
+```sh
 $ kubectl get pods
 NAME                         READY     STATUS    RESTARTS   AGE
-wordpress-2668199741-wvaup   2/2       Running   1          1m
+wordpress-1615343444-d95v3   2/2       Running   0          1m
 ```
 
-Then use `kubectl port-forward`:
+This means the WordPress application is able to connect the Cloud SQL proxy.
+Follow the next step to expose the WordPress container with a load balancer and
+set up the blog to verify the connection to the Cloud SQL instance.
+
+If the Pod fails to start, consider troubleshooting using commands:
+- `kubectl describe deployment wordpress`
+- `kubectl logs -l app=wordpress web`
+- `kubectl logs -l app=wordpress cloufsq`
+
+
+### Expose the WordPress deployment
+
+The following command will create a public IP and load balancer for the
+WordPress deployment.
 
 ```
-kubectl port-forward wordpress-2668199741-wvaup 8080:80
+$ kubectl expose deployment wordpress --type=LoadBalancer
+service "wordpress" exposed
 ```
 
-Then open `localhost:8080` in your browser. You should see the
-Wordpress installation screen.
+Run `kubectl get services` and wait until the `wordpress` service gets a value
+for `EXTERNAL-IP`.
+
+Then visit this IP address and complete setting up the blog. If you succeed,
+it means the WordPress container is successfully using the Cloud SQL instance.
+
+### Cleanup
+
+The following command will delete the Deployment and Service resources:
+
+```
+$ kubectl delete service,deployment -l app=wordpress
+```

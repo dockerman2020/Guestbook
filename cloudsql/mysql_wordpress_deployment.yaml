@@ -2,48 +2,44 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: wordpress
+  labels:
+    app: wordpress
 spec:
-  replicas: 1
   template:
     metadata:
       labels:
         app: wordpress
     spec:
       containers:
-        - image: wordpress:4.4.2-apache
-          name: web
+        - name: web
+          image: wordpress:4.8.2-apache
+          ports:
+            - containerPort: 80
           env:
             - name: WORDPRESS_DB_HOST
-              # Connect to the SQL proxy over the local network on a fixed port.
-              # Change the <PORT> to the port number used by your database
-              # (e.g. 3306 for MySQL or 5432 for PostgreSQL).
-              value: 127.0.0.1:<PORT>
+              value: 127.0.0.1:3306
             # These secrets are required to start the pod.
             # [START cloudsql_secrets]
-            - name: WORDPRESS_DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: cloudsql-db-credentials
-                  key: password
             - name: WORDPRESS_DB_USER
               valueFrom:
                 secretKeyRef:
                   name: cloudsql-db-credentials
                   key: username
+            - name: WORDPRESS_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: cloudsql-db-credentials
+                  key: password
             # [END cloudsql_secrets]
-          ports:
-            - containerPort: 80
-              name: wordpress
         # Change <INSTANCE_CONNECTION_NAME> here to include your GCP
         # project, the region of your Cloud SQL instance and the name
         # of your Cloud SQL instance. The format is
         # $PROJECT:$REGION:$INSTANCE
-        # Insert the port number used by your database.
         # [START proxy_container]
-        - image: gcr.io/cloudsql-docker/gce-proxy:1.11
-          name: cloudsql-proxy
+        - name: cloudsql-proxy
+          image: gcr.io/cloudsql-docker/gce-proxy:1.11
           command: ["/cloud_sql_proxy", "--dir=/cloudsql",
-                    "-instances=<INSTANCE_CONNECTION_NAME>=tcp:<PORT>",
+                    "-instances=<INSTANCE_CONNECTION_NAME>=tcp:3306",
                     "-credential_file=/secrets/cloudsql/credentials.json"]
           volumeMounts:
             - name: cloudsql-instance-credentials
@@ -59,9 +55,9 @@ spec:
         - name: cloudsql-instance-credentials
           secret:
             secretName: cloudsql-instance-credentials
+        - name: cloudsql
+          emptyDir:
         - name: ssl-certs
           hostPath:
             path: /etc/ssl/certs
-        - name: cloudsql
-          emptyDir:
       # [END volumes]
