@@ -2,7 +2,7 @@
 
 This example shows how to connect to
 [Google Cloud SQL](https://cloud.google.com/sql/docs/) from an application
-running on [Google Container Engine](https://cloud.google.com/container-engine).
+running on [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine).
 
 The [`mysql_wordpress_deployment.yaml` manifest file](mysql_wordpress_deployment.yaml)
 that consists of two containers:
@@ -16,14 +16,14 @@ that consists of two containers:
 ready to use in production, as it does not configure a persistent disk for the
 WordPress set up and may yield in data loss.
 > Follow the [Using Persistent Disks with WordPress and
-MySQL](https://cloud.google.com/container-engine/docs/tutorials/persistent-disk) for an example that is ready to use.
+MySQL](https://cloud.google.com/kubernetes-engine/docs/tutorials/persistent-disk) for an example that is ready to use.
 
 If you are looking for a PostgreSQL example, see [`postgres_deployment.yaml`](postgres_deployment.yaml).
 
 ### Prerequisites
 
 Follow the tutorial at [Connecting from Google Container
-Engine](https://cloud.google.com/sql/docs/mysql/connect-container-engine).
+Engine](https://cloud.google.com/sql/docs/mysql/connect-kubernetes-engine).
 
 After you follow the tutorial, you must have Secrets named
 `cloudsql-instance-credentials` and `cloudsql-db-credentials` in your cluster:

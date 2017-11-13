@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Pub/Sub pull example on Google Container Engine.
+"""Pub/Sub pull example on Google Kubernetes Engine.
 
 This program pulls messages from a Cloud Pub/Sub topic and
 prints to standard output.

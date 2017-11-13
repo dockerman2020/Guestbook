@@ -1,12 +1,12 @@
-# Container Engine Samples
+# Kubernetes Engine Samples
 
 This repository contains sample applications used in
-[Google Container Engine](https://cloud.google.com/container-engine/) tutorials.
+[Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine/) tutorials.
 
 See the following resources to learn more:
 
-- [Google Container Engine - Quickstart](https://cloud.google.com/container-engine/docs/quickstart)
-- [Google Container Engine - Tutorials](https://cloud.google.com/container-engine/docs/tutorials)
+- [Google Kubernetes Engine - Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart)
+- [Google Kubernetes Engine - Tutorials](https://cloud.google.com/kubernetes-engine/docs/tutorials)
 
 ## Contributing changes
 
