@@ -12,7 +12,7 @@ cluster.
    <a href="https://cloud.google.com/free/" target="_blank">https://cloud.google.com/free/</a>.
 
 2. This tutorial requires the `kubectl` and `gcloud` command-line tools.
-   <a href="https://console.google.com/cloudshell" target="_blank">Cloud Shell</a>
+   <a href="https://console.cloud.google.com/cloudshell" target="_blank">Cloud Shell</a>
    provides an environment with these tools preinstalled.
 
 For each step below, run the command in a terminal window.
