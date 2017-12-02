@@ -9,11 +9,11 @@ cluster.
 1. You will need a Google Cloud Platform account with an active billing account.
    If you don't have one, you can sign up for a free trial to get $300 worth of
    GCP credits, which are valid for 12 months, at
-   https://cloud.google.com/free/.
+   <a href="https://cloud.google.com/free/" target="_blank">https://cloud.google.com/free/</a>.
 
-2. This tutorial requires the `kubectl` and `gcloud` command-line tools. [Cloud
-   Shell](https://console.google.com/cloudshell) provides an environment with
-   these tools preinstalled.
+2. This tutorial requires the `kubectl` and `gcloud` command-line tools.
+   <a href="https://console.google.com/cloudshell" target="_blank">Cloud Shell</a>
+   provides an environment with these tools preinstalled.
 
 For each step below, run the command in a terminal window.
 
@@ -34,9 +34,9 @@ Replace `[PROJECT-ID]` with the id returned in Step 1.
 ## Step 3: Get your billing account ID.
 
 Make a note of the billing account ID in the format XXXXXX-XXXXXX-XXXXXX. If you
-see 0 items listed, you can sign up for the [Free
-Trial](https://cloud.google.com/free/) to get $300 worth of GCP credits, which
-are valid for 12 months.
+see 0 items listed, you can sign up for the
+<a href="https://cloud.google.com/free/" target="_blank">Free Trial</a>
+to get $300 worth of GCP credits, which are valid for 12 months.
 
 ```gcloud alpha billing accounts list```
 
