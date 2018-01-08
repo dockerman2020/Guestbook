@@ -46,8 +46,6 @@ spec:
             - name: cloudsql-instance-credentials
               mountPath: /secrets/cloudsql
               readOnly: true
-            - name: ssl-certs
-              mountPath: /etc/ssl/certs
             - name: cloudsql
               mountPath: /cloudsql
         # [END proxy_container]
@@ -58,7 +56,4 @@ spec:
             secretName: cloudsql-instance-credentials
         - name: cloudsql
           emptyDir:
-        - name: ssl-certs
-          hostPath:
-            path: /etc/ssl/certs
       # [END volumes]
