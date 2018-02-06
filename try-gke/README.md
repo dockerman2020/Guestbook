@@ -111,7 +111,7 @@ kubectl get service web-app
 
 ## Step 12: Make a request to the application.
 
-Replace `[IP-ADDRESS]` with the id returned in the previous step.
+Replace `[IP-ADDRESS]` with the external IP address returned in the previous step.
 
 ```
 curl http://[IP-ADDRESS]
