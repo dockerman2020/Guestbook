@@ -33,7 +33,7 @@ spec:
         - /bin/sh
         - -c
         - ./direct-to-sd --metric-name=foo --metric-value=40 --pod-id=$(POD_ID)
-        image: gcr.io/google-samples/sd-dummy-exporter:dev
+        image: gcr.io/google-samples/sd-dummy-exporter:latest
         name: sd-dummy-exporter
         resources:
           requests:

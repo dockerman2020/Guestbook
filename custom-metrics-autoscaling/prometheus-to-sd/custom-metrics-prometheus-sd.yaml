@@ -21,7 +21,7 @@ spec:
     - /bin/sh
     - -c
     - ./prometheus-dummy-exporter --metric-name=foo --metric-value=40 --port=8080
-    image: gcr.io/google-samples/prometheus-dummy-exporter:dev
+    image: gcr.io/google-samples/prometheus-dummy-exporter:latest
     imagePullPolicy: Always
     name: prometheus-dummy-exporter
     resources:
