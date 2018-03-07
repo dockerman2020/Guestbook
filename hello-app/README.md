@@ -4,7 +4,7 @@ This example shows how to build and deploy a containerized Go web server
 application using [Kubernetes](https://kubernetes.io).
 
 Visit https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app
-to follow the tutorial and deploy this application on [Google Container
+to follow the tutorial and deploy this application on [Google Kubernetes
 Engine](https://cloud.google.com/kubernetes-engine).
 
 This directory contains:
@@ -18,3 +18,9 @@ with different version numbers:
 
 - `gcr.io/google-samples/hello-app:1.0`
 - `gcr.io/google-samples/hello-app:2.0`
+
+This examples is used in many official/unofficial tutorials, some of them
+include:
+- [Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart)
+- [Kubernetes Engine - Deploying a containerized web application](https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app) tutorial
+- [Kubernetes Engine - Setting up HTTP Load Balancing](https://cloud.google.com/kubernetes-engine/docs/tutorials/http-balancer) tutorial
