@@ -33,6 +33,5 @@ spec:
               mountPath: /var/www/html
       volumes:
         - name: wordpress-persistent-storage
-          gcePersistentDisk:
-            pdName: wordpress-disk
-            fsType: ext4
+          persistentVolumeClaim:
+            claimName: wordpress-volumeclaim
