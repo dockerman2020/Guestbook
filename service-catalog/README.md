@@ -32,7 +32,9 @@ The Service Catalog samples demonstrate use of the services provided by the
 Service Broker.
 
 | Service                               | Admin job | Application Service Account | Per-Binding Service Account |
-| ------------------------------------- |:---------:|:--------------------------:|:----------------------------:|
+| ------------------------------------- |:---------:|:---------------------------:|:---------------------------:|
+| [Cloud Pub/Sub](cloud-pubsub/)        |     *     |             *               |               *             |
+
 
 ### Admin job
 
