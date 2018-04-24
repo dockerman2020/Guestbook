@@ -1,0 +1,63 @@
+# Copyright 2018 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: storage-cleanup-job
+  namespace: storage-quotes
+spec:
+  template:
+    spec:
+      containers:
+        - name: storage-cleanup
+          image: gcr.io/google-samples/service-catalog/cloud-storage-cleanup:latest
+          volumeMounts:
+            - name: service-account
+              mountPath: /var/secrets/service-account
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /var/secrets/service-account/privateKeyData
+            - name: STORAGE_PROJECT
+              valueFrom:
+                secretKeyRef:
+                  name: cleanup-storage-binding
+                  key: projectId
+            - name: STORAGE_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: cleanup-storage-binding
+                  key: bucketId
+          imagePullPolicy: Always
+      restartPolicy: Never
+      volumes:
+        - name: service-account
+          secret:
+            secretName: cleanup-storage-binding
+---
+# A binding for the cleanup job
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceBinding
+metadata:
+  name: cleanup-storage-binding
+  namespace: storage-quotes
+spec:
+  instanceRef:
+    name: storage-instance
+  parameters:
+    serviceAccount: storage-cleanup
+    # Create a new service account as part of the binding.
+    createServiceAccount: true
+    roles:
+      - roles/storage.objectAdmin

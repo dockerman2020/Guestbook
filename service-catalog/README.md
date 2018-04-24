@@ -35,6 +35,7 @@ Service Broker.
 | ------------------------------------- |:---------:|:---------------------------:|:---------------------------:|
 | [Cloud Pub/Sub](cloud-pubsub/)        |     *     |             *               |               *             |
 | [Cloud Spanner](cloud-spanner/)       |     *     |             *               |               *             |
+| [Cloud Storage](cloud-storage/)       |     *     |                             |               *             |
 
 ### Admin job
 
