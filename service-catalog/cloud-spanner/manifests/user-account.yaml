@@ -1,0 +1,37 @@
+# Copyright 2018 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The manifest file for provisioning an IAM Service Account.
+
+apiVersion: servicecatalog.k8s.io/v1beta1
+kind: ServiceInstance
+metadata:
+  name: user-account
+  namespace: spanner-guestbook
+spec:
+  # The name of the service class to be provisioned.
+  # Provisioning an instance of the `cloud-iam-service-account` class creates
+  # a service account.
+  clusterServiceClassExternalName: cloud-iam-service-account
+  # The name of the service plan of the `cloud-iam-service-account` service
+  # class to provision. `beta` is the currently available plan.
+  clusterServicePlanExternalName: beta
+  # Parameters for the service account instance provisioning.
+  parameters:
+    # `accountid` will be used to create the service account's email address.
+    # The email address will be of the form `<accountId>@<project>.iam.gserviceaccount.com`
+    accountId: guestbook-user
+    # A display name to use for the service account. This will be visible
+    # in Google Cloud Console.
+    displayName: A service account for user-level access to the Spanne instance.
