@@ -7,8 +7,6 @@ and a [Google Cloud Platform Service Broker](
 https://cloud.google.com/kubernetes-engine/docs/concepts/add-on/service-broker),
 an implementation of the [Open Service Broker](
 https://www.openservicebrokerapi.org/) standard.
-The sample web application allows users to store and retrieve very simple
-musician data.
 
 The sample highlights a number of Kubernetes and Open Service Broker concepts:
 
@@ -17,24 +15,30 @@ The sample highlights a number of Kubernetes and Open Service Broker concepts:
 *   *Binding* the provisioned *service instance* to a Kubernetes application.
 *   Use of the *binding* by the application to access the *service instance*.
 
+The sample application allows users to store and retrieve musician information.
+
+At the center of the sample is a Cloud SQL (MySQL) instance, which will be
+provisioned in your project by the Service Broker. A Kubernetes application
+will access the MySQL instance using a *binding*.
 
 ## Objectives
 
-To deploy and run the simple musician application, you must:
+To deploy and run the musician application, you must:
 
 1.  Create a new namespace for all Kubernetes resources used by the sample.
 2.  Provision Cloud SQL (MySQL) instance using Kubernetes Service Catalog.
-3.  Provision a service account for the application to access cloud resources.
-4.  Create bindings to the Cloud SQL instance and service account.
-5.  Deploy a Kubernetes application (configured to use the bindings).
-6.  Use the application's web API to create and read musician data.
+3.  Deploy the musician application:
+      1.  Provision a service account for the application.
+      2.  Create a binding to the MySQL instance with the service account.
+      3.  Deploy the Kubernetes application.
+4.  Use the application's web API to create and read musician data.
+5.  Deprovision and delete all resources used by the sample.
 
 
 ## Before you begin
 
-Review the [information](../README.md) applicable to all Service Catalog samples.
-
-Successful use of this sample requires:
+Review the [information](../README.md) applicable to all Service Catalog
+samples, including [prerequisites](../README.md#prerequisites):
 
 *   A Kubernetes cluster, minimum version 1.8.x.
 *   Kubernetes Service Catalog and the Service Broker [installed](
@@ -42,19 +46,15 @@ Successful use of this sample requires:
 *   The [Service Catalog CLI](
     https://github.com/kubernetes-incubator/service-catalog/blob/master/docs/install.md#installing-the-service-catalog-cli)
     (`svcat`) installed.
-*   [Cloud SQL Administration API](https://console.cloud.google.com/apis/library/sqladmin.googleapis.com)
-    enabled.
 
 
-## Create a new namespace in Kubernetes cluster
-
-Create a new namespace for all Kubernetes resources used by the sample:
+## Step 1: Create a new Kubernetes namespace
 
 ```shell
 kubectl create namespace cloud-mysql
 ```
 
-## Provision a Cloud SQL instance
+## Step 2: Provision a Cloud SQL instance
 
 To provision an instance of Cloud SQL (MySQL), run:
 
@@ -73,25 +73,48 @@ svcat provision cloudsql-instance \
 ```
 
 This command will use the Kubernetes Service Catalog to provision a Cloud SQL
-instance. To check on the status of instance provisioning, run:
+instance.
+
+Check on the status of the instance provisioning:
 
 ```shell
 svcat describe instance --namespace cloud-mysql cloudsql-instance
 ```
 
-The provisioning of a Cloud SQL instance may take several minutes. Once the
-provisioning is complete (its status is `Ready`), proceed to the next step.
+The instance is provisioned when its status is `Ready`.
 
-
-## Provision a Service Account
+## Step 3: Deploy the musician application
 
 The sample application assumes an identity of a [service account](
 https://cloud.google.com/iam/docs/understanding-service-accounts) to access the
-Cloud SQL instance. In this section you will provision a service account for
-the application to use and make the service account credentials (private key)
-available to the application by creating a binding.
+Cloud SQL instance. The service account will be granted the `client` role
+(specified in [cloudsql-binding.yaml](manifests/cloudsql-binding.yaml)).
+For more information on Cloud SQL's IAM roles and permissions, please refer to
+Cloud SQL's [access control documentation](
+https://cloud.google.com/sql/docs/mysql/project-access-control#permissions_and_roles).
 
-To provision a service account using the Kubernetes Service Catalog, run:
+Even though the application only uses Cloud SQL, a typical application may use
+a number of different Google Cloud services. For example, the application can
+be extended to store photos from concerts in Cloud Storage bucket. In that case,
+the application will use a single service account to access all Google Cloud
+resources. The musician sample application follows this pattern - it uses
+a single service account created specifically for the application.
+
+To deploy the musician application, you will:
+
+*   Create a service account by provisioning a special 'service account'
+    service.
+*   Create a binding to the service account instance. This will:
+      *    Create a service account private key.
+      *    Store the private key in the Kubernetes secret as `privateKeyData`.
+*   Create a binding to Cloud SQL instance, referencing the service account.
+    This will:
+      *    Grant the service account the roles needed to use the Cloud SQL
+           instance.
+      *    Store the MySQL connection information (`connectionName`)
+           in a Kubernetes secret.
+
+### Step 3.1: Provision a service account
 
 ```shell
 svcat provision service-account \
@@ -108,10 +131,8 @@ Check on the status of the service account provisioning:
 svcat get instance --namespace cloud-mysql service-account
 ```
 
-Once the service account is provisioned (its status is `Ready`), create
-a binding for the application. The act of creating the binding will make
-the service account credentials available in the `cloud-mysql` namespace
-as a secret:
+Once the status is `Ready`, create a binding to make the service account
+private key available in the `cloud-mysql` namespace as a secret:
 
 ```shell
 svcat bind --namespace cloud-mysql service-account
@@ -123,8 +144,8 @@ Check on the status of the binding operation:
 svcat bind --namespace cloud-mysql service-account
 ```
 
-Once the binding is completed (its status is `Ready`), you can view the secret
-containing the service account credentials:
+Once the binding status is `Ready`, view the secret containing the service
+account credentials:
 
 ```shell
 kubectl get secret --namespace cloud-mysql service-account -oyaml
@@ -138,69 +159,46 @@ to make the service account private key available to the Cloud SQL proxy for
 authentication with Cloud SQL and enables the web application (specifically
 the Cloud SQL Proxy) to assume the identity of the service account.
 
-## Create a Binding to the Cloud SQL Instance
+## Step 3.2: Create a Binding to the Cloud SQL Instance
 
-The application, executing with the assumed identity of the service account,
-needs to be permitted to access the Cloud SQL instance. To express the intent
-of giving the application permission to access the Cloud SQL instance, create
-a binding. The act of creating the binding will grant the service account
-used by the application appropriate permissions to access the Cloud SQL
-instance and will make the information necessary to access the Cloud SQL
-instance available to the application in the form of Kubernetes secret.
-
-The list of roles which should be granted to the service account is specified when
-creating the binding ([cloudsql-binding.yaml](manifests/cloudsql-binding.yaml)).
-Because the web application uses Cloud SQL Proxy, the only applicable role is
-`client`.
-
-For more information on Cloud SQL's IAM roles and permissions, please refer to
-Cloud SQL's [access control documentation](
-https://cloud.google.com/sql/docs/mysql/project-access-control#permissions_and_roles).
-
-Create a binding to the `cloudsql-instance`:
+Create a binding to the `cloudsql-instance` using the parameters in
+[cloudsql-binding.yaml](manifests/cloudsql-binding.yaml):
 
 ```shell
 kubectl create -f ./manifests/cloudsql-binding.yaml
 ```
 
-Check on the status of the binding operation:
+Check on the binding status:
 
 ```shell
 svcat get binding --namespace cloud-mysql cloudsql-binding
 ```
 
-Once the binding is completed (its status is `Ready`), you can view the secret
-containing information for the application (Cloud SQL Proxy) to connect to the
-Cloud SQL instance:
+Once the `cloudsql-binding` status is `Ready`, view the secret containing the
+information for the application (Cloud SQL Proxy) to connect to the
+Cloud SQL instance (the default name of the secret is the same as the name
+of the binding resource: `cloudsql-binding`):
 
 ```shell
-kubectl get secret --namespace cloud-mysql -o yaml \
-  "$(kubectl get servicebinding --namespace cloud-mysql cloudsql-binding -o=jsonpath='{.spec.secretName}')"
+kubectl get secret --namespace cloud-mysql -o yaml cloudsql-binding
 ```
 
-Notice the key `connectionName` which contains base-64 encoded value for the
-proxy to use when connecting to the Cloud SQL instance. You can find the
-reference to the `connectionName` in the [user-deployment.yaml](
-manifests/user-deployment.yaml) manifest file.
+Notice the `connectionName` value, which is referenced from the
+[user-deployment.yaml](manifests/user-deployment.yaml) and tells the application
+which MySQL instance to access.
 
-## Deploy the Web Application
+## Step 3.3: Deploy the Application
 
-Having satisfied both dependencies of the web applications:
-*   a service account
-*   a binding to the Cloud SQL instance
-
-You are now ready to deploy the web application:
+Create the Kubernetes deployment using configuration in
+[user-deployment.yaml](manifests/user-deployment.yaml). The configuration
+uses two secrets to obtain the service account credentials (`service-account`
+secret) and MySQL connection information (`cloudsql-binding` secret).
 
 ```shell
 kubectl create -f ./manifests/user-deployment.yaml
 ```
 
-The web application consists of a Kubernetes deployment and a load balancer service.
-The deployment contains a single pod with two containers: the Cloud SQL Proxy
-and the web application frontend.
-The load balancer forwards traffic to the web application frontend.
-
-You can monitor the status of the deployment and the load balancer:
+Wait for the deployment to complete:
 
 ```shell
 # Deployment
@@ -210,8 +208,7 @@ kubectl get deployment --namespace cloud-mysql musicians
 kubectl get service --namespace cloud-mysql cloudsql-user-service
 ```
 
-After the deployment finishes, find the the Kubernetes service external IP
-address:
+Next, find the external IP address of the Kubernetes load balancer:
 
 ```shell
 kubectl get service --namespace cloud-mysql
@@ -224,7 +221,7 @@ or:
 IP=$(kubectl get service --namespace cloud-mysql cloudsql-user-service -o=jsonpath='{.status.loadBalancer.ingress[0].ip}')
 ```
 
-## Access the Application
+## Step 4: Access the Application
 
 Use the IP address of the Kubernetes load balancer service along with a `curl`
 command to access the application:
@@ -246,15 +243,23 @@ curl http://${IP}/musicians -d '{"name": "George", "instrument": "Lead Guitar"}'
 curl http://${IP}/musicians
 ```
 
-## Cleanup
+## Step 5: Cleanup
 
 To avoid incurring charges to your Google Cloud Platform account for the
-resources used in this sample, run the following commands.
+resources used in this sample, delete and deprovision all resources.
+
+An expedient way is to delete the Kubernetes namespace; however make sure that
+the namespace doesn't contain any resources you want to keep:
+
+```shell
+kubectl delete namespace cloud-mysql
+```
+
+Alternatively, delete all resources individually by running the following
+commands:
 
 **Note:** You may have to wait several minutes between steps to allow for the
-previous operations to complete. An expedient alternative to de-provisioning
-all resources individually is to delete the Kubernetes namespace:
-`kubectl delete namespace cloud-mysql`.
+previous operations to complete.
 
 Delete the application deployment and the load balancer service:
 
