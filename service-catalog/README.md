@@ -33,6 +33,7 @@ Service Broker.
 
 | Service                               | Admin job | Application Service Account | Per-Binding Service Account |
 | ------------------------------------- |:---------:|:---------------------------:|:---------------------------:|
+| [BigQuery](bigquery/)                 |     *     |             *               |               *             |
 | [Cloud Pub/Sub](cloud-pubsub/)        |     *     |             *               |               *             |
 | [Cloud Spanner](cloud-spanner/)       |     *     |             *               |               *             |
 | [Cloud Storage](cloud-storage/)       |     *     |                             |               *             |
@@ -178,3 +179,4 @@ for the previously existing roles will unexpectedly fail.
 account ID if it is supposed to exist already or [create the service
 account](https://cloud.google.com/kubernetes-engine/docs/how-to/add-on/service-broker/use-service-catalog#bind_to_an_instance)
 referenced in the binding, then recreate the binding.
+
