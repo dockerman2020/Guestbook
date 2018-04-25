@@ -1,0 +1,69 @@
+# Copyright 2018 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: bigtable-counter
+  namespace: bigtable
+spec:
+  selector:
+    matchLabels:
+      app: bigtable-counter
+  template:
+    metadata:
+      name: bigtable-counter
+      labels:
+        app: bigtable-counter
+    spec:
+      volumes:
+        - name: service-account
+          secret:
+           secretName: user-account
+      containers:
+        - name: bigtable-counter
+          image: gcr.io/google-samples/service-catalog/cloud-bigtable-counter:latest
+          volumeMounts:
+          - name: service-account
+            mountPath: /var/secrets/service-account
+          env:
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: /var/secrets/service-account/privateKeyData
+          - name: "GOOGLE_CLOUD_PROJECT"
+            valueFrom:
+                secretKeyRef:
+                   name: user-bigtable-binding
+                   key: projectId
+          - name: "BIGTABLE_INSTANCE"
+            valueFrom:
+                secretKeyRef:
+                   name: user-bigtable-binding
+                   key: instanceId
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bigtable-counter
+  namespace: bigtable
+  labels:
+    app: bigtable-counter
+spec:
+  selector:
+    app: bigtable-counter
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: LoadBalancer
