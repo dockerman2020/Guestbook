@@ -24,8 +24,6 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/service-catalog/cloud-bigtable-admin', 'cloud-bigtable/admin' ]
 - name: 'gcr.io/cloud-builders/docker'
-  args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/service-catalog/cloud-sql-mysql-user', 'cloud-sql-mysql/user' ]
-- name: 'gcr.io/cloud-builders/docker'
   args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/service-catalog/cloud-storage-user', 'cloud-storage/quotes' ]
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/service-catalog/cloud-storage-cleanup', 'cloud-storage/cleanup' ]
@@ -48,7 +46,6 @@ images:
 - 'gcr.io/$PROJECT_ID/service-catalog/cloud-sql-mysql-user'
 - 'gcr.io/$PROJECT_ID/service-catalog/cloud-bigtable-counter'
 - 'gcr.io/$PROJECT_ID/service-catalog/cloud-bigtable-admin'
-- 'gcr.io/$PROJECT_ID/service-catalog/cloud-sql-mysql-user'
 - 'gcr.io/$PROJECT_ID/service-catalog/cloud-storage-user'
 - 'gcr.io/$PROJECT_ID/service-catalog/cloud-storage-cleanup'
 - 'gcr.io/$PROJECT_ID/service-catalog/bigquery-user'
