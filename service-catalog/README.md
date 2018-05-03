@@ -35,7 +35,7 @@ Service Broker.
 | ------------------------------------- |:---------:|:---------------------------:|:---------------------------:|
 | [BigQuery](bigquery/)                 |     *     |             *               |               *             |
 | [Cloud Bigtable](cloud-bigtable/)     |     *     |             *               |               *             |
-| [Cloud Pub/Sub](cloud-pubsub/)        |     *     |             *               |               *             |
+| [Cloud Pub/Sub](cloud-pubsub/)        |           |             *               |               *             |
 | [Cloud Spanner](cloud-spanner/)       |     *     |             *               |               *             |
 | [Cloud SQL - MySQL](cloud-sql-mysql/) |           |             *               |                             |
 | [Cloud Storage](cloud-storage/)       |     *     |                             |               *             |

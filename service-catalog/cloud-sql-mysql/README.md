@@ -47,7 +47,6 @@ samples, including [prerequisites](../README.md#prerequisites):
     https://github.com/kubernetes-incubator/service-catalog/blob/master/docs/install.md#installing-the-service-catalog-cli)
     (`svcat`) installed.
 
-
 ## Step 1: Create a new Kubernetes namespace
 
 ```shell
