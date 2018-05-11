@@ -6,6 +6,7 @@ prints to standard output.
 """
 
 import datetime
+import time
 
 from google.cloud import pubsub
 
@@ -22,9 +23,21 @@ def main():
     while True:
         with pubsub.subscription.AutoAck(subscription, max_messages=10) as ack:
             for _, message in list(ack.items()):
-                print("[{0}] ID={1} Data={2}".format(datetime.datetime.now(),
-                                                     message.message_id,
-                                                     message.data))
+                print("[{0}] Received message: ID={1} Data={2}".format(
+                    datetime.datetime.now(),
+                    message.message_id,
+                    message.data))
+                process(message)
+
+
+def process(message):
+    """Process received message"""
+    print("[{0}] Processing: {1}".format(datetime.datetime.now(),
+                                         message.message_id))
+    time.sleep(3)
+    print("[{0}] Processed: {1}".format(datetime.datetime.now(),
+                                        message.message_id))
+
 
 if __name__ == '__main__':
     main()
