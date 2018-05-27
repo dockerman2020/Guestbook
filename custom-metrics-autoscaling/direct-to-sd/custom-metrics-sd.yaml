@@ -31,10 +31,8 @@ spec:
         run: custom-metric-sd
     spec:
       containers:
-      - command:
-        - /bin/sh
-        - -c
-        - ./direct-to-sd --metric-name=foo --metric-value=40 --pod-id=$(POD_ID)
+      - command: ["./direct-to-sd"]
+        args: ["--metric-name=foo", "--metric-value=40", "--pod-id=$(POD_ID)"]
         image: gcr.io/google-samples/sd-dummy-exporter:latest
         name: sd-dummy-exporter
         resources:
