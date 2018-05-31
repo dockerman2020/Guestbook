@@ -1,0 +1,32 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: helloweb
+  labels:
+    app: hello
+spec:
+  template:
+    metadata:
+      labels:
+        app: hello
+        tier: web
+    spec:
+      containers:
+      - name: hello-app
+        image: gcr.io/google-samples/hello-app-tls:1.0
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8443
+        volumeMounts:
+          - name: tls
+            mountPath: /etc/tls
+            readOnly: true
+        env:
+          - name: TLS_CERT
+            value: /etc/tls/tls.crt
+          - name: TLS_KEY
+            value: /etc/tls/tls.key
+      volumes:
+      - name: tls
+        secret:
+          secretName: yourdomain-tls
