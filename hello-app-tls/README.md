@@ -49,7 +49,7 @@ kubectl create secret tls yourdomain-tls \
 
 ```sh
 kubectl apply -f manifests/helloweb-deployment.yaml
-kubectl apply -f manifests/helloweb-service.yaml
+kubectl apply -f manifests/helloweb-ingress-tls.yaml
 ```
 
 ### Step 4: Query the application
