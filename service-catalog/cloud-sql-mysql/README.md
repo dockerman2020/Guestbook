@@ -140,7 +140,7 @@ svcat bind --namespace cloud-mysql service-account
 Check on the status of the binding operation:
 
 ```shell
-svcat bind --namespace cloud-mysql service-account
+svcat get binding --namespace cloud-mysql service-account
 ```
 
 Once the binding status is `Ready`, view the secret containing the service
@@ -179,7 +179,7 @@ Cloud SQL instance (the default name of the secret is the same as the name
 of the binding resource: `cloudsql-binding`):
 
 ```shell
-kubectl get secret --namespace cloud-mysql -o yaml cloudsql-binding
+kubectl get secret --namespace cloud-mysql -o yaml cloudsql-credentials
 ```
 
 Notice the `connectionName` value, which is referenced from the
