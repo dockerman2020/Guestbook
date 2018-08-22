@@ -61,8 +61,8 @@ set up the blog to verify the connection to the Cloud SQL instance.
 
 If the Pod fails to start, consider troubleshooting using commands:
 - `kubectl describe deployment wordpress`
-- `kubectl logs -l app=wordpress web`
-- `kubectl logs -l app=wordpress cloufsq`
+- `kubectl logs -l app=wordpress -c web`
+- `kubectl logs -l app=wordpress -c cloudsql-proxy`
 
 
 ### Expose the WordPress deployment
