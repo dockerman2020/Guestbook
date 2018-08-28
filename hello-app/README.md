@@ -19,7 +19,7 @@ with different version numbers:
 - `gcr.io/google-samples/hello-app:1.0`
 - `gcr.io/google-samples/hello-app:2.0`
 
-This examples is used in many official/unofficial tutorials, some of them
+This example is used in many official/unofficial tutorials, some of them
 include:
 - [Kubernetes Engine Quickstart](https://cloud.google.com/kubernetes-engine/docs/quickstart)
 - [Kubernetes Engine - Deploying a containerized web application](https://cloud.google.com/kubernetes-engine/docs/tutorials/hello-app) tutorial
