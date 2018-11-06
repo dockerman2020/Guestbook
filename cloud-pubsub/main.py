@@ -10,7 +10,7 @@ import time
 
 from google.cloud import pubsub
 
-PUBSUB_TOPIC = 'eco'
+PUBSUB_TOPIC = 'echo'
 PUBSUB_SUBSCRIPTION = 'echo-read'
 
 

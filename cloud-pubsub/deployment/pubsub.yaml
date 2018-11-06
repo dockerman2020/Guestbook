@@ -3,6 +3,9 @@ kind: Deployment
 metadata:
   name: pubsub
 spec:
+  selector:
+    matchLabels:
+      app: pubsub
   template:
     metadata:
       labels:
