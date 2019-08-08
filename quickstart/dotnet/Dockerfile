@@ -15,4 +15,4 @@ COPY . .
 RUN dotnet publish -c Release -o out
 
 # Run the web service on container startup.
-CMD ["dotnet", "out/helloworld-csharp.dll"]
+CMD ["dotnet", "out/HelloGKE.dll"]
