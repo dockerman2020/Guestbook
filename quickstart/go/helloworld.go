@@ -9,10 +9,12 @@ import (
 
 func main() {
 	http.HandleFunc("/", handler)
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
+
 	log.Printf("Listening on localhost:%s", port)
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
 }
