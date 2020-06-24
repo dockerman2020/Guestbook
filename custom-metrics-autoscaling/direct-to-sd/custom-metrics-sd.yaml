@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START all]
-apiVersion: apps/v1
+# [START kubernetes_engine_custom_metrics_direct_deployment]
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
@@ -31,17 +31,29 @@ spec:
         run: custom-metric-sd
     spec:
       containers:
-      - command: ["./direct-to-sd"]
-        args: ["--metric-name=foo", "--metric-value=40", "--pod-id=$(POD_ID)"]
-        image: gcr.io/google-samples/sd-dummy-exporter:latest
+      - command: ["./sd_dummy_exporter"]
+        args:
+        - --use-new-resource-model=true
+        - --use-old-resource-model=false
+        - --metric-name=custom-stackdriver
+        - --metric-value=40
+        - --pod-name=$(POD_NAME)
+        - --namespace=$(NAMESPACE)
+        image: gcr.io/google-containers/sd-dummy-exporter:v0.2.0
         name: sd-dummy-exporter
         resources:
           requests:
             cpu: 100m
         env:
-          - name: POD_ID
-            valueFrom:
-              fieldRef:
-                apiVersion: v1
-                fieldPath: metadata.uid
-# [END all]
+        # save Kubernetes metadata as environment variables for use in metrics
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.name
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+# [END kubernetes_engine_custom_metrics_direct_deployment]

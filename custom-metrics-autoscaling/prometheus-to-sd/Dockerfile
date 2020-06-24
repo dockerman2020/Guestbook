@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.7.3
+FROM golang:1.12.5
 ADD . /go/src/prometheus-dummy-exporter
 RUN go get github.com/prometheus/client_golang/prometheus
 RUN CGO_ENABLED=0 GOOS=linux go install prometheus-dummy-exporter

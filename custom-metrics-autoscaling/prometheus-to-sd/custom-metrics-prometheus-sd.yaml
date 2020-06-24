@@ -12,39 +12,52 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START all]
-apiVersion: v1
-kind: Pod
+# [START kubernetes_engine_custom_metrics_prometheus_deployment]
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
+  labels:
+    run: custom-metric-prometheus-sd
   name: custom-metric-prometheus-sd
+  namespace: default
 spec:
-  containers:
-  - command:
-    - /bin/sh
-    - -c
-    - ./prometheus-dummy-exporter --metric-name=foo --metric-value=40 --port=8080
-    image: gcr.io/google-samples/prometheus-dummy-exporter:latest
-    imagePullPolicy: Always
-    name: prometheus-dummy-exporter
-    resources:
-      requests:
-        cpu: 100m
-  - name: prometheus-to-sd
-    image: gcr.io/google-containers/prometheus-to-sd:v0.5.0
-    command:
-    - /monitor
-    - --source=:http://localhost:8080
-    - --stackdriver-prefix=custom.googleapis.com
-    - --pod-id=$(POD_ID)
-    - --namespace-id=$(POD_NAMESPACE)
-    env:
-    - name: POD_ID
-      valueFrom:
-        fieldRef:
-          apiVersion: v1
-          fieldPath: metadata.uid
-    - name: POD_NAMESPACE
-      valueFrom:
-        fieldRef:
-          fieldPath: metadata.namespace
-# [END all]
+  replicas: 1
+  selector:
+    matchLabels:
+      run: custom-metric-prometheus-sd
+  template:
+    metadata:
+      labels:
+        run: custom-metric-prometheus-sd
+    spec:
+      containers:
+      # sample container generating custom metrics
+      - name: prometheus-dummy-exporter
+        image: gcr.io/google-containers/prometheus-dummy-exporter:v0.1.0
+        command: ["./prometheus_dummy_exporter"]
+        args:
+        - --metric-name=custom_prometheus
+        - --metric-value=40
+        - --port=8080
+      # pre-built 'prometheus-to-sd' sidecar container to export prometheus
+      # metrics to Stackdriver
+      - name: prometheus-to-sd
+        image: gcr.io/google-containers/prometheus-to-sd:v0.5.0
+        command: ["/monitor"]
+        args:
+        - --source=:http://localhost:8080
+        - --stackdriver-prefix=custom.googleapis.com
+        - --pod-id=$(POD_ID)
+        - --namespace-id=$(POD_NAMESPACE)
+        env:
+        # save Kubernetes metadata as environment variables for use in metrics
+        - name: POD_ID
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.uid
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+# [END kubernetes_engine_custom_metrics_prometheus_deployment]
