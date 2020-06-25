@@ -35,7 +35,7 @@ spec:
         args:
         - --use-new-resource-model=true
         - --use-old-resource-model=false
-        - --metric-name=custom-stackdriver
+        - --metric-name=custom-metric
         - --metric-value=40
         - --pod-name=$(POD_NAME)
         - --namespace=$(NAMESPACE)
