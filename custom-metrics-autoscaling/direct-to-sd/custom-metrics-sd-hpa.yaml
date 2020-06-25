@@ -28,6 +28,6 @@ spec:
   metrics:
   - type: Pods
     pods:
-      metricName: custom-stackdriver
+      metricName: custom-metric
       targetAverageValue: 20
 # [END kubernetes_engine_custom_metrics_direct_horizontal_pod_autoscaler]
