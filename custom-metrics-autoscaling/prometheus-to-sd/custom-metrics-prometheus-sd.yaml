@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START kubernetes_engine_custom_metrics_prometheus_deployment]
+# [START container_custom_metrics_prometheus_deployment]
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -60,4 +60,4 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-# [END kubernetes_engine_custom_metrics_prometheus_deployment]
+# [END container_custom_metrics_prometheus_deployment]

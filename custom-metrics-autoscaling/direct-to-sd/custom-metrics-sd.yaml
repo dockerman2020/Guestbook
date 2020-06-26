@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START kubernetes_engine_custom_metrics_direct_deployment]
+# [START container_custom_metrics_direct_deployment]
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -56,4 +56,4 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
-# [END kubernetes_engine_custom_metrics_direct_deployment]
+# [END container_custom_metrics_direct_deployment]

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START kubernetes_engine_helloapp_ingress]
+# [START container_helloapp_ingress]
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -40,4 +40,4 @@ spec:
   ports:
   - port: 8080
     targetPort: 8080
-# [END kubernetes_engine_helloapp_ingress]
+# [END container_helloapp_ingress]

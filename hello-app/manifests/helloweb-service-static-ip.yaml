@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START kubernetes_engine_helloapp_service]
+# [START container_helloapp_service]
 apiVersion: v1
 kind: Service
 metadata:
@@ -28,4 +28,4 @@ spec:
     targetPort: 8080
   type: LoadBalancer
   loadBalancerIP: "YOUR.IP.ADDRESS.HERE"
-# [END kubernetes_engine_helloapp_service]
+# [END container_helloapp_service]

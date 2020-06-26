@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START kubernetes_engine_helloapp_deployment]
+# [START container_helloapp_deployment]
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -35,4 +35,4 @@ spec:
         image: gcr.io/google-samples/hello-app:1.0
         ports:
         - containerPort: 8080
-# [END kubernetes_engine_helloapp_deployment]
+# [END container_helloapp_deployment]

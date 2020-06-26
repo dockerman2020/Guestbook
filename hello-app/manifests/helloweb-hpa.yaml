@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START kubernetes_engine_helloapp_horizontal_pod_autoscaler]
+# [START container_helloapp_horizontal_pod_autoscaler]
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -29,4 +29,4 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: helloweb
-# [END kubernetes_engine_helloapp_horizontal_pod_autoscaler]
+# [END container_helloapp_horizontal_pod_autoscaler]

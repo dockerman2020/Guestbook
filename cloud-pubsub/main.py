@@ -13,7 +13,7 @@ from google.cloud import pubsub
 PUBSUB_TOPIC = 'echo'
 PUBSUB_SUBSCRIPTION = 'echo-read'
 
-# [START kubernetes_engine_pubsub_pull]
+# [START container_pubsub_pull]
 def main():
     """Continuously pull messages from subsciption"""
     client = pubsub.Client()
@@ -37,7 +37,7 @@ def process(message):
     time.sleep(3)
     print("[{0}] Processed: {1}".format(datetime.datetime.now(),
                                         message.message_id))
-# [END kubernetes_engine_pubsub_pull]
+# [END container_pubsub_pull]
 
 if __name__ == '__main__':
     main()
