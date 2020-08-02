@@ -1,0 +1,4 @@
+flask
+requests
+emoji
+flask-cors
