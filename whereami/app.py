@@ -132,6 +132,18 @@ def home(path):
 
         payload['backend_result'] = backend_result
 
+    echo_headers = os.getenv('ECHO_HEADERS')
+
+    if echo_headers == 'True':
+
+        try: 
+
+            payload['headers'] = {k:v for k, v in request.headers.items()}
+
+        except:
+
+            logging.warning("Unable to capture inbound headers.")
+
     return jsonify(payload)
 
 
