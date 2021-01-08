@@ -98,6 +98,7 @@ if __name__ == '__main__':
     logging.getLogger().setLevel(logging.INFO)
     app.logger.handlers = []
     app.logger.propagate = True
+    app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
     # decision point - HTTP or gRPC?
     if os.getenv('GRPC_ENABLED') == "True":
