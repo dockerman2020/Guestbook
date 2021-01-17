@@ -1,5 +1,7 @@
 # Setting up HTTP(S) Load Balancing with Ingress example
 
+[![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/kubernetes-engine-samples&cloudshell_tutorial=README.md&cloudshell_workspace=load-balancing)
+
 This example shows how to run a web application behind
 an [external HTTP(S) load balancer](https://cloud.google.com/load-balancing/docs/https)
 using the [Ingress](https://cloud.google.com/kubernetes-engine/docs/concepts/ingress) resource.

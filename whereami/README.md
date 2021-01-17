@@ -1,10 +1,12 @@
 # whereami
 
-`whereami` is a simple Kubernetes-oriented python app for describing the location of the pod serving a request via its attributes (cluster name, cluster region, pod name, namespace, service account, etc). This is useful for a variety of demos where you just need to understand how traffic is getting to and returning from your app. 
+[![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.svg)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/GoogleCloudPlatform/kubernetes-engine-samples&cloudshell_tutorial=README.md&cloudshell_workspace=whereami/)
+
+`whereami` is a simple Kubernetes-oriented python app for describing the location of the pod serving a request via its attributes (cluster name, cluster region, pod name, namespace, service account, etc). This is useful for a variety of demos where you just need to understand how traffic is getting to and returning from your app.
 
 `whereami`, by default, is a Flask-based python app. It also can operate as a [gRPC](https://grpc.io/) server. The instructions for using gRPC are at the bottom of this document [here](#gRPC-support).
 
-### Simple deployment 
+### Simple deployment
 
 `whereami` is a single-container app, designed and packaged to run on Kubernetes. In it's simplest form it can be deployed in a single line with only a few parameters.
 
@@ -47,7 +49,7 @@ $ git clone https://github.com/GoogleCloudPlatform/kubernetes-engine-samples
 $ cd kubernetes-engine-samples/whereami
 ```
 
-#### Step 1 - Create a GKE cluster 
+#### Step 1 - Create a GKE cluster
 
 First define your environment variables (substituting where #needed#):
 
@@ -70,7 +72,7 @@ $ gcloud beta container clusters create $CLUSTER_NAME \
 $ gcloud container clusters get-credentials $CLUSTER_NAME --region $COMPUTE_REGION
 ```
 
-This will create a regional cluster with a single node per zone (3 nodes in total). 
+This will create a regional cluster with a single node per zone (3 nodes in total).
 
 #### Step 2 - Deploy whereami
 
@@ -126,7 +128,7 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: spec.serviceAccountName
-          - name: BACKEND_ENABLED #If true, enables queries from whereami to a specified Service name or IP. Requires BACKEND_SERVICE to be set. 
+          - name: BACKEND_ENABLED #If true, enables queries from whereami to a specified Service name or IP. Requires BACKEND_SERVICE to be set.
             valueFrom:
               configMapKeyRef:
                 name: whereami-configmap
@@ -170,7 +172,7 @@ ENDPOINT=$(kubectl get svc whereami | grep -v EXTERNAL-IP | awk '{ print $4}')
 
 > Note: this may be `pending` for a few minutes while the service provisions
 
-Wrap things up by `curl`ing the `EXTERNAL-IP` of the service. 
+Wrap things up by `curl`ing the `EXTERNAL-IP` of the service.
 
 ```bash
 $ curl $ENDPOINT
@@ -310,11 +312,11 @@ $ for i in {1..3}; do curl $ENDPOINT -s | jq '{frontend: .pod_name_emoji, backen
 {"frontend":"🏃🏻‍♀️","backend":"🏀"}
 ```
 
-### Include all received headers in the response  
+### Include all received headers in the response
 
-`whereami` has an additional feature flag that, when enabled, will include all received headers in its reply. If, in `k8s/configmap.yaml`, `ECHO_HEADERS` is set to `True`, the response payload will include a `headers` field, populated with the headers included in the client's request. 
+`whereami` has an additional feature flag that, when enabled, will include all received headers in its reply. If, in `k8s/configmap.yaml`, `ECHO_HEADERS` is set to `True`, the response payload will include a `headers` field, populated with the headers included in the client's request.
 
-#### Step 1 - Deploy whereami with header echoing enabled 
+#### Step 1 - Deploy whereami with header echoing enabled
 
 ```bash
 $ kubectl apply -k k8s-echo-headers-overlay-example
@@ -379,7 +381,7 @@ service/whereami-grpc-backend created
 deployment.apps/whereami-grpc-backend created
 ```
 
-This backend will listen for gRPC requests from the frontend service deployed in the following step. 
+This backend will listen for gRPC requests from the frontend service deployed in the following step.
 
 #### Step 2 - Deploy the whereami-grpc frontend
 
@@ -393,7 +395,7 @@ service/whereami-grpc-frontend created
 deployment.apps/whereami-grpc-frontend created
 ```
 
-This frontend will both listen for gRPC requests from the user (described in the following step), and will make gRPC requests to the backend deployed in the prior step. 
+This frontend will both listen for gRPC requests from the user (described in the following step), and will make gRPC requests to the backend deployed in the prior step.
 
 #### Step 3 - Query whereami-grpc frontend
 
@@ -447,7 +449,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   wget && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
-  wget -O /bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.3/grpc_health_probe-linux-amd64 && \ 
+  wget -O /bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.3/grpc_health_probe-linux-amd64 && \
   chmod +x /bin/grpc_health_probe
 USER cnb
 EOF
