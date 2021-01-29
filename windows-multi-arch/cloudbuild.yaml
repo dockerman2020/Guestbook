@@ -15,7 +15,7 @@
 # [START container_windows_multi_arch_cloudbuild]
 timeout: 3600s
 steps:
-- name: 'gcr.io/gke-release/gke-windows-builder:release-1.0.0-gke.0'
+- name: 'gcr.io/gke-release/gke-windows-builder:release-2.0.0-gke.0'
   args:
   - --container-image-name
   - 'gcr.io/$PROJECT_ID/multiarch-helloworld:latest'

@@ -13,8 +13,8 @@
 # limitations under the License.
 
 # [START container_windows_multi_arch_dockerfile]
-ARG version=
-FROM mcr.microsoft.com/windows/servercore:${version}
+ARG WINDOWS_VERSION=
+FROM mcr.microsoft.com/windows/servercore:${WINDOWS_VERSION}
 COPY hello.exe /hello.exe
 USER ContainerUser
 ENTRYPOINT ["hello.exe"]
