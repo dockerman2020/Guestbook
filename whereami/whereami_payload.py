@@ -14,7 +14,7 @@ METADATA_URL = 'http://metadata.google.internal/computeMetadata/v1/'
 METADATA_HEADERS = {'Metadata-Flavor': 'Google'}
 
 # set up emoji list
-emoji_list = list(emoji.unicode_codes.UNICODE_EMOJI.keys())
+emoji_list = list(emoji.unicode_codes.UNICODE_EMOJI['en'].keys())
 
 
 class WhereamiPayload(object):

@@ -11,7 +11,7 @@
 `whereami` is a single-container app, designed and packaged to run on Kubernetes. In it's simplest form it can be deployed in a single line with only a few parameters.
 
 ```bash
-$ kubectl run --image=gcr.io/google-samples/whereami:v1.1.3 --expose --port 8080 whereami
+$ kubectl run --image=gcr.io/google-samples/whereami:v1.1.4 --expose --port 8080 whereami
 ```
 
 The `whereami`  pod listens on port `8080` and returns a very simple JSON response that indicates who is responding and where they live. This example assumes you're executing the `curl` command from a pod in the same K8s cluster & namespace (although the following examples show how to access from external clients):
@@ -96,7 +96,7 @@ spec:
       serviceAccountName: whereami-ksa
       containers:
       - name: whereami
-        image: gcr.io/google-samples/whereami:v1.1.3
+        image: gcr.io/google-samples/whereami:v1.1.4
         ports:
           - name: http
             containerPort: 8080 #The application is listening on port 8080
@@ -193,6 +193,24 @@ $ curl $ENDPOINT
 }
 ```
 
+The JSON payload example above covers the majority of fields that `whereami` can return. In the following sections, you will see how it's possible to have `whereami` to call downstream services, adding additional data to that payload. Before you do that, it's worth pointing out that `whereami` can also return individual fields from that JSON payload as plaintext, so long as you include the field's name as a suffix to the path you're calling. Let's see an example.
+
+Suppose you only care about the `pod_name_emoji` value. You can do the following to capture only that value in the response:
+
+```bash
+$ curl $ENDPOINT/some/path/prefix/pod_name_emoji
+
+🧚🏽
+```
+
+`whereami` will evaluate the path you're accessing, and as long as the last part of the path matches a valid field name of the JSON response, it will return that value. Otherwise, you'll get the full JSON response. 
+
+The fields/path suffixes that are *always* available in a HTTP `whereami` response are:
+
+- `host_header`
+- `pod_name`
+- `pod_name_emoji`
+- `timestamp`
 
 
 ### Setup a backend service call
@@ -363,11 +381,11 @@ $ curl $ENDPOINT -s | jq .
 
 All of the prior examples for `whereami` are based on its default operating mode of using [Flask](https://flask.palletsprojects.com/en/1.1.x/) as its server. The following section details how `whereami` can be configured to use [gRPC](https://grpc.io/) instead.
 
-By setting the feature flag `GRPC_ENABLED` in the `whereami` configmap (see [here](k8s-grpc/configmap.yaml) to `"True"`, `whereami` can be interacted with using [gRPC](https://grpc.io/), with support for the gRPC [health check protocol](https://github.com/grpc/grpc/blob/master/doc/health-checking.md). The examples below leverage [grpcurl](https://github.com/fullstorydev/grpcurl), and assume you've already deployed a GKE cluster.
+By setting the feature flag `GRPC_ENABLED` in the `whereami` configmap (see [here](k8s-grpc/configmap.yaml)) to `"True"`, `whereami` can be interacted with using [gRPC](https://grpc.io/), with support for the gRPC [health check protocol](https://github.com/grpc/grpc/blob/master/doc/health-checking.md). The examples below leverage [grpcurl](https://github.com/fullstorydev/grpcurl), and assume you've already deployed a GKE cluster.
 
 If gRPC is enabled for a given pod, that `whereami` pod will not respond to HTTP requests, and any downstream service calls that the pod makes will also use gRPC only.
 
-> Note: because gRPC is used as the protocol, the `whereami-grpc` response will omit any `header` fields *and* listens on port `9090` instead of port `8080`.
+> Note: because gRPC is used as the protocol, the `whereami-grpc` response will omit any `header` fields *and* listens on port `9090` instead of port `8080`. 
 
 #### Step 1 - Deploy the whereami-grpc backend
 
