@@ -11,7 +11,7 @@
 `whereami` is a single-container app, designed and packaged to run on Kubernetes. In it's simplest form it can be deployed in a single line with only a few parameters.
 
 ```bash
-$ kubectl run --image=gcr.io/google-samples/whereami:v1.2.0 --expose --port 8080 whereami
+$ kubectl run --image=gcr.io/google-samples/whereami:v1.2.1 --expose --port 8080 whereami
 ```
 
 The `whereami`  pod listens on port `8080` and returns a very simple JSON response that indicates who is responding and where they live. This example assumes you're executing the `curl` command from a pod in the same K8s cluster & namespace (although the following examples show how to access from external clients):
@@ -96,7 +96,7 @@ spec:
       serviceAccountName: whereami-ksa
       containers:
       - name: whereami
-        image: gcr.io/google-samples/whereami:v1.2.0
+        image: gcr.io/google-samples/whereami:v1.2.1
         ports:
           - name: http
             containerPort: 8080 #The application is listening on port 8080
@@ -217,6 +217,8 @@ The fields/path suffixes that are *always* available in a HTTP `whereami` respon
 
 `whereami` has an optional flag within its configmap that will cause it to call another backend service within your Kubernetes cluster (for example, a different, non-public instance of itself). This is helpful for demonstrating a public microservice call to a non-public microservice, and then including the responses of both microservices in the payload delivered back to the user.
 
+> Note: when defining a backend service to call via HTTP, make sure the `BACKEND_SERVICE` endpoint indicates either an `http://` or `https://` prefix.
+
 #### Step 1 - Deploy the whereami backend
 
 Deploy `whereami` again using the manifests from [k8s-backend-overlay-example](k8s-backend-overlay-example)
@@ -265,7 +267,8 @@ metadata:
   name: whereami-configmap
 data:
   BACKEND_ENABLED: "True" #This enables requests to be send to the backend
-  BACKEND_SERVICE: "whereami-backend" #This is the name of the backend Service that was created in the previous step
+  # when defining the BACKEND_SERVICE using an HTTP protocol, indicate HTTP or HTTPS; if using gRPC, use the host name only
+  BACKEND_SERVICE: "http://whereami-backend" #This is the name of the backend Service that was created in the previous step
   METADATA:        "frontend" #This is the metadata string returned in the output
 ```
 
@@ -467,7 +470,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   wget && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
-  wget -O /bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.3/grpc_health_probe-linux-amd64 && \
+  wget -O /bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.6/grpc_health_probe-linux-amd64 && \
   chmod +x /bin/grpc_health_probe
 USER cnb
 EOF

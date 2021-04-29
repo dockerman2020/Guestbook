@@ -144,7 +144,7 @@ class WhereamiPayload(object):
             else:
 
                 try:
-                    r = requests.get('http://' + backend_service,
+                    r = requests.get(backend_service,
                                      headers=getForwardHeaders(request_headers))
                     if r.ok:
                         backend_result = r.json()
