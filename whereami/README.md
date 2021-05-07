@@ -8,7 +8,7 @@
 
 ### Simple deployment
 
-`whereami` is a single-container app, designed and packaged to run on Kubernetes. In it's simplest form it can be deployed in a single line with only a few parameters.
+`whereami` is a single-container app, designed and packaged to run on Kubernetes. In its simplest form it can be deployed in a single line with only a few parameters.
 
 ```bash
 $ kubectl run --image=gcr.io/google-samples/whereami:v1.2.1 --expose --port 8080 whereami

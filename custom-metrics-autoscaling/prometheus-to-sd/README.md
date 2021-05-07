@@ -11,7 +11,7 @@ This container is then deployed in the same pod with another container, promethe
 # Build
 
 Provided manifest files use already available images. You don't need to do
-anything else to use them. Following steps are only applicable if you want to
+anything else to use them. The following steps are only applicable if you want to
 build your own image.
 
 1. Set TAG to build version and PROJECT to the project in which you want to host the image.

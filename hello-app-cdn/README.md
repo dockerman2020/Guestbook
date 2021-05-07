@@ -6,7 +6,7 @@
 > See that directory for more details on this sample.
 
 This sample web application is designed to be compatible with the Cloud CDN.
-It responds the requests with the `Cache-Control` HTTP header to ensure the responses
+It responds to requests with the `Cache-Control` HTTP header to ensure the responses
 are cached.
 
 The container image for this directory is publicly available at
