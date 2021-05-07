@@ -17,5 +17,5 @@ ADD . /go/src/prometheus-dummy-exporter
 RUN go get github.com/prometheus/client_golang/prometheus
 RUN CGO_ENABLED=0 GOOS=linux go install prometheus-dummy-exporter
 
-FROM alpine:latest
+FROM gcr.io/distroless/static:latest
 COPY --from=0 /go/bin/prometheus-dummy-exporter .

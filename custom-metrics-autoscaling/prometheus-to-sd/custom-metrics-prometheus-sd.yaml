@@ -33,8 +33,8 @@ spec:
       containers:
       # sample container generating custom metrics
       - name: prometheus-dummy-exporter
-        image: gcr.io/google-containers/prometheus-dummy-exporter:v0.1.0
-        command: ["./prometheus_dummy_exporter"]
+        image: gcr.io/google-samples/prometheus-dummy-exporter:v0.2.0
+        command: ["./prometheus-dummy-exporter"]
         args:
         - --metric-name=custom_prometheus
         - --metric-value=40
