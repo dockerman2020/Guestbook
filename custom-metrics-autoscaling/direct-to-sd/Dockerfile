@@ -12,13 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.12.5
-ADD . /go/src/direct-to-sd
+FROM golang:1.15.11
+ADD . /go/src/sd-dummy-exporter
 RUN go get cloud.google.com/go/compute/metadata
 RUN go get golang.org/x/oauth2
 RUN go get cloud.google.com/go/monitoring/apiv3
-RUN CGO_ENABLED=0 GOOS=linux go install direct-to-sd
+RUN CGO_ENABLED=0 GOOS=linux go install sd-dummy-exporter
 
-FROM alpine:latest
-RUN apk -U add ca-certificates
-COPY --from=0 /go/bin/direct-to-sd .
+FROM gcr.io/distroless/static:latest
+COPY --from=0 /go/bin/sd-dummy-exporter .
