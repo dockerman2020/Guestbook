@@ -29,17 +29,11 @@ steps:
     - '.'
   dir: 'hello-app'
 
-# Copy hello-app to /workspace.
+# Create back-up of main.go and replace "Version: 1.0.0" with "Version: 2.0.0".
 - name: 'bash'
   args:
     - '-c'
-    - cp -r hello-app/ /workspace
-
-# Copy main.go to /workspace, with "Version: 1.0.0" replaced by "Version: 2.0.0".
-- name: 'bash'
-  args:
-    - '-c'
-    - 'sed "s/Version: 1.0.0/Version: 2.0.0/" hello-app/main.go > /workspace/main.go'
+    - 'cp -p hello-app/main.go hello-app/main.go.bak && sed "s/Version: 1.0.0/Version: 2.0.0/g" hello-app/main.go.bak > hello-app/main.go'
 
 # Build hello-app:2.0 from /workspace.
 - name: 'gcr.io/cloud-builders/docker'
