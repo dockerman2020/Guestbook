@@ -35,7 +35,7 @@ steps:
     - '-c'
     - 'cp -p hello-app/main.go hello-app/main.go.bak && sed "s/Version: 1.0.0/Version: 2.0.0/g" hello-app/main.go.bak > hello-app/main.go'
 
-# Build hello-app:2.0 from /workspace.
+# Build hello-app:2.0.
 - name: 'gcr.io/cloud-builders/docker'
   args:
     - 'build'
@@ -44,7 +44,7 @@ steps:
     - '-t'
     - 'us-docker.pkg.dev/google-samples/containers/gke/hello-app:2.0'
     - '.'
-  dir: '/workspace'
+  dir: 'hello-app'
 
 # Push images.
 images:
