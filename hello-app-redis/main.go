@@ -17,7 +17,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -116,7 +115,7 @@ func hello(w http.ResponseWriter, r *http.Request) {
 		defer pool.release()
 	}
 
-	count, err := redisClusterClient.Incr(context.Background(), "hits").Result()
+	count, err := redisClusterClient.Incr("hits").Result()
 	if err != nil {
 		w.Write([]byte("500 - Error due to redis cluster broken!\n" + fmt.Sprintf("%v", err)))
 		return
