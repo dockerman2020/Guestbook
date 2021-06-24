@@ -19,9 +19,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-require 'Predis/Autoloader.php';
-
-Predis\Autoloader::register();
+require __DIR__ . '/vendor/autoload.php';
 
 if (isset($_GET['cmd']) === true) {
   $host = 'redis-leader';
