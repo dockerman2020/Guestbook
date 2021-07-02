@@ -1,5 +1,9 @@
-# Repo owners - Anthos DPE
-*   @anthos-dpe
+# See https://help.github.com/en/articles/about-code-owners
+# for more info about CODEOWNERS file.
+
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence.
+*                   @GoogleCloudPlatform/anthos-dpe
 
 # Directory-specific owners
 /windows-multi-arch/ @ibabou @jeremyje @lizhuqi @mcshooter @pjh @yanglu1031
