@@ -34,7 +34,7 @@ if (isset($_GET['cmd']) === true) {
       'port'   => 6379,
     ]);
 
-    $client->set($_GET['key'], $_GET['value']);
+    $client->set('guestbook', $_GET['value']);
     print('{"message": "Updated"}');
   } else {
     $host = 'redis-follower';
@@ -47,7 +47,7 @@ if (isset($_GET['cmd']) === true) {
       'port'   => 6379,
     ]);
 
-    $value = $client->get($_GET['key']);
+    $value = $client->get('guestbook');
     print('{"data": "' . $value . '"}');
   }
 } else {
