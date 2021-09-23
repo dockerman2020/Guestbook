@@ -175,3 +175,18 @@ resource "google_cloudbuild_trigger" "whereami" {
         }
     }
 }
+
+resource "google_cloudbuild_trigger" "workload-metrics" {
+    name = "kubernetes-engine-samples-workload-metrics"
+    filename = "workload-metrics/cloudbuild.yaml"
+    included_files = ["workload-metrics/**"]
+    description = local.trigger_description
+
+    github {
+        owner = "GoogleCloudPlatform"
+        name = "kubernetes-engine-samples"
+        push {
+            branch = "^master$"
+        }
+    }
+}
