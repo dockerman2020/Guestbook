@@ -10,4 +10,4 @@ This program reads messages published on a particular topic and prints them on
 standard output.
 
 Docker image for this application is available at
-`gcr.io/google-samples/pubsub-sample:v1`.
+`us-docker.pkg.dev/google-samples/containers/gke/pubsub-sample:v1`.

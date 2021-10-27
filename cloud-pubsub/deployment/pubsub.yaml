@@ -28,5 +28,5 @@ spec:
     spec:
       containers:
       - name: subscriber
-        image: gcr.io/google-samples/pubsub-sample:v1
+        image: us-docker.pkg.dev/google-samples/containers/gke/pubsub-sample:v1
 # [END container_pubsub_deployment]
