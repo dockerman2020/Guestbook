@@ -18,7 +18,5 @@ steps:
 - name: 'gcr.io/gke-release/gke-windows-builder:release-2.6.1-gke.0'
   args:
   - --container-image-name
-  # Replace <REGISTRY_REGION> and <REPOSITORY>.
-  - '<REGISTRY_REGION>-docker.pkg.dev/$PROJECT_ID/<REPOSITORY>/multiarch-helloworld:latest'
+  - 'gcr.io/$PROJECT_ID/multiarch-helloworld:latest'
 # [END container_windows_multi_arch_cloudbuild]
-
