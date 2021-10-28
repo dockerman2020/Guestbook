@@ -70,11 +70,11 @@ gcloud container clusters create demo-1 -z us-central1-b
 
 ## Step 7: Deploy a web application from a container image.
 
-A sample container image, `gcr.io/google-samples/hello-app:1.0`, is stored in
-Google Container Registry.
+A sample container image, `us-docker.pkg.dev/google-samples/containers/gke/hello-app:1.0`, is stored in
+Google Artifact Registry.
 
 ```
-kubectl run web-app --image gcr.io/google-samples/hello-app:1.0 --port 8080
+kubectl run web-app --image us-docker.pkg.dev/google-samples/containers/gke/hello-app:1.0 --port 8080
 ```
 
 
@@ -122,7 +122,8 @@ curl http://[IP-ADDRESS]
 ## Step 13: Deploy a new version of the web application from Google Container Registry.
 
 ```
-kubectl set image deployment web-app web-app=gcr.io/google-samples/hello-app:2.0; watch kubectl get pods
+kubectl set image deployment web-app web-app=us-docker.pkg.dev/google-samples/containers/gke/hello-app:2.0
+watch kubectl get pods
 ```
 
 ## Step 14: Watch the changes roll out.

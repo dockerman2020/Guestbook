@@ -18,8 +18,8 @@ This directory contains:
 This application is available as two Docker images, which respond to requests
 with different version numbers:
 
-- `gcr.io/google-samples/hello-app:1.0`
-- `gcr.io/google-samples/hello-app:2.0`
+- `us-docker.pkg.dev/google-samples/containers/gke/hello-app:1.0`
+- `us-docker.pkg.dev/google-samples/containers/gke/hello-app:2.0`
 
 This example is used in many official/unofficial tutorials, some of them
 include:

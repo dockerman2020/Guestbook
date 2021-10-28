@@ -77,13 +77,13 @@ GKE uses Kubernetes objects to create and manage your cluster's resources. This 
 
 To run `hello-app` in your cluster, run the following command:
 ```
-kubectl create deployment hello-server --image=gcr.io/google-samples/hello-app:1.0
+kubectl create deployment hello-server --image=us-docker.pkg.dev/google-samples/containers/gke/hello-app:1.0
 ```
 
 Let's break down what this command is doing:
 - The Kubernetes command [`kubectl create deployment`](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#create) creates a Deployment named `hello-server`. The Deployment's [Pod](https://cloud.google.com/kubernetes-engine/docs/concepts/pod) runs the `hello-app` container image.
 
-- The command flag `--image` specifies a container image to deploy. In this case, the command pulls the example image from a [Container Registry](https://cloud.google.com/container-registry/docs) bucket, `gcr.io/google-samples/hello-app`. The suffix `:1.0` indicates the specific image version to pull. (If you don't specify a version, the latest version is used.)
+- The command flag `--image` specifies a container image to deploy. In this case, the command pulls the example image from an [Artifact Registry](https://cloud.google.com/artifact-registry/docs) Docker repository, `us-docker.pkg.dev/google-samples/containers/gke/hello-app`. The suffix `:1.0` indicates the specific image version to pull. (If you don't specify a version, the latest version is used.)
 
 ## Expose the Deployment
 

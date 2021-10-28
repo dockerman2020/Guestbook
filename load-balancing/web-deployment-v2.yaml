@@ -13,7 +13,7 @@ spec:
         run: web2
     spec:
       containers:
-      - image: gcr.io/google-samples/hello-app:2.0
+      - image: us-docker.pkg.dev/google-samples/containers/gke/hello-app:2.0
         imagePullPolicy: IfNotPresent
         name: web2
         ports:
