@@ -4,23 +4,72 @@ import sys
 import os
 from flask_cors import CORS
 import whereami_payload
-
+# gRPC stuff
 from concurrent import futures
 import multiprocessing
-
 import grpc
-
 from grpc_reflection.v1alpha import reflection
 from grpc_health.v1 import health
 from grpc_health.v1 import health_pb2
 from grpc_health.v1 import health_pb2_grpc
-
+# whereami protobufs
 import whereami_pb2
 import whereami_pb2_grpc
+# Prometheus export setup
+from prometheus_flask_exporter import PrometheusMetrics
+from py_grpc_prometheus.prometheus_server_interceptor import PromServerInterceptor
+from prometheus_client import start_http_server
+# OpenTelemetry setup
+os.environ["OTEL_PYTHON_FLASK_EXCLUDED_URLS"] = "healthz,metrics"  # set exclusions
+from opentelemetry.instrumentation.requests import RequestsInstrumentor
+from opentelemetry import trace
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.exporter.cloud_trace import CloudTraceSpanExporter
+from opentelemetry.propagate import set_global_textmap
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.propagators.cloud_trace_propagator import (
+    CloudTraceFormatPropagator,
+)
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.sdk.trace.sampling import TraceIdRatioBased
 
+
+# check to see if tracing enabled and sampling probability
+trace_sampling_ratio = 0  # default to not sampling if absense of environment var
+if os.getenv("TRACE_SAMPLING_RATIO"):
+
+    try:
+        trace_sampling_ratio = float(os.getenv("TRACE_SAMPLING_RATIO"))
+    except:
+        logging.warning("Invalid trace ratio provided; disabling.")  # invalid value? just keep at 0%
+sampler = TraceIdRatioBased(trace_sampling_ratio)
+
+# OTEL setup
+set_global_textmap(CloudTraceFormatPropagator())
+
+tracer_provider = TracerProvider(sampler=sampler)
+cloud_trace_exporter = CloudTraceSpanExporter()
+tracer_provider.add_span_processor(
+    # BatchSpanProcessor buffers spans and sends them in batches in a
+    # background thread. The default parameters are sensible, but can be
+    # tweaked to optimize your performance
+    BatchSpanProcessor(cloud_trace_exporter)
+)
+trace.set_tracer_provider(tracer_provider)
+
+tracer = trace.get_tracer(__name__)
+
+# flask setup
 app = Flask(__name__)
+FlaskInstrumentor().instrument_app(app)
+RequestsInstrumentor().instrument()  # enable tracing for Requests
 app.config['JSON_AS_ASCII'] = False  # otherwise our emojis get hosed
 CORS(app)  # enable CORS
+metrics = PrometheusMetrics(app)  # enable Prom metrics
+
+# gRPC setup
+grpc_serving_port = 9090
+grpc_metrics_port = 8080  # prometheus /metrics, same as flask port
 
 # define Whereami object
 whereami_payload = whereami_payload.WhereamiPayload()
@@ -41,7 +90,8 @@ def grpc_serve():
     # the +5 you see below re: max_workers is a hack to avoid thread starvation
     # working on a proper workaround
     server = grpc.server(
-        futures.ThreadPoolExecutor(max_workers=multiprocessing.cpu_count()+5))
+        futures.ThreadPoolExecutor(max_workers=multiprocessing.cpu_count()+5),
+        interceptors=(PromServerInterceptor(),))  # interceptor for metrics
 
     # Add the application servicer to the server.
     whereami_pb2_grpc.add_WhereamiServicer_to_server(WhereamigRPC(), server)
@@ -59,9 +109,12 @@ def grpc_serve():
         for service in whereami_pb2.DESCRIPTOR.services_by_name.values()) + (
             reflection.SERVICE_NAME, health.SERVICE_NAME)
 
+    # Start an end point to expose metrics at host:$grpc_metrics_port/metrics
+    start_http_server(grpc_metrics_port)  # starts a flask server for metrics
+
     # Add the reflection service to the server.
     reflection.enable_server_reflection(services, server)
-    server.add_insecure_port('[::]:9090')
+    server.add_insecure_port('[::]:' + str(grpc_serving_port))
     server.start()
 
     # Mark all services as healthy.
@@ -75,6 +128,7 @@ def grpc_serve():
 
 # HTTP heathcheck
 @app.route('/healthz')  # healthcheck endpoint
+@metrics.do_not_track()  # exclude from prom metrics
 def i_am_healthy():
     return ('OK')
 
