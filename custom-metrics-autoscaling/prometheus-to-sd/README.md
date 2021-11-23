@@ -14,14 +14,4 @@ Provided manifest files use already available images. You don't need to do
 anything else to use them. The following steps are only applicable if you want to
 build your own image.
 
-1. Set TAG to build version and PROJECT to the project in which you want to host the image.
-
-2. Build the image:
-
-`$ docker build --pull -t gcr.io/$PROJECT/prometheus-dummy-exporter:$TAG .`
-
-3. Push the image:
-
-`$ gcloud docker -- push gcr.io/$PROJECT/prometheus-dummy-exporter:$TAG`
-
-4. Edit manifest file to use image hosted in your project.
+If you would like to build this image locally and deploy via Arifact Registry, checkout [Artifact Registry Quickstart for Docker](https://cloud.google.com/artifact-registry/docs/docker/quickstart).

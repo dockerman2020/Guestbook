@@ -39,7 +39,7 @@ spec:
         - --metric-value=40
         - --pod-name=$(POD_NAME)
         - --namespace=$(NAMESPACE)
-        image: gcr.io/google-samples/sd-dummy-exporter:v0.3.0
+        image: us-docker.pkg.dev/google-samples/containers/gke/sd-dummy-exporter:v0.3.0
         name: sd-dummy-exporter
         resources:
           requests:
