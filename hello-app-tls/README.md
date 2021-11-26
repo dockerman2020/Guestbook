@@ -8,7 +8,7 @@ HTTPS queries on port `8443`:
 - TLS cert and key files are configured through environment variables `TLS_CERT`
   and `TLS_KEY`.
 - The application image is available at
-  `gcr.io/google-samples/hello-app-tls:1.0`.
+  `us-docker.pkg.dev/google-samples/containers/gke/hello-app-tls:1.0`.
 
 This example uses `Ingress` (Cloud HTTPS Load Balancer) to terminate HTTPS
 connections (with a provided certificate).

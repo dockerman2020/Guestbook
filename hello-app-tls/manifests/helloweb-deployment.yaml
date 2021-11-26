@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: hello-app
-        image: gcr.io/google-samples/hello-app-tls:1.0
+        image: us-docker.pkg.dev/google-samples/containers/gke/hello-app-tls:1.0
         imagePullPolicy: Always
         ports:
         - containerPort: 8443
