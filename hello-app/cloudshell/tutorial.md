@@ -1,6 +1,6 @@
 # Hello Application example
 
-## 
+##
 
 This tutorial shows how to build and deploy a containerized Go web server application using [Google Kubernetes Engine (GKE)](https://cloud.google.com/kubernetes-engine).
 
@@ -28,17 +28,17 @@ COMPUTE_ZONE=us-west1-a
 ```
 Replace COMPUTE_ZONE with your [compute zone](https://cloud.google.com/compute/docs/regions-zones#available), such as `us-west1-a`.
 
-### 2. Set the default project and compute zone 
+### 2. Set the default project and compute zone
 ```bash
 gcloud config set project $PROJECT_ID
 gcloud config set compute/zone $COMPUTE_ZONE
-```    
+```
 
 Next, you'll create a GKE cluster.
 
 
 ## Create a GKE cluster
-A cluster consists of at least one cluster control plane machine and multiple worker machines called nodes. Nodes are [Compute Engine virtual machine (VM) instances](https://cloud.google.com/compute/docs/instances) that run the Kubernetes processes necessary to make them part of the cluster. 
+A cluster consists of at least one cluster control plane machine and multiple worker machines called nodes. Nodes are [Compute Engine virtual machine (VM) instances](https://cloud.google.com/compute/docs/instances) that run the Kubernetes processes necessary to make them part of the cluster.
 
 GKE offers two [modes of operation](https://cloud.google.com/kubernetes-engine/docs/concepts/types-of-clusters#modes) for clusters: [Standard](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture) and [Autopilot](https://cloud.google.com/kubernetes-engine/docs/concepts/autopilot-architecture). For this tutorial, we'll use Standard mode.
 
@@ -60,17 +60,17 @@ After creating your cluster, you need to get authentication credentials to inter
 gcloud container clusters get-credentials hello-cluster
 ```
 
-This command configures `kubectl` to use the cluster you created.    
+This command configures `kubectl` to use the cluster you created.
 
 
 Next, let's deploy an app to the cluster.
 
 ## Deploy an application to the cluster
 
-Now that you have created a cluster, you can deploy a [containerized application](https://cloud.google.com/kubernetes-engine/docs/concepts/kubernetes-engine-overview#workloads) to it. For this tutorial, let's deploy the [example web application](https://github.com/GoogleCloudPlatform/kubernetes-engine-samples/tree/master/hello-app) `hello-app`.
+Now that you have created a cluster, you can deploy a [containerized application](https://cloud.google.com/kubernetes-engine/docs/concepts/kubernetes-engine-overview#workloads) to it. For this tutorial, let's deploy the [example web application](https://github.com/GoogleCloudPlatform/kubernetes-engine-samples/tree/main/hello-app) `hello-app`.
 
 GKE uses Kubernetes objects to create and manage your cluster's resources. This example has two types of Kubernetes objects:
-- a [Deployment](https://cloud.google.com/kubernetes-engine/docs/concepts/deployment) object, which deploys stateless applications like web servers 
+- a [Deployment](https://cloud.google.com/kubernetes-engine/docs/concepts/deployment) object, which deploys stateless applications like web servers
 - a [Service](https://cloud.google.com/kubernetes-engine/docs/concepts/service) object, which defines rules and load balancing for accessing your application from the internet
 
 ### Create the Deployment
@@ -94,7 +94,7 @@ To expose your application, run the following [`kubectl expose`](https://kuberne
 kubectl expose deployment hello-server --type LoadBalancer --port 80 --target-port 8080
 ```
 
-- Passing in the `--type LoadBalancer` flag creates a Compute Engine load balancer for your container. 
+- Passing in the `--type LoadBalancer` flag creates a Compute Engine load balancer for your container.
 
 - The `--port` flag initializes public port 80 to the internet and the `--target-port` flag routes the traffic to port 8080 of the application.
 

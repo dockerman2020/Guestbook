@@ -23,7 +23,7 @@ provider "google" {
 }
 
 locals {
-    trigger_description = "This Cloud Build Trigger was created using Terraform (see github.com/GoogleCloudPlatform/kubernetes-engine-samples/tree/master/terraform)."
+    trigger_description = "This Cloud Build Trigger was created using Terraform (see github.com/GoogleCloudPlatform/kubernetes-engine-samples/tree/main/terraform)."
 }
 
 resource "google_cloudbuild_trigger" "cloud-pubsub" {
@@ -36,7 +36,7 @@ resource "google_cloudbuild_trigger" "cloud-pubsub" {
         owner = "GoogleCloudPlatform"
         name = "kubernetes-engine-samples"
         push {
-            branch = "^master$"
+            branch = "^main$"
         }
     }
 }
@@ -51,7 +51,7 @@ resource "google_cloudbuild_trigger" "custom-metrics-direct-to-sd" {
         owner = "GoogleCloudPlatform"
         name = "kubernetes-engine-samples"
         push {
-            branch = "^master$"
+            branch = "^main$"
         }
     }
 }
@@ -66,7 +66,7 @@ resource "google_cloudbuild_trigger" "custom-metrics-prometheus-to-sd" {
         owner = "GoogleCloudPlatform"
         name = "kubernetes-engine-samples"
         push {
-            branch = "^master$"
+            branch = "^main$"
         }
     }
 }
@@ -81,7 +81,7 @@ resource "google_cloudbuild_trigger" "guestbook-php-redis" {
         owner = "GoogleCloudPlatform"
         name = "kubernetes-engine-samples"
         push {
-            branch = "^master$"
+            branch = "^main$"
         }
     }
 }
@@ -96,7 +96,7 @@ resource "google_cloudbuild_trigger" "guestbook-redis-follower" {
         owner = "GoogleCloudPlatform"
         name = "kubernetes-engine-samples"
         push {
-            branch = "^master$"
+            branch = "^main$"
         }
     }
 }
@@ -111,7 +111,7 @@ resource "google_cloudbuild_trigger" "hello-app" {
         owner = "GoogleCloudPlatform"
         name = "kubernetes-engine-samples"
         push {
-            branch = "^master$"
+            branch = "^main$"
         }
     }
 }
@@ -126,7 +126,7 @@ resource "google_cloudbuild_trigger" "hello-app-cdn" {
         owner = "GoogleCloudPlatform"
         name = "kubernetes-engine-samples"
         push {
-            branch = "^master$"
+            branch = "^main$"
         }
     }
 }
@@ -141,7 +141,7 @@ resource "google_cloudbuild_trigger" "hello-app-redis" {
         owner = "GoogleCloudPlatform"
         name = "kubernetes-engine-samples"
         push {
-            branch = "^master$"
+            branch = "^main$"
         }
     }
 }
@@ -156,7 +156,7 @@ resource "google_cloudbuild_trigger" "hello-app-tls" {
         owner = "GoogleCloudPlatform"
         name = "kubernetes-engine-samples"
         push {
-            branch = "^master$"
+            branch = "^main$"
         }
     }
 }
@@ -171,7 +171,7 @@ resource "google_cloudbuild_trigger" "whereami" {
         owner = "GoogleCloudPlatform"
         name = "kubernetes-engine-samples"
         push {
-            branch = "^master$"
+            branch = "^main$"
         }
     }
 }
@@ -186,7 +186,7 @@ resource "google_cloudbuild_trigger" "workload-metrics" {
         owner = "GoogleCloudPlatform"
         name = "kubernetes-engine-samples"
         push {
-            branch = "^master$"
+            branch = "^main$"
         }
     }
 }
