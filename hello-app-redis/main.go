@@ -22,8 +22,7 @@ import (
 	"net/http"
 	"os"
 	"sync"
-
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 )
 
 // Start of resource pool code.
@@ -115,7 +114,7 @@ func hello(w http.ResponseWriter, r *http.Request) {
 		defer pool.release()
 	}
 
-	count, err := redisClusterClient.Incr("hits").Result()
+	count, err := redisClusterClient.Incr(redisClusterClient.Context(), "hits").Result()
 	if err != nil {
 		w.Write([]byte("500 - Error due to redis cluster broken!\n" + fmt.Sprintf("%v", err)))
 		return
