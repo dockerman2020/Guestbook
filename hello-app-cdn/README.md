@@ -10,4 +10,4 @@ It responds to requests with the `Cache-Control` HTTP header to ensure the respo
 are cached.
 
 The container image for this directory is publicly available at
-`gcr.io/google-samples/hello-app-cdn:1.0`.
+`us-docker.pkg.dev/google-samples/containers/gke/hello-app-cdn:1.0`.

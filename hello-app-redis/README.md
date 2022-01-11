@@ -10,5 +10,5 @@ This directory contains:
 - `main.go` The HTTP server uses Redis as a cache database, counts the number of requests it receives, and prints out the number on the website. If the Redis service works, the number should keep increasing.
 - `Dockerfile` is used to build the Docker image for the application.
 
-The container image for this directory is publicly available at `gcr.io/google-samples/hello-app-redis:1.0`
+The container image for this directory is publicly available at `us-docker.pkg.dev/google-samples/containers/gke/hello-app-redis:1.0`
 
