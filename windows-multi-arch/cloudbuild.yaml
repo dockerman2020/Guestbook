@@ -15,8 +15,9 @@
 # [START container_windows_multi_arch_cloudbuild]
 timeout: 3600s
 steps:
-- name: 'us-docker.pkg.dev/cloud-builders/preview/gke-windows-builder:latest'
+- name: 'us-docker.pkg.dev/gke-windows-tools/docker-repo/gke-windows-builder:latest'
   args:
   - --container-image-name
-  - 'us-docker.pkg.dev/$PROJECT_ID/docker-repo/multiarch-helloworld:latest'
+  # Replace <REGISTRY_REGION> and <REPOSITORY>.
+  - '<REGISTRY_REGION>-docker.pkg.dev/$PROJECT_ID/<REPOSITORY>/multiarch-helloworld:latest'
 # [END container_windows_multi_arch_cloudbuild]
