@@ -19,7 +19,7 @@ Prometheus metrics are exposed from `whereami` at `x.x.x.x/metrics` in both Flas
 `whereami` is a single-container app, designed and packaged to run on Kubernetes. In its simplest form it can be deployed in a single line with only a few parameters.
 
 ```bash
-$ kubectl run --image=us-docker.pkg.dev/google-samples/containers/gke/whereami:v1.2.6 --expose --port 8080 whereami
+$ kubectl run --image=us-docker.pkg.dev/google-samples/containers/gke/whereami:v1.2.7 --expose --port 8080 whereami
 ```
 
 The `whereami`  pod listens on port `8080` and returns a very simple JSON response that indicates who is responding and where they live. This example assumes you're executing the `curl` command from a pod in the same K8s cluster & namespace (although the following examples show how to access from external clients):
@@ -104,7 +104,7 @@ spec:
       serviceAccountName: whereami-ksa
       containers:
       - name: whereami
-        image: us-docker.pkg.dev/google-samples/containers/gke/whereami:v1.2.6
+        image: us-docker.pkg.dev/google-samples/containers/gke/whereami:v1.2.7
         ports:
           - name: http
             containerPort: 8080 #The application is listening on port 8080
@@ -482,8 +482,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   wget && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* && \
-  wget -O /bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.3.6/grpc_health_probe-linux-amd64 && \
-  chmod +x /bin/grpc_health_probe
+  wget -O /bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/v0.4.7/grpc_health_probe-linux-amd64 && \ 
+  chmod +x /bin/grpc_health_probe && \
+  wget -O /bin/curl https://github.com/moparisthebest/static-curl/releases/download/v7.81.0/curl-amd64 && \ 
+  chmod +x /bin/curl
 USER cnb
 EOF
 
@@ -493,4 +495,4 @@ docker push gcr.io/${PROJECT_ID}/whereami-run-image
 
 ```pack build --builder gcr.io/buildpacks/builder:v1 --publish gcr.io/${PROJECT_ID}/whereami --run-image gcr.io/${PROJECT_ID}/whereami-run-image```
 
-
+Recently, [cURL](https://curl.se/) was added to `/bin` of the container image for additional testing capability.

@@ -21,12 +21,12 @@ steps:
   args:
     - 'build'
     - '-t'
-    - 'gcr.io/google-samples/whereami:v1.2.6'
+    - 'gcr.io/google-samples/whereami:v1.2.7'
     - '-t'
-    - 'us-docker.pkg.dev/google-samples/containers/gke/whereami:v1.2.6'
+    - 'us-docker.pkg.dev/google-samples/containers/gke/whereami:v1.2.7'
     - '.'
   dir: 'whereami'
 
 images:
-  - 'gcr.io/google-samples/whereami:v1.2.6'
-  - 'us-docker.pkg.dev/google-samples/containers/gke/whereami:v1.2.6'
+  - 'gcr.io/google-samples/whereami:v1.2.7'
+  - 'us-docker.pkg.dev/google-samples/containers/gke/whereami:v1.2.7'

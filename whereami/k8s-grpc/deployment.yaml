@@ -16,7 +16,7 @@ spec:
       serviceAccountName: whereami-grpc-ksa
       containers:
       - name: whereami-grpc
-        image: us-docker.pkg.dev/google-samples/containers/gke/whereami:v1.2.6
+        image: us-docker.pkg.dev/google-samples/containers/gke/whereami:v1.2.7
         ports:
           - name: grpc
             containerPort: 9090
