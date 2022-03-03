@@ -35,6 +35,7 @@ func main() {
 	port := flag.Int64("port", 8080, "port to expose metrics on")
 	flag.Parse()
 
+	// [START gke_custom_metrics_prometheus_exporter]
 	// [START container_custom_metrics_prometheus_exporter]
 	metric := prometheus.NewGauge(
 		prometheus.GaugeOpts{
@@ -49,5 +50,6 @@ func main() {
 	log.Printf("Starting to listen on :%d", *port)
 	err := http.ListenAndServe(fmt.Sprintf(":%d", *port), nil)
 	// [END container_custom_metrics_prometheus_exporter]
+	// [END gke_custom_metrics_prometheus_exporter]
 	log.Fatal("Failed to start serving metrics: %v", err)
 }

@@ -1,23 +1,28 @@
+
 # Copyright 2021 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+# [START gke_manifests_adapter_new_resource_model_namespace_custom_metrics]
 # [START container_workload_metrics_namespace_custom_metrics]
 apiVersion: v1
 kind: Namespace
 metadata:
   name: custom-metrics
 # [END container_workload_metrics_namespace_custom_metrics]
+# [END gke_manifests_adapter_new_resource_model_namespace_custom_metrics]
 ---
+# [START gke_manifests_adapter_new_resource_model_serviceaccount_custom_metrics_stackdriver_adapter]
 # [START container_workload_metrics_service_account_custom_metrics_stackdriver_adapter]
 apiVersion: v1
 kind: ServiceAccount
@@ -25,7 +30,9 @@ metadata:
   name: custom-metrics-stackdriver-adapter
   namespace: custom-metrics
 # [END container_workload_metrics_service_account_custom_metrics_stackdriver_adapter]
+# [END gke_manifests_adapter_new_resource_model_serviceaccount_custom_metrics_stackdriver_adapter]
 ---
+# [START gke_manifests_adapter_new_resource_model_clusterrolebinding_custom_metrics_system_auth_delegator]
 # [START container_workload_metrics_cluster_role_binding_custom_metrics_system_auth_delegator]
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -40,7 +47,9 @@ subjects:
   name: custom-metrics-stackdriver-adapter
   namespace: custom-metrics
 # [END container_workload_metrics_cluster_role_binding_custom_metrics_system_auth_delegator]
+# [END gke_manifests_adapter_new_resource_model_clusterrolebinding_custom_metrics_system_auth_delegator]
 ---
+# [START gke_manifests_adapter_new_resource_model_rolebinding_custom_metrics_auth_reader]
 # [START container_workload_metrics_role_binding_custom_metrics_auth_reader]
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -56,7 +65,9 @@ subjects:
   name: custom-metrics-stackdriver-adapter
   namespace: custom-metrics
 # [END container_workload_metrics_role_binding_custom_metrics_auth_reader]
+# [END gke_manifests_adapter_new_resource_model_rolebinding_custom_metrics_auth_reader]
 ---
+# [START gke_manifests_adapter_new_resource_model_clusterrolebinding_custom_metrics_resource_reader]
 # [START container_workload_metrics_cluster_role_binding_custom_metrics_resource_reader]
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -71,7 +82,9 @@ subjects:
   name: custom-metrics-stackdriver-adapter
   namespace: custom-metrics
 # [END container_workload_metrics_cluster_role_binding_custom_metrics_resource_reader]
+# [END gke_manifests_adapter_new_resource_model_clusterrolebinding_custom_metrics_resource_reader]
 ---
+# [START gke_manifests_adapter_new_resource_model_deployment_custom_metrics_stackdriver_adapter]
 # [START container_workload_metrics_deployment_custom_metrics_stackdriver_adapter]
 apiVersion: apps/v1
 kind: Deployment
@@ -111,7 +124,9 @@ spec:
             cpu: 250m
             memory: 200Mi
 # [END container_workload_metrics_deployment_custom_metrics_stackdriver_adapter]
+# [END gke_manifests_adapter_new_resource_model_deployment_custom_metrics_stackdriver_adapter]
 ---
+# [START gke_manifests_adapter_new_resource_model_service_custom_metrics_stackdriver_adapter]
 # [START container_workload_metrics_service_custom_metrics_stackdriver_adapter]
 apiVersion: v1
 kind: Service
@@ -133,7 +148,9 @@ spec:
     k8s-app: custom-metrics-stackdriver-adapter
   type: ClusterIP
 # [END container_workload_metrics_service_custom_metrics_stackdriver_adapter]
+# [END gke_manifests_adapter_new_resource_model_service_custom_metrics_stackdriver_adapter]
 ---
+# [START gke_manifests_adapter_new_resource_model_apiservice_v1beta1_custom_metrics_k8s_io]
 # [START container_workload_metrics_apiservice_v1beta1]
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
@@ -149,7 +166,9 @@ spec:
     namespace: custom-metrics
   version: v1beta1
 # [END container_workload_metrics_apiservice_v1beta1]
+# [END gke_manifests_adapter_new_resource_model_apiservice_v1beta1_custom_metrics_k8s_io]
 ---
+# [START gke_manifests_adapter_new_resource_model_apiservice_v1beta2_custom_metrics_k8s_io]
 # [START container_workload_metrics_apiservice_v1beta2]
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
@@ -164,8 +183,10 @@ spec:
     name: custom-metrics-stackdriver-adapter
     namespace: custom-metrics
   version: v1beta2
-# [END container_workload_metrics_apiservice_v1beta2]
+  # [END container_workload_metrics_apiservice_v1beta2]
+# [END gke_manifests_adapter_new_resource_model_apiservice_v1beta2_custom_metrics_k8s_io]
 ---
+# [START gke_manifests_adapter_new_resource_model_apiservice_v1beta1_external_metrics_k8s_io]
 # [START container_workload_metrics_apiservice_v1beta1_external]
 apiVersion: apiregistration.k8s.io/v1
 kind: APIService
@@ -181,7 +202,9 @@ spec:
     namespace: custom-metrics
   version: v1beta1
 # [END container_workload_metrics_apiservice_v1beta1_external]
+# [END gke_manifests_adapter_new_resource_model_apiservice_v1beta1_external_metrics_k8s_io]
 ---
+# [START gke_manifests_adapter_new_resource_model_clusterrole_external_metrics_reader]
 # [START container_workload_metrics_cluster_role_external_metrics_reader]
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -197,7 +220,9 @@ rules:
   - get
   - watch
 # [END container_workload_metrics_cluster_role_external_metrics_reader]
+# [END gke_manifests_adapter_new_resource_model_clusterrole_external_metrics_reader]
 ---
+# [START gke_manifests_adapter_new_resource_model_clusterrolebinding_external_metrics_reader]
 # [START container_workload_metrics_cluster_role_binding_external_metrics_reader]
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -212,3 +237,5 @@ subjects:
   name: horizontal-pod-autoscaler
   namespace: kube-system
 # [END container_workload_metrics_cluster_role_binding_external_metrics_reader]
+# [END gke_manifests_adapter_new_resource_model_clusterrolebinding_external_metrics_reader]
+---

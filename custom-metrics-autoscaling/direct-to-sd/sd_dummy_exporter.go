@@ -143,6 +143,7 @@ func getResourceLabelsForNewModel(namespace, name string) map[string]string {
 	}
 }
 
+// [START gke_custom_metrics_direct_exporter]
 // [START container_custom_metrics_direct_exporter]
 func exportMetric(stackdriverService *monitoring.Service, metricName string,
 	metricValue int64, metricLabels map[string]string, monitoredResource string, resourceLabels map[string]string) error {
@@ -178,3 +179,4 @@ func exportMetric(stackdriverService *monitoring.Service, metricName string,
 }
 
 // [END container_custom_metrics_direct_exporter]
+// [END gke_custom_metrics_direct_exporter]

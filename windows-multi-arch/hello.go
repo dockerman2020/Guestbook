@@ -12,10 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// [START gke_windows_multi_arch_hello_go]
 // [START container_windows_multi_arch_hello_go]
 package main
+
 import "fmt"
+
 func main() {
-    fmt.Println("Hello World!")
+	fmt.Println("Hello World!")
 }
+
 // [END container_windows_multi_arch_hello_go]
+// [END gke_windows_multi_arch_hello_go]

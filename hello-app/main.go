@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+// [START gke_hello_app]
 // [START container_hello_app]
 package main
 
@@ -50,3 +51,4 @@ func hello(w http.ResponseWriter, r *http.Request) {
 }
 
 // [END container_hello_app]
+// [END gke_hello_app]

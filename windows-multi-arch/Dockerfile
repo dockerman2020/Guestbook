@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# [START gke_windows_multi_arch_dockerfile]
 # [START container_windows_multi_arch_dockerfile]
 ARG WINDOWS_VERSION=
 FROM mcr.microsoft.com/windows/servercore:${WINDOWS_VERSION}
@@ -19,3 +20,4 @@ COPY hello.exe /hello.exe
 USER ContainerUser
 ENTRYPOINT ["hello.exe"]
 # [END container_windows_multi_arch_dockerfile]
+# [END gke_windows_multi_arch_dockerfile]
