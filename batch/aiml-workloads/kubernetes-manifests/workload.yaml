@@ -1,0 +1,40 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# [START gke_batch_aiml_workload_job]
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: workload
+spec:
+  parallelism: 1
+  template:
+    metadata:
+      name: workload
+    spec:
+      nodeSelector:
+        cloud.google.com/gke-spot: "true"
+      containers:
+      - name: workload
+        image: "us-central1-docker.pkg.dev/gke-batch-ml-workload/batch-aiml-docker-repo/workload"
+        volumeMounts:
+        - mountPath: /mnt/fileserver
+          name: workload-pvc
+      volumes:
+      - name: workload-pvc
+        persistentVolumeClaim:
+          claimName: fileserver-claim
+          readOnly: false
+      restartPolicy: OnFailure
+# [END gke_batch_aiml_workload_job]
