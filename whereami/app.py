@@ -1,5 +1,6 @@
 from flask import Flask, request, Response, jsonify
 import logging
+from logging.config import dictConfig
 import sys
 import os
 from flask_cors import CORS
@@ -33,6 +34,22 @@ from opentelemetry.propagators.cloud_trace_propagator import (
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.sdk.trace.sampling import TraceIdRatioBased
 
+# set up logging
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+    }},
+    'handlers': {'wsgi': {
+        'class': 'logging.StreamHandler',
+        'stream': 'ext://sys.stdout',
+        'formatter': 'default'
+    }},
+    'root': {
+        'level': 'INFO',
+        'handlers': ['wsgi']
+    }
+})
 
 # check to see if tracing enabled and sampling probability
 trace_sampling_ratio = 0  # default to not sampling if absense of environment var
@@ -41,26 +58,39 @@ if os.getenv("TRACE_SAMPLING_RATIO"):
     try:
         trace_sampling_ratio = float(os.getenv("TRACE_SAMPLING_RATIO"))
     except:
-        logging.warning("Invalid trace ratio provided; disabling.")  # invalid value? just keep at 0%
-sampler = TraceIdRatioBased(trace_sampling_ratio)
+        logging.warning("Invalid trace ratio provided.")  # invalid value? just keep at 0%
 
-# OTEL setup
-set_global_textmap(CloudTraceFormatPropagator())
+# if tracing is desired, set up trace provider / exporter
+if trace_sampling_ratio > 0:
+    logging.info("Attempting to enable tracing.")
 
-tracer_provider = TracerProvider(sampler=sampler)
-cloud_trace_exporter = CloudTraceSpanExporter()
-tracer_provider.add_span_processor(
-    # BatchSpanProcessor buffers spans and sends them in batches in a
-    # background thread. The default parameters are sensible, but can be
-    # tweaked to optimize your performance
-    BatchSpanProcessor(cloud_trace_exporter)
-)
-trace.set_tracer_provider(tracer_provider)
+    sampler = TraceIdRatioBased(trace_sampling_ratio)
 
-tracer = trace.get_tracer(__name__)
+    # OTEL setup
+    set_global_textmap(CloudTraceFormatPropagator())
+
+    tracer_provider = TracerProvider(sampler=sampler)
+    cloud_trace_exporter = CloudTraceSpanExporter()
+    tracer_provider.add_span_processor(
+        # BatchSpanProcessor buffers spans and sends them in batches in a
+        # background thread. The default parameters are sensible, but can be
+        # tweaked to optimize your performance
+        BatchSpanProcessor(cloud_trace_exporter)
+    )
+    trace.set_tracer_provider(tracer_provider)
+
+    tracer = trace.get_tracer(__name__)
+    logging.info("Tracing enabled.")
+
+else:
+    logging.info("Tracing disabled.")
 
 # flask setup
 app = Flask(__name__)
+handler = logging.StreamHandler(sys.stdout)
+app.logger.addHandler(handler)
+#app.logger.propagate = True
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()  # enable tracing for Requests
 app.config['JSON_AS_ASCII'] = False  # otherwise our emojis get hosed
@@ -149,16 +179,6 @@ def home(path):
     return jsonify(payload)
 
 if __name__ == '__main__':
-    out_hdlr = logging.StreamHandler(sys.stdout)
-    fmt = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-    out_hdlr.setFormatter(fmt)
-    out_hdlr.setLevel(logging.INFO)
-    logging.getLogger().addHandler(out_hdlr)
-    logging.getLogger().setLevel(logging.INFO)
-    app.logger.handlers = []
-    app.logger.propagate = True
-    app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
     # decision point - HTTP or gRPC?
     if os.getenv('GRPC_ENABLED') == "True":

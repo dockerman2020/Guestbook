@@ -32,7 +32,7 @@ spec:
       serviceAccountName: whereami-ksa
       containers:
       - name: whereami
-        image: us-docker.pkg.dev/google-samples/containers/gke/whereami:v1.2.7
+        image: us-docker.pkg.dev/google-samples/containers/gke/whereami:v1.2.8
         ports:
           - name: http
             containerPort: 8080
