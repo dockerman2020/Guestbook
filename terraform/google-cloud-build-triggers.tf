@@ -26,6 +26,21 @@ locals {
     trigger_description = "This Cloud Build Trigger was created using Terraform (see github.com/GoogleCloudPlatform/kubernetes-engine-samples/tree/main/terraform)."
 }
 
+resource "google_cloudbuild_trigger" "batch-ml-workload" {
+    name = "kubernetes-engine-samples-batch-ml-workload"
+    filename = "batch/aiml-workloads/src/cloudbuild.yaml"
+    included_files = ["batch/aiml-workloads/src/**"]
+    description = local.trigger_description
+
+    github {
+        owner = "GoogleCloudPlatform"
+        name = "kubernetes-engine-samples"
+        push {
+            branch = "^main$"
+        }
+    }
+}
+
 resource "google_cloudbuild_trigger" "cloud-pubsub" {
     name = "kubernetes-engine-samples-cloud-pubsub"
     filename = "cloud-pubsub/cloudbuild.yaml"
