@@ -37,7 +37,7 @@ threadpoolctl==3.0.0
     # via scikit-learn
 typing-extensions==4.0.1
     # via importlib-metadata
-wrapt==1.13.3
+wrapt==1.14.1
     # via deprecated
 zipp==3.7.0
     # via importlib-metadata
