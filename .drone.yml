@@ -1,0 +1,19 @@
+---
+kind: pipeline
+type: kubernetes
+name: guestbook-demo
+
+steps:
+  - name: docker  
+    image: plugins/docker
+    settings:
+      repo: juanluisbaptiste/guestbook-demo
+      dockerfile: guestbook/php-redis/Dockerfile
+      context: guestbook/php-redis
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags: 
+        - latest
+  
