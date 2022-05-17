@@ -4,16 +4,87 @@ type: kubernetes
 name: guestbook-demo
 
 steps:
-  - name: docker  
-    image: plugins/docker
+  # - name: docker  
+  #   image: plugins/docker
+  #   settings:
+  #     repo: juanluisbaptiste/guestbook-demo
+  #     dockerfile: guestbook/php-redis/Dockerfile
+  #     context: guestbook/php-redis
+  #     username:
+  #       from_secret: docker_username
+  #     password:
+  #       from_secret: docker_password
+  #     tags: 
+  #       - latest
+  - name: Deploy demo guestbook redis follower service
+    image: danielgormly/drone-plugin-kube:0.2.0
     settings:
-      repo: juanluisbaptiste/guestbook-demo
-      dockerfile: guestbook/php-redis/Dockerfile
-      context: guestbook/php-redis
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-      tags: 
-        - latest
-  
+      build_number: ${DRONE_BUILD_NUMBER}
+      template: guestbook/redis-follower-service.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+  - name: Deploy demo guest book redis follower deployment
+    image: danielgormly/drone-plugin-kube:0.2.0
+    settings:
+      build_number: ${DRONE_BUILD_NUMBER}
+      template: guestbook/redis-follower-deployment.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+  - name: Deploy demo guestbook redis leader service
+    image: danielgormly/drone-plugin-kube:0.2.0
+    settings:
+      build_number: ${DRONE_BUILD_NUMBER}
+      template: guestbook/redis-leader-service.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+  - name: Deploy demo guest book redis leader deployment
+    image: danielgormly/drone-plugin-kube:0.2.0
+    settings:
+      build_number: ${DRONE_BUILD_NUMBER}
+      template: guestbook/redis-leader-deployment.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+  - name: Deploy demo guestbook frontend service
+    image: danielgormly/drone-plugin-kube:0.2.0
+    settings:
+      build_number: ${DRONE_BUILD_NUMBER}
+      template: guestbook/frontend-service.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+  - name: Deploy demo guest book frontend deployment
+    image: danielgormly/drone-plugin-kube:0.2.0
+    settings:
+      build_number: ${DRONE_BUILD_NUMBER}
+      template: guestbook/frontend-deployment.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
