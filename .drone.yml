@@ -4,18 +4,18 @@ type: kubernetes
 name: guestbook-demo
 
 steps:
-  # - name: docker  
-  #   image: plugins/docker
-  #   settings:
-  #     repo: juanluisbaptiste/guestbook-demo
-  #     dockerfile: guestbook/php-redis/Dockerfile
-  #     context: guestbook/php-redis
-  #     username:
-  #       from_secret: docker_username
-  #     password:
-  #       from_secret: docker_password
-  #     tags: 
-  #       - latest
+  - name: Build docker image
+    image: plugins/docker
+    settings:
+      repo: juanluisbaptiste/guestbook-demo
+      dockerfile: guestbook/php-redis/Dockerfile
+      context: guestbook/php-redis
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags:
+        - latest
   - name: Deploy demo guestbook redis follower service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
