@@ -16,7 +16,7 @@ steps:
         from_secret: docker_password
       tags:
         - latest
-  - name: Deploy demo guestbook redis follower service
+  - name: Deploy redis follower service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
       build_number: ${DRONE_BUILD_NUMBER}
@@ -40,7 +40,7 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
-  - name: Deploy demo guestbook redis leader service
+  - name: Deploy redis leader service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
       build_number: ${DRONE_BUILD_NUMBER}
@@ -64,7 +64,7 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
-  - name: Deploy demo guestbook frontend service
+  - name: Deploy frontend service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
       build_number: ${DRONE_BUILD_NUMBER}
@@ -76,7 +76,7 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
-  - name: Deploy demo guest book frontend deployment
+  - name: Deploy frontend deployment
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
       build_number: ${DRONE_BUILD_NUMBER}
