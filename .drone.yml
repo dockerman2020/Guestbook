@@ -1,4 +1,35 @@
 ---
+kind: secret
+name: docker_username
+get:
+  path: docker
+  name: username
+---
+kind: secret
+name: docker_password
+get:
+  path: docker
+  name: password
+---
+kind: secret
+name: k8s_crt
+get:
+  path: k8s
+  name: ca_crt
+---
+kind: secret
+name: k8s_server
+get:
+  path: k8s
+  name: server
+---
+kind: secret
+name: k8s_token
+get:
+  path: k8s
+  name: token
+
+---
 kind: pipeline
 type: kubernetes
 name: guestbook-demo
