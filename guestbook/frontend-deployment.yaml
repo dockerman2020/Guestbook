@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - name: php-redis
-        image: us-docker.pkg.dev/google-samples/containers/gke/gb-frontend:v5
+        image: juanluisbaptiste/guestbook-demo
         env:
         - name: GET_HOSTS_FROM
           value: "dns"
