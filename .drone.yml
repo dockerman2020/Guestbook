@@ -47,6 +47,11 @@ steps:
         from_secret: docker_password
       tags:
         - latest
+trigger:
+  event:
+  - push
+  - pull_request
+  - custom
 
 ---
 kind: pipeline
@@ -126,3 +131,9 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
+trigger:
+  event:
+  - promote
+  - rollback
+  target:
+  - production
