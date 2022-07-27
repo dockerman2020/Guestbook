@@ -32,7 +32,7 @@ get:
 ---
 kind: pipeline
 type: kubernetes
-name: guestbook-demo
+name: build
 
 steps:
   - name: Build docker image
@@ -47,6 +47,13 @@ steps:
         from_secret: docker_password
       tags:
         - latest
+
+---
+kind: pipeline
+type: kubernetes
+name: deploy
+
+steps:
   - name: Deploy redis follower service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
