@@ -33,6 +33,7 @@ spec:
       containers:
       - name: php-redis
         image: juanluisbaptiste/guestbook-demo
+        imagePullPolicy: Always
         env:
         - name: GET_HOSTS_FROM
           value: "dns"
