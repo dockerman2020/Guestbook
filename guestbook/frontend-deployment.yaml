@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - name: php-redis
-        image: juanluisbaptiste/guestbook-demo:latest
+        image: juanluisbaptiste/guestbook-demo:{{ build_number }}
         imagePullPolicy: Always
         env:
         - name: GET_HOSTS_FROM
