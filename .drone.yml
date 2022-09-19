@@ -38,7 +38,7 @@ steps:
   - name: Build docker image
     image: plugins/docker
     settings:
-      repo: juanluisbaptiste/guestbook-demo
+      repo: dockerman2002/guestbook-demo
       dockerfile: guestbook/php-redis/Dockerfile
       context: guestbook/php-redis
       username:
@@ -56,7 +56,7 @@ steps:
   - name: Tag docker image
     image: plugins/docker
     settings:
-      repo: juanluisbaptiste/guestbook-demo
+      repo: dockerman2002/guestbook-demo
       dockerfile: guestbook/php-redis/Dockerfile
       context: guestbook/php-redis
       username:
