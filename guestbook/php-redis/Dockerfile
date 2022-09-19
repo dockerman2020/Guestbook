@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 FROM php:7.4-apache-buster
-RUN apt update && apt -y install zip unzip git-all
+RUN apt-get update && apt-get -y install zip unzip git-all
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY . .
