@@ -65,19 +65,19 @@ steps:
         from_secret: docker_password
       tags:
         - latest
-        - ${DRONE_TAG}test
+        - ${DRONE_TAG}test   #A work around until fix for null $DRONE_TAG is found.
     when:
       event:
       - push
       - pull_request
       - custom
 
----
-kind: pipeline
-type: kubernetes
-name: deploy
+#---
+#kind: pipeline
+#type: kubernetes
+#name: deploy
 
-steps:
+#steps:
   - name: Deploy redis follower service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
