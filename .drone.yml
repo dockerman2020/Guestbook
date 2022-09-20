@@ -71,6 +71,7 @@ steps:
       - push
       - pull_request
       - custom
+
   - name: Deploy redis follower service
     image: dockerman2002/drone-plugin-kube:latest
     settings:
@@ -82,6 +83,13 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
+
+---
+kind: pipeline
+type: kubernetes
+name: deploy
+
+steps:      
   - name: Deploy demo guest book redis follower deployment
     image: dockerman2002/drone-plugin-kube:latest
     settings:
