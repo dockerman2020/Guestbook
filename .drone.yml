@@ -71,13 +71,6 @@ steps:
       - push
       - pull_request
       - custom
-  
----
-kind: pipeline
-type: kubernetes
-name: deploy
-
-steps:
   - name: Deploy redis follower service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
