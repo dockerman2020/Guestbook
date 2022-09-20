@@ -66,33 +66,7 @@ steps:
       tags:
         - latest
         - ${DRONE_TAG}
-
-    # image: docker:dind
-    # environment:
-    #   USERNAME:
-    #     from_secret: docker_username
-    #   PASSWORD:
-    #     from_secret: docker_password
-
-    # commands:
-    #   - export ENCODED=$(echo "${USERNAME}:${PASSWORD}"|base64)
-    #   - cat << EOF > config.json
-    #     '{
-    #       "auths": {
-    #         "https://index.docker.io/v1/": {
-    #           "auth": "${ENCODED}"
-    #         }
-    #       }
-    #     }'
-    #     EOF
-    #   - docker --config config.json login
-    #   - docker pull juanluisbaptiste/guestbook-demo:latest
-    #   - docker tag juanluisbaptiste/guestbook-demo:latest juanluisbaptiste/guestbook-demo:test
-    #   - docker push juanluisbaptiste/guestbook-demo:test
-    when:
-      event:
-      - tag
-
+        
 ---
 kind: pipeline
 type: kubernetes
