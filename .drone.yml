@@ -94,13 +94,6 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
-
----
-kind: pipeline
-type: kubernetes
-name: deploy
-
-steps:      
   - name: Deploy redis leader service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
@@ -112,6 +105,13 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
+---
+kind: pipeline
+type: kubernetes
+name: deploy
+
+steps:      
+
   - name: Deploy demo guest book redis leader deployment
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
