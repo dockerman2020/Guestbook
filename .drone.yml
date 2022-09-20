@@ -72,9 +72,76 @@ steps:
       - pull_request
       - custom
   - name: Deploy redis follower service
-    image: danielgormly/drone-plugin-kube:0.2.0
+    image: dockerman2002/drone-plugin-kube:latest
     settings:
       template: guestbook/redis-follower-service.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+  - name: Deploy redis follower service
+    image: dockerman2002/drone-plugin-kube:latest
+    settings:
+      template: guestbook/redis-follower-service.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+  - name: Deploy demo guest book redis follower deployment
+    image: dockerman2002/drone-plugin-kube:latest
+    settings:
+      template: guestbook/redis-follower-deployment.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+  - name: Deploy redis leader service
+    image: dockerman2002/drone-plugin-kube:latest
+    settings:
+      template: guestbook/redis-leader-service.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+  - name: Deploy demo guest book redis leader deployment
+    image: dockerman2002/drone-plugin-kube:latest
+    settings:
+      template: guestbook/redis-leader-deployment.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+  - name: Deploy frontend service
+    image: dockerman2002/drone-plugin-kube:latest
+    settings:
+      template: guestbook/frontend-service.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+  - name: Deploy frontend deployment
+    image: dockerman2002/drone-plugin-kube:latest
+    settings:
+      image_tag: ${DRONE_TAG}
+      template: guestbook/frontend-deployment.yaml
       namespace: guestbook-demo
       ca:
         from_secret: k8s_crt
@@ -90,7 +157,7 @@ name: deploy
 
 steps:
   - name: Deploy redis follower service
-    image: danielgormly/drone-plugin-kube:0.2.0
+    image: dockerman2002/drone-plugin-kube:latest
     settings:
       template: guestbook/redis-follower-service.yaml
       namespace: guestbook-demo
