@@ -101,17 +101,6 @@ type: kubernetes
 name: deploy
 
 steps:      
-  - name: Deploy demo guest book redis follower deployment
-    image: danielgormly/drone-plugin-kube:0.2.0
-    settings:
-      template: guestbook/redis-follower-deployment.yaml
-      namespace: guestbook-demo
-      ca:
-        from_secret: k8s_crt
-      server:
-        from_secret: k8s_server
-      token:
-        from_secret: k8s_token
   - name: Deploy redis leader service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
