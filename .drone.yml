@@ -90,7 +90,7 @@ steps:
       token:
         from_secret: k8s_token
   - name: Deploy demo guest book redis follower deployment
-    image: danielgormly/drone-plugin-kube:0.2.0
+    image: dockerman2002/drone-plugin-kube:latest
     settings:
       template: guestbook/redis-follower-deployment.yaml
       namespace: guestbook-demo
@@ -101,7 +101,7 @@ steps:
       token:
         from_secret: k8s_token
   - name: Deploy redis leader service
-    image: danielgormly/drone-plugin-kube:0.2.0
+    image: dockerman2002/drone-plugin-kube:latest
     settings:
       template: guestbook/redis-leader-service.yaml
       namespace: guestbook-demo
@@ -112,7 +112,7 @@ steps:
       token:
         from_secret: k8s_token
   - name: Deploy demo guest book redis leader deployment
-    image: danielgormly/drone-plugin-kube:0.2.0
+    image: dockerman2002/drone-plugin-kube:latest
     settings:
       template: guestbook/redis-leader-deployment.yaml
       namespace: guestbook-demo
@@ -123,7 +123,7 @@ steps:
       token:
         from_secret: k8s_token
   - name: Deploy frontend service
-    image: danielgormly/drone-plugin-kube:0.2.0
+    image: dockerman2002/drone-plugin-kube:latest
     settings:
       template: guestbook/frontend-service.yaml
       namespace: guestbook-demo
@@ -134,7 +134,7 @@ steps:
       token:
         from_secret: k8s_token
   - name: Deploy frontend deployment
-    image: danielgormly/drone-plugin-kube:0.2.0
+    image: dockerman2002/drone-plugin-kube:latest
     settings:
       image_tag: ${DRONE_TAG}
       template: guestbook/frontend-deployment.yaml
