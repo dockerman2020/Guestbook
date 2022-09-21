@@ -72,14 +72,14 @@ steps:
       - pull_request
       - custom
   - name: Trivy Scan
-    image: dockerman2002/dronetrivy:latest
+    image: dockerman2002/dronetrivy
     pull: always
-    username:
+    DOCKER_USER:
       from_secret: docker_username
-    password:
+    DOCKER_PASSWORD:
       from_secret: docker_password
     environment:
-      IMAGE_NAME: dockerman2002/guestbook-demo:latest
+      IMAGE_NAME: dockerman2002/guestbook-demo
       LOCAL_IMAGE: true
       TOLERATE: medium
     commands:
