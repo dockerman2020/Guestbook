@@ -74,6 +74,10 @@ steps:
   - name: Trivy Scan
     image: dockerman2002/dronetrivy:latest
     pull: always
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
     environment:
       IMAGE_NAME: dockerman2002/guestbook-demo:latest
       LOCAL_IMAGE: true
