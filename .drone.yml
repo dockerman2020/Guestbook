@@ -36,7 +36,7 @@ name: build
 
 steps:
   - name: Build docker image
-    image: dockerman2002/dronetrivy
+    image: plugins/docker
     settings:
       repo: dockerman2002/guestbook-demo
       dockerfile: guestbook/php-redis/Dockerfile
