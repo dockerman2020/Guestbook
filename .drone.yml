@@ -85,7 +85,7 @@ steps:
       LOCAL_IMAGE: true
       TOLERATE: medium
     commands:
-      - docker ps -a
+      - sleep 5
       - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.32.0
       - trivy image dockerman2002/guestbook-demo -f json
 
