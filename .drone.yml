@@ -36,7 +36,7 @@ name: build
 
 steps:
   - name: Build docker image
-    image: plugins/docker
+    image: dockerman2002/dronetrivy:0.32.0
     settings:
       repo: dockerman2002/guestbook-demo
       dockerfile: guestbook/php-redis/Dockerfile
@@ -139,18 +139,3 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
----
-kind: pipeline
-type: kubernetes
-name: deploy
-
-steps:
-  - name: Test Scan
-    image: danielgormly/drone-plugin-kube:0.2.0
-
-trigger:
-  event:
-  - promote
-  - rollback
-  target:
-  - production
