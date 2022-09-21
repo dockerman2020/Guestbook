@@ -71,7 +71,13 @@ steps:
       - push
       - pull_request
       - custom
-
+  - name: Trivy Scan
+    image: dockerman2002/dronetrivy:latest
+    pull: always
+    environment:
+      IMAGE_NAME: dockerman2002/guestbook-demo:latest
+      LOCAL_IMAGE: true
+      TOLERATE: medium
   - name: Deploy redis follower service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
