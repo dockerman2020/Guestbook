@@ -75,7 +75,8 @@ steps:
 
   - name: Trivy Scan
     image: plugins/docker
-    pull: always
+    settings:
+      repo: dockerman2002/guestbook-demo
     DOCKER_USER:
       from_secret: docker_username
     DOCKER_PASSWORD:
