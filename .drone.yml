@@ -83,6 +83,7 @@ steps:
       LOCAL_IMAGE: true
       TOLERATE: medium
     commands:
+      - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - trivy image dockerman2002/guestbook-demo -f json
   - name: Deploy redis follower service
     image: danielgormly/drone-plugin-kube:0.2.0
