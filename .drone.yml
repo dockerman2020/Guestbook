@@ -87,6 +87,7 @@ steps:
       TOLERATE: medium
     commands:
       - sleep 5
+      - apt-get install -y curl
       - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.32.0
       - trivy image dockerman2002/guestbook-demo -f json
 
