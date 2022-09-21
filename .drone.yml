@@ -74,7 +74,7 @@ steps:
       - custom
 
   - name: Trivy Scan
-    image: dockerman2002/dronetrivy
+    image: plugins/docker
     pull: always
     DOCKER_USER:
       from_secret: docker_username
@@ -86,7 +86,7 @@ steps:
       TOLERATE: medium
     commands:
       - docker ps -a
-      - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.32.0
       - trivy image dockerman2002/guestbook-demo -f json
 
   - name: Deploy redis follower service
@@ -148,7 +148,7 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
-        
+
   - name: Deploy frontend deployment
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
