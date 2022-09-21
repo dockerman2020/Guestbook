@@ -82,6 +82,8 @@ steps:
       IMAGE_NAME: dockerman2002/guestbook-demo:latest
       LOCAL_IMAGE: true
       TOLERATE: medium
+    commands:
+      - trivy image dockerman2002/guestbook-demo -f json
   - name: Deploy redis follower service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
