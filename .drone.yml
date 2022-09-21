@@ -53,6 +53,7 @@ steps:
       - push
       - pull_request
       - custom
+
   - name: Tag docker image
     image: plugins/docker
     settings:
@@ -71,6 +72,7 @@ steps:
       - push
       - pull_request
       - custom
+
   - name: Trivy Scan
     image: dockerman2002/dronetrivy
     pull: always
@@ -83,8 +85,10 @@ steps:
       LOCAL_IMAGE: true
       TOLERATE: medium
     commands:
+      - docker ps -a
       - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - trivy image dockerman2002/guestbook-demo -f json
+
   - name: Deploy redis follower service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
@@ -96,6 +100,7 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
+
   - name: Deploy demo guest book redis follower deployment
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
@@ -107,6 +112,7 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
+
   - name: Deploy redis leader service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
@@ -118,6 +124,7 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
+
   - name: Deploy demo guest book redis leader deployment
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
@@ -129,6 +136,7 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
+
   - name: Deploy frontend service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
@@ -140,6 +148,7 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
+        
   - name: Deploy frontend deployment
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
