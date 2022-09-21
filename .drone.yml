@@ -36,7 +36,7 @@ name: build
 
 steps:
   - name: Build docker image
-    image: plugins/docker
+    image: dockerman2002/alpine.trivy
     settings:
       repo: dockerman2002/guestbook-demo
       dockerfile: guestbook/php-redis/Dockerfile
