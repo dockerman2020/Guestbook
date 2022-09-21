@@ -73,24 +73,6 @@ steps:
       - pull_request
       - custom
 
-  - name: Trivy Scan
-    image: plugins/docker
-    settings:
-      repo: dockerman2002/guestbook-demo
-    DOCKER_USER:
-      from_secret: docker_username
-    DOCKER_PASSWORD:
-      from_secret: docker_password
-    environment:
-      IMAGE_NAME: dockerman2002/guestbook-demo
-      LOCAL_IMAGE: true
-      TOLERATE: medium
-    commands:
-      - sleep 5
-      - apt-get install -y curl
-      - curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.32.0
-      - trivy image dockerman2002/guestbook-demo -f json
-
   - name: Deploy redis follower service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
