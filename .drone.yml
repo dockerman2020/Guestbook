@@ -73,6 +73,14 @@ steps:
       - pull_request
       - custom
 
+  - name: Trivy Scan
+    image: plugins/docker
+    commands:
+    - /usr/local/bin/trivy image dockerman2002/guestbook-demo:latest -f json
+    when:
+      branch: master
+      event: pull_request
+
   - name: Deploy redis follower service
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
