@@ -73,9 +73,10 @@ steps:
       - pull_request
       - custom
 
-  - name: Trivy Scan
+  - name: Trivy Image Scan
     image: plugins/docker
     commands:
+    - /usr/local/trivy --version
     - /usr/local/bin/trivy image dockerman2002/guestbook-demo:latest -f json
     when:
       branch: master
