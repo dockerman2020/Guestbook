@@ -53,20 +53,6 @@ steps:
       - push
       - pull_request
       - custom
-      
-  - name: Trivy Image Scan
-    image: plugins/docker
-    settings:
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-    commands:
-    - /usr/local/trivy --version
-    - /usr/local/bin/trivy image dockerman2002/guestbook-demo:latest -f json
-    when:
-      branch: master
-      event: pull_request
 
   - name: Tag docker image
     image: plugins/docker
