@@ -73,6 +73,7 @@ steps:
       - pull_request
       - custom
 
+---
 kind: pipeline
 type: kubernetes
 name: deploy
