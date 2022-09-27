@@ -54,24 +54,24 @@ steps:
       - pull_request
       - custom
 
-  - name: Tag docker image
-    image: plugins/docker
-    settings:
-      repo: dockerman2002/guestbook-demo
-      dockerfile: guestbook/php-redis/Dockerfile
-      context: guestbook/php-redis
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-      tags:
-        - latest
-        - ${DRONE_TAG}test
-    when:
-      event:
-      - push
-      - pull_request
-      - custom
+ # - name: Tag docker image
+ #  image: plugins/docker
+ #   settings:
+ #     repo: dockerman2002/guestbook-demo
+ #     dockerfile: guestbook/php-redis/Dockerfile
+ #     context: guestbook/php-redis
+ #     username:
+ #       from_secret: docker_username
+ #     password:
+ #       from_secret: docker_password
+ #     tags:
+ #       - latest
+ #       - ${DRONE_TAG}test
+ #   when:
+ #     event:
+ #     - push
+ #     - pull_request
+ #     - custom
 
 ---
 kind: pipeline
