@@ -13,9 +13,9 @@
 # limitations under the License.
 FROM php:7.4-apache-buster
 RUN apt-get update && apt-get -y install zip unzip git-all
-RUN apt-get install -y curl
+# RUN apt-get install -y curl
 # Install Trivy Scanner
-RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.32.0
+# RUN curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.32.0
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
