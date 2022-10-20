@@ -103,7 +103,7 @@ steps:
         from_secret: k8s_token
     commands:
     - cd /
-    - which nslookup
+    - nslookup trivy-server.trivy-redis.svc.cluster.local
     - sh script.sh us-docker.pkg.dev/google-samples/containers/gke/gb-redis-follower:v2
 
 
