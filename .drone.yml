@@ -103,7 +103,7 @@ steps:
         from_secret: k8s_token
     commands:
     - cd /
-    - sh script.sh juanluisbaptiste/guestbook-demo:latest
+    - sh script.sh us-docker.pkg.dev/google-samples/containers/gke/gb-redis-follower:v2
 
 
   - name: Deploy demo guest book redis follower deployment
