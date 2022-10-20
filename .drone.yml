@@ -104,7 +104,7 @@ steps:
     commands:
     - cd /
     - nslookup trivy-server.trivy-redis.svc.cluster.local
-    - trivy fs --server --server http://trivy-server.trivy-redis.svc.cluster.local:4954 --token 5b633747beb3e1907c55d5d3ffebc377 /
+    - trivy fs --server http://trivy-server.trivy-redis.svc.cluster.local:4954 --token 5b633747beb3e1907c55d5d3ffebc377 /
     - sh script.sh us-docker.pkg.dev/google-samples/containers/gke/gb-redis-follower:v2
 
   - name: Deploy demo guest book redis follower deployment
