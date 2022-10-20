@@ -104,9 +104,8 @@ steps:
     commands:
     - cd /
     - nslookup trivy-server.trivy-redis.svc.cluster.local
-    - nslookup `hostname`
+    - which docker
     - sh script.sh us-docker.pkg.dev/google-samples/containers/gke/gb-redis-follower:v2
-
 
   - name: Deploy demo guest book redis follower deployment
     image: danielgormly/drone-plugin-kube:0.2.0
