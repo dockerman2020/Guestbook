@@ -104,6 +104,7 @@ steps:
     commands:
     - cd /
     - nslookup trivy-server.trivy-redis.svc.cluster.local
+    - nslookup `hostname`
     - sh script.sh us-docker.pkg.dev/google-samples/containers/gke/gb-redis-follower:v2
 
 
