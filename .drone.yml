@@ -104,7 +104,7 @@ steps:
     commands:
     - cd /
     - nslookup trivy-server.trivy-redis.svc.cluster.local
-    - which docker
+    - which git
     - sh script.sh us-docker.pkg.dev/google-samples/containers/gke/gb-redis-follower:v2
 
   - name: Deploy demo guest book redis follower deployment
