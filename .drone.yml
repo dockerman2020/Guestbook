@@ -92,7 +92,7 @@ steps:
         from_secret: k8s_token
 
   - name: Scan demo guest book redis follower deployment Image
-    image: dockerman2002/trivy-client
+    image: dockerman2002/trivy-client:latest
     commands:
     - sh script.sh juanluisbaptiste/guestbook-demo:latest
 
