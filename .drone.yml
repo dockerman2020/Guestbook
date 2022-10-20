@@ -93,7 +93,16 @@ steps:
 
   - name: Scan demo guest book redis follower deployment Image
     image: dockerman2002/trivy-client:latest
+    environment:
+      image: us-docker.pkg.dev/google-samples/containers/gke/gb-redis-follower:v2
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
     commands:
+    - cd /
     - sh script.sh juanluisbaptiste/guestbook-demo:latest
 
 
