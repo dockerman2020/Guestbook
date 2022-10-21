@@ -73,7 +73,8 @@ steps:
       --severity MEDIUM,HIGH,CRITICAL \
       --token 5b633747beb3e1907c55d5d3ffebc377 \
       dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
-      -f table"
+      -f json
+      | tee /tmp/scan_results.out"
 
   - name: Build Status Nofification
     image: plugins/slack
