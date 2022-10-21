@@ -76,10 +76,10 @@ steps:
       -f json"
   
   - name: Status Nofication
-    image: plugin/slack
+    image: plugins/slack
     webhook: 
       from_secret: slack_webhook
-    icon_url: https://unsplash.it/256/256/?random
+    settings:
     channel: k8s
     template: >
       {{#sucess build.status}}
