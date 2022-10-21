@@ -66,15 +66,15 @@ steps:
       token:
         from_secret: k8s_token
     commands:
-    - cd /
-    #- nslookup trivy-server.trivy-redis.svc.cluster.local
     - "trivy fs --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
-    --token 5b633747beb3e1907c55d5d3ffebc377 / -f json"
+       --token 5b633747beb3e1907c55d5d3ffebc377 / 
+       -f json"
     - "trivy \
       image --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
       --token 5b633747beb3e1907c55d5d3ffebc377 \
-      dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} -f json"
-    #- sh script.sh dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER}
+      dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
+      -f json"
+  
 
 ---
 kind: pipeline
