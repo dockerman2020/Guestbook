@@ -54,24 +54,22 @@ steps:
       - pull_request
       - custom
 
- # - name: Tag docker image
- #  image: plugins/docker
- #   settings:
- #     repo: dockerman2002/guestbook-demo
- #     dockerfile: guestbook/php-redis/Dockerfile
- #     context: guestbook/php-redis
- #     username:
- #       from_secret: docker_username
- #     password:
- #       from_secret: docker_password
- #     tags:
- #       - latest
- #       - ${DRONE_TAG}test
- #   when:
- #     event:
- #     - push
- #     - pull_request
- #     - custom
+  - name: Scan demo guest book redis follower deployment Image
+    image: dockerman2002/trivy-client:latest
+    environment:
+      #image: us-docker.pkg.dev/google-samples/containers/gke/gb-redis-follower:v2
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+    commands:
+    - cd /
+    #- nslookup trivy-server.trivy-redis.svc.cluster.local
+    - "trivy fs --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
+    --token 5b633747beb3e1907c55d5d3ffebc377 / -f json"
+    - sh script.sh dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER}
 
 ---
 kind: pipeline
@@ -90,22 +88,6 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
-
-  - name: Scan demo guest book redis follower deployment Image
-    image: dockerman2002/trivy-client:latest
-    environment:
-      image: us-docker.pkg.dev/google-samples/containers/gke/gb-redis-follower:v2
-      ca:
-        from_secret: k8s_crt
-      server:
-        from_secret: k8s_server
-      token:
-        from_secret: k8s_token
-    commands:
-    - cd /
-    #- nslookup trivy-server.trivy-redis.svc.cluster.local
-    - trivy fs --server http://trivy-server.trivy-redis.svc.cluster.local:4954 --token 5b633747beb3e1907c55d5d3ffebc377 / -f json
-    #- sh script.sh us-docker.pkg.dev/google-samples/containers/gke/gb-redis-follower:v2
 
   - name: Deploy demo guest book redis follower deployment
     image: danielgormly/drone-plugin-kube:0.2.0
