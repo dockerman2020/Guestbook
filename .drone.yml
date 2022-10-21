@@ -100,11 +100,11 @@ steps:
         from_secret: slack_webhook
       channel: k8s  
       template: >
-        {{#success build.status}} {{ else }} :x: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
-        Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
-        Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
-        Author: {{ build.author }}      
-        Build: <{{ build.link }}| Drone Build {{ build.number }} >
+        {{#success scan.status}} {{ else }} :x: {{/success}} {{ uppercasefirst scan.status }}: Scan #{{ scan.number }} * (type: `{{ scan.event }}`)
+        Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ scan.commit }}|{{ truncate scan.commit 8 }}>
+        Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ scan.branch }}|{{ scan.branch }}>
+        Author: {{ scan.author }}      
+        Build: <{{ scan.link }}| Drone Scan {{ scan.number }} >
     when:
       status: [ success, failure ]
 
