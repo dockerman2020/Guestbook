@@ -77,9 +77,10 @@ steps:
   
   - name: Status Nofication
     image: plugin/slack
-    webhook: https://hooks.slack.com/services/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
-    channel: #k8s
-    username: mamuduem
+    webhook: 
+      from_secret: slack_webhook
+    icon_url: https://unsplash.it/256/256/?random
+    channel: k8s
     template: >
       {{#sucess build.status}}
         build {{build.number}} succeeded.
