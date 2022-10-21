@@ -75,19 +75,23 @@ steps:
       dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
       -f json"
   
-  - name: Status Nofication
+  - name: Build Status Nofication
     image: plugins/slack
-    webhook: 
-      from_secret: slack_webhook
     settings:
-    channel: k8s
-    template: >
-      {{#sucess build.status}}
-        build {{build.number}} succeeded.
-      {{else}}
-        build {{build.number}} failed.
-      {{/success}}
-  
+      token:
+        from_secret: drone_slack_token
+      channel: k8s
+      secrets: [slack_webhook]
+      webhook: $slack_webhook     
+      template: >
+        {{#success build.status}} {{ else }} :x: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
+        Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
+        Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
+        Author: {{ build.author }}      
+        Build: <{{ build.link }}| Drone Build {{ build.number }} >
+    when:
+      status: [ success, failure ]
+
 ---
 kind: pipeline
 type: kubernetes
