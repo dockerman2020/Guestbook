@@ -54,22 +54,22 @@ steps:
       - pull_request
       - custom
 
-  #- name: Build Status Nofification
-  #  image: plugins/slack
-  #  settings:
-  #    token:
-  #      from_secret: drone_slack_token
-  #    webhook:
-  #      from_secret: slack_webhook
-  #    channel: k8s  
-  #    template: >
-  #      {{#success build.status}} {{ else }} :x: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
-  #      Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
-  #      Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
-  #      Author: {{ build.author }}      
-  #      Build: <{{ build.link }}| Drone Build {{ build.number }} >
-  #  when:
-  #    status: [ success, failure ]
+  - name: Build Status Nofification
+    image: plugins/slack
+    settings:
+      token:
+        from_secret: drone_slack_token
+      webhook:
+        from_secret: slack_webhook
+      channel: k8s  
+      template: >
+        {{#success build.status}} {{ else }} :x: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
+        Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
+        Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
+        Author: {{ build.author }}      
+        Build: <{{ build.link }}| Drone Build {{ build.number }} >
+    when:
+      status: [ success, failure ]
 
   - name: Scan demo guest book redis follower deployment Image
     image: aquasec/trivy:0.32.0
@@ -86,27 +86,11 @@ steps:
     #   -f json"
     - "trivy \
       image --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
+      --security-checks vuln \
       --severity MEDIUM,HIGH,CRITICAL \
       --token 5b633747beb3e1907c55d5d3ffebc377 \
       dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
       -f json"
-  
-  - name: Scan Status Nofification
-    image: plugins/slack
-    settings:
-      token:
-        from_secret: drone_slack_token
-      webhook:
-        from_secret: slack_webhook
-      channel: k8s  
-      template: >
-        {{#success scan.status}} {{ else }} :x: {{/success}} {{ uppercasefirst scan.status }}: Scan #{{ scan.number }} * (type: `{{ scan.event }}`)
-        Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ scan.commit }}|{{ truncate scan.commit 8 }}>
-        Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ scan.branch }}|{{ scan.branch }}>
-        Author: {{ scan.author }}      
-        Build: <{{ scan.link }}| Drone Scan {{ scan.number }} >
-    when:
-      status: [ success, failure ]
 
 ---
 kind: pipeline
