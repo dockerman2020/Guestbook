@@ -56,7 +56,7 @@ steps:
 
   - name: Scan demo guest book redis follower deployment Image
     #image: dockerman2002/trivy-client:latest
-    image: aquasec/trivy:0.32
+    image: aquasec/trivy:0.32.0
     environment:
       #image: us-docker.pkg.dev/google-samples/containers/gke/gb-redis-follower:v2
       ca:
