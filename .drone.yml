@@ -68,7 +68,7 @@ steps:
     #   -f json"
     - echo $$token $$PLUGIN_TTOKEN $token $PLUGIN_TTOKEN
     - "trivy \
-      image --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
+      image --server $tserver \
       --ignore-unfixed \
       --security-checks vuln \
       --severity MEDIUM,HIGH,CRITICAL \
@@ -85,6 +85,8 @@ steps:
         from_secret: k8s_token
       ttoken:
         from_secret: trivy_token
+      tserver:
+        from_secret: trivy_server
       
 
   - name: Build Status Nofification
