@@ -76,9 +76,7 @@ steps:
     #- "trivy fs --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
     #  --token 5b633747beb3e1907c55d5d3ffebc377 / 
     #   -f json"
-    - printenv
-    - echo token $token, ttoken $ttoken, PLUGIN_TTOKEN $PLUGIN_TTOKEN
-    - echo ca $ca
+    - echo $$token $$PLUGIN_TTOKEN $token $PLUGIN_TTOKEN
     - "trivy \
       image --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
       --ignore-unfixed \
