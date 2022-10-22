@@ -56,6 +56,9 @@ steps:
 
   - name: Scan demo guest book redis follower deployment Image
     image: aquasec/trivy:0.32.0
+    settings:
+      ttoken:
+        from_secret: trivy_token
     environment:
       ca:
         from_secret: k8s_crt
@@ -63,15 +66,14 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
-    settings:
-      ttoken:
-        from_secret: trivy_token
     commands:
     #- "trivy fs --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
     #  --token 5b633747beb3e1907c55d5d3ffebc377 / 
     #   -f json"
+    - echo ${ttoken}
     - "trivy \
       image --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
+      --ignore_unfixed \
       --security-checks vuln \
       --severity MEDIUM,HIGH,CRITICAL \
       --token 5b633747beb3e1907c55d5d3ffebc377 \
