@@ -28,12 +28,6 @@ name: k8s_token
 get:
   path: k8s
   name: token
-#---
-#kind: secret
-#name: trivy_token
-#get:
-#  path: k8s
-#  name: trivy_token
 
 ---
 kind: pipeline
@@ -63,7 +57,6 @@ steps:
   - name: Scan demo guest book redis follower deployment Image
     image: aquasec/trivy:0.32.0
     commands:
-    - apt-get install -y curl jq
     - "trivy \
       image --server $tserver \
       --ignore-unfixed \
