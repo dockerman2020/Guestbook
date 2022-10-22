@@ -63,7 +63,7 @@ steps:
   - name: Scan demo guest book redis follower deployment Image
     image: aquasec/trivy:0.32.0
     commands:
-    - sudo apt-get install -y curl jq
+    - apt-get install -y curl jq
     - "trivy \
       image --server $tserver \
       --ignore-unfixed \
