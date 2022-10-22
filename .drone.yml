@@ -28,12 +28,12 @@ name: k8s_token
 get:
   path: k8s
   name: token
----
-kind: secret
-name: trivy_token
-get:
-  path: k8s
-  name: trivy_token
+#---
+#kind: secret
+#name: trivy_token
+#get:
+#  path: k8s
+#  name: trivy_token
 
 ---
 kind: pipeline
@@ -63,10 +63,8 @@ steps:
   - name: Scan demo guest book redis follower deployment Image
     image: aquasec/trivy:0.32.0
     commands:
-    #- "trivy fs --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
-    #  --token 5b633747beb3e1907c55d5d3ffebc377 / 
-    #   -f json"
-    - echo $$token $$PLUGIN_TTOKEN $token $PLUGIN_TTOKEN
+    - which cat
+    - which curl
     - "trivy \
       image --server $tserver \
       --ignore-unfixed \
