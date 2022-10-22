@@ -33,7 +33,7 @@ kind: secret
 name: trivy_token
 get:
   path: k8s
-  name: token
+  name: trivy_token
 
 ---
 kind: pipeline
@@ -62,16 +62,6 @@ steps:
 
   - name: Scan demo guest book redis follower deployment Image
     image: aquasec/trivy:0.32.0
-    settings:
-      ttoken:
-        from_secret: trivy_token
-    environment:
-      ca:
-        from_secret: k8s_crt
-      server:
-        from_secret: k8s_server
-      token:
-        from_secret: k8s_token
     commands:
     #- "trivy fs --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
     #  --token 5b633747beb3e1907c55d5d3ffebc377 / 
@@ -82,10 +72,20 @@ steps:
       --ignore-unfixed \
       --security-checks vuln \
       --severity MEDIUM,HIGH,CRITICAL \
-      --token $token \
+      --token $ttoken \
       dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
       -f json
       | tee /tmp/scan_results.out"
+    environment:
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+      ttoken:
+        from_secret: trivy_token
+      
 
   - name: Build Status Nofification
     image: plugins/slack
