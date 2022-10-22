@@ -57,12 +57,12 @@ steps:
   - name: Scan demo guest book redis follower deployment Image
     image: aquasec/trivy:0.32.0
     commands:
-    - "trivy \
-      image --server $tserver \
-      --ignore-unfixed \
-      --security-checks vuln \
-      --severity MEDIUM,HIGH,CRITICAL \
-      --token $ttoken \
+    - "trivy image                                 \
+      --server $tserver                             \
+      --token $ttoken                                \
+      --ignore-unfixed                                \
+      --security-checks vuln                           \
+      --severity MEDIUM,HIGH,CRITICAL                   \
       dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
       -f json
       | tee /tmp/scan_results.out"
