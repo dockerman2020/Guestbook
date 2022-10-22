@@ -64,7 +64,6 @@ steps:
     image: aquasec/trivy:0.32.0
     commands:
     - which cat
-    - which curl
     - "trivy \
       image --server $tserver \
       --ignore-unfixed \
@@ -74,6 +73,8 @@ steps:
       dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
       -f json
       | tee /tmp/scan_results.out"
+    - echo "Running cat /tmp/scan_results.out"
+    - cat /tmp/scan_results.out
     environment:
       ca:
         from_secret: k8s_crt
@@ -86,7 +87,6 @@ steps:
       tserver:
         from_secret: trivy_server
       
-
   - name: Build Status Nofification
     image: plugins/slack
     settings:
