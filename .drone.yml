@@ -63,7 +63,6 @@ steps:
   - name: Scan demo guest book redis follower deployment Image
     image: aquasec/trivy:0.32.0
     commands:
-    - which cat
     - "trivy \
       image --server $tserver \
       --ignore-unfixed \
@@ -74,7 +73,7 @@ steps:
       -f json
       | tee /tmp/scan_results.out"
     - echo "Running cat /tmp/scan_results.out"
-    - cat /tmp/scan_results.out
+    - grep "VulnerabilityID|PkgName|InstalledVersion|FixedVersion|PrimaryURL" /tmp/scan_results.out
     environment:
       ca:
         from_secret: k8s_crt
