@@ -74,7 +74,7 @@ steps:
       image --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
       --security-checks vuln \
       --severity MEDIUM,HIGH,CRITICAL \
-      --token ${ttoken} \
+      --token 5b633747beb3e1907c55d5d3ffebc377 \
       dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
       -f json
       | tee /tmp/scan_results.out"
