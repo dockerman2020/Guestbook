@@ -63,6 +63,7 @@ steps:
         from_secret: k8s_server
       token:
         from_secret: k8s_token
+    settings:
       ttoken:
         from_secret: trivy_token
     commands:
