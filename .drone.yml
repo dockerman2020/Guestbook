@@ -28,6 +28,12 @@ name: k8s_token
 get:
   path: k8s
   name: token
+---
+kind: secret
+name: trivy_token
+get:
+  path: k8s
+  name: token
 
 ---
 kind: pipeline
@@ -70,13 +76,13 @@ steps:
     #- "trivy fs --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
     #  --token 5b633747beb3e1907c55d5d3ffebc377 / 
     #   -f json"
-    - echo ${ttoken}
+    - echo ${token}
     - "trivy \
       image --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
       --ignore-unfixed \
       --security-checks vuln \
       --severity MEDIUM,HIGH,CRITICAL \
-      --token ${ttoken} \
+      --token ${token} \
       dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
       -f json
       | tee /tmp/scan_results.out"
