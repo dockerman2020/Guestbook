@@ -57,6 +57,7 @@ steps:
   - name: Scan demo guest book redis follower deployment Image
     image: aquasec/trivy:0.32.0
     commands:
+    - which jq
     - "trivy image \
       --server $tserver \
       --token $ttoken \
