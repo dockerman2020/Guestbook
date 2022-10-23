@@ -57,7 +57,6 @@ steps:
   - name: Scan demo guest book redis follower deployment Image
     image: aquasec/trivy:0.32.0
     commands:
-    - which jq
     - "trivy image \
       --server $tserver \
       --token $ttoken \
@@ -66,7 +65,7 @@ steps:
       --severity MEDIUM,HIGH,CRITICAL \
       dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
       -f json
-      | tee /tmp/scan_results.out"
+      -o /tmp/scan_results.out"
     environment:
       ca:
         from_secret: k8s_crt
