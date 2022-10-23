@@ -58,9 +58,9 @@ steps:
     image: aquasec/trivy:0.32.0
     commands:
     - "trivy image \
-      --server $tserver \
       --token $ttoken \
       --ignore-unfixed \
+      --server $tserver \
       --security-checks vuln \
       --severity MEDIUM,HIGH,CRITICAL \
       dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
