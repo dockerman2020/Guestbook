@@ -55,8 +55,11 @@ steps:
       - custom
 
   - name: Scan demo guest book redis follower deployment Image
-    image: aquasec/trivy:0.32.0
+    #image: aquasec/trivy:0.32.0
+    image: dockerman2002/trivy-client:v0.0.16
     commands:
+    - which curl
+    - which jq
     - "trivy image \
       --token $ttoken \
       --ignore-unfixed \
