@@ -62,11 +62,11 @@ steps:
       --token $ttoken \
       --ignore-unfixed \
       --server $tserver \
-      --security-checks vuln \
+     # --security-checks vuln \
       --severity MEDIUM,HIGH,CRITICAL \
       dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
-      -f json
-      -o /tmp/scan_results.out"
+      -f json"
+     # -o /tmp/scan_results.out"
     #- "/bin/cat /tmp/scan_results.out | \
      # /usr/bin/jq '.Results[0] .Vulnerabilities[] |
       #{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, 
