@@ -62,6 +62,7 @@ steps:
       --token $ttoken \
       --ignore-unfixed \
       --server $tserver \
+      --security-checks vuln \
       --severity MEDIUM,HIGH,CRITICAL \
       dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
       -f json 
@@ -100,7 +101,7 @@ steps:
         Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
         Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
         Author: {{ build.author }}      
-        Build: <{{ build.link }}| Drone Build {{ build.number }} >
+        Build: <{{ build.link }}| Drone Build {{ build.number }}>
     when:
       status: [ success, failure ]
 
