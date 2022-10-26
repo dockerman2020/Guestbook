@@ -75,7 +75,7 @@ steps:
       '{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, 
       FixedVersion: .FixedVersion, Severity: .Severity, PrimaryURL: .PrimaryURL,
       Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' \
-      || echo "No Vulnerabilities found this time."
+      || echo \"No Vulnerabilities found this time.\"
       "
     environment:
       ca:
