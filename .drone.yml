@@ -58,6 +58,8 @@ steps:
     #image: aquasec/trivy:0.32.0
     image: dockerman2002/trivy-client:v0.0.16
     commands:
+    - which grep
+    - which wc
     - "trivy image \
       --token $ttoken \
       --ignore-unfixed \
@@ -66,9 +68,10 @@ steps:
       dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
       -f json 
       -o /tmp/scan_results.out"
-    - "/bin/cat /tmp/scan_results.out | \
+    - "
+      /bin/cat /tmp/scan_results.out |\
       /usr/bin/jq '.Results[0] .Vulnerabilities[] |
-      {VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, 
+      '{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, 
       FixedVersion: .FixedVersion, Severity: .Severity, PrimaryURL: .PrimaryURL,
       Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}'"
     environment:
