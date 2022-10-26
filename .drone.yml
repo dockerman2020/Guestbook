@@ -58,6 +58,8 @@ steps:
     #image: aquasec/trivy:0.32.0
     image: dockerman2002/trivy-client:v0.0.16
     commands:
+    - trivy --version
+    - trivy fs --token $ttoken  --server $tserver --severity HIGH,CRITICAL / -f json
     - "trivy image \
       --token $ttoken \
       --ignore-unfixed \
