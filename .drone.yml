@@ -67,7 +67,7 @@ steps:
       -f json 
       -o /tmp/scan_results.out"
     - "VULNFOUND=`/bin/grep Vulnerabilities /tmp/scan_results.out`
-      [ -z $VULNFOUND ] && /bin/cat /tmp/scan_results.out |\
+      [ ! -z $VULNFOUND ] && /bin/cat /tmp/scan_results.out |\
       /usr/bin/jq '.Results[0] .Vulnerabilities[] |
       {VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, 
       FixedVersion: .FixedVersion, Severity: .Severity, PrimaryURL: .PrimaryURL,
