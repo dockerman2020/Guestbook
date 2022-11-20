@@ -12,6 +12,18 @@ get:
   name: password
 ---
 kind: secret
+name: QUAY_LOGIN
+get:
+  path: docker
+  name: username
+---
+kind: secret
+name: QUAY_TOKEN
+get:
+  path: docker
+  name: docker_password
+---
+kind: secret
 name: k8s_crt
 get:
   path: k8s
@@ -38,16 +50,16 @@ steps:
   - name: Build docker image
     image: plugins/docker
     settings:
-      repo: dockerman2002/guestbook-demo
+      repo: quay.io/absiplant/guestbook
       dockerfile: guestbook/php-redis/Dockerfile
       context: guestbook/php-redis
       username:
-        from_secret: docker_username
+        from_secret: QUAY_LOGIN
       password:
-        from_secret: docker_password
+        from_secret: QUAY_TOKEN
       tags:
         - latest
-        - ${DRONE_BUILD_NUMBER}
+        - ${DRONE_COMMIT_SHA}
     when:
       event:
       - push
@@ -64,7 +76,7 @@ steps:
       --server $tserver \
       --security-checks vuln \
       --severity MEDIUM,HIGH,CRITICAL \
-      dockerman2002/guestbook-demo:${DRONE_BUILD_NUMBER} \
+      quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} \
       -f json 
       -o /tmp/scan_results.out"
     - "
