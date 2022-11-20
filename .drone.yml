@@ -50,13 +50,18 @@ steps:
   - name: Build docker image
     image: plugins/docker
     settings:
-     # repo: quay.io/absiplant/guestbook
+      repo: quay.io/absiplant/guestbook
       dockerfile: guestbook/php-redis/Dockerfile
       context: guestbook/php-redis
       username:
         from_secret: docker_username
       password:
         from_secret: docker_password
+    environment:
+      DOCKER_PASSWORD:
+        from_secret: QUAY_TOKEN
+      DOCKER_USERNAME:
+        from_secret: QUAY_LOGIN
     commands:
     - docker login -u=$${{QUAY_LOGIN}} -p=$${QUAY_TOKEN} quay.io
     - docker tag $${IMAGE_REPO}:$${DRONE_COMMIT_SHA} quay.io/absiplant/guestbook:$${DRONE_COMMIT_SHA}
