@@ -57,9 +57,9 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-    volumes:
-      - name: dockersock
-        path: /var/run
+ #   volumes:
+ #     - name: dockersock
+ #       path: /var/run
     tags:
       - latest
       - ${DRONE_COMMIT_SHA}
