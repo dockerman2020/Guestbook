@@ -12,6 +12,18 @@ get:
   name: password
 ---
 kind: secret
+name: QUAY_LOGIN
+get:
+  path: docker
+  name: username
+---
+kind: secret
+name: QUAY_TOKEN
+get:
+  path: docker
+  name: password
+---
+kind: secret
 name: k8s_crt
 get:
   path: k8s
@@ -42,9 +54,9 @@ steps:
       dockerfile: guestbook/php-redis/Dockerfile
       context: guestbook/php-redis
       username:
-        from_secret: docker_username
+        from_secret: QUAY_LOGIN
       password:
-        from_secret: docker_password
+        from_secret: QUAY_TOKEN
       tags:
         - latest
         - ${DRONE_COMMIT_SHA}
