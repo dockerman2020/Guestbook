@@ -102,6 +102,8 @@ steps:
         Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
         Author: {{ build.author }}      
         Build: <{{ build.link }}| Drone Build {{ build.number }}>
+        success_image_attachments: http://i.imgur.com/TP4PIxc.jpg
+        failure_image_attachments: http://cdn.meme.am/instances/51000361.jpg
     when:
       status: [ success, failure ]
 
