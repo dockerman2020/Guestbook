@@ -45,18 +45,24 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
+      tags:
+        - latest
+        - ${DRONE_COMMIT_SHA}
+    when:
+      event:
+      - push
+      - pull_request
+      - custom
+
+  - name: Tag Build And Push To Quay
+    image: plugins/docker
     environment:
       DOCKER_PASSWORD:
         from_secret: docker_password
-      DOCKER_USERNAME:
-        from_secret: docker_username
     commands:
     - docker login -u="absiplant+guestbook_robot" -p=$${{QUAY_TOKEN}} quay.io
     - docker tag quay.io/absiplant/guestbook:$${DRONE_COMMIT_SHA} quay.io/absiplant/guestbook:$${DRONE_COMMIT_SHA}
     - docker push quay.io/absiplant/guestbook:$${DRONE_COMMIT_SHA}
-    tags:
-      - latest
-      - ${DRONE_COMMIT_SHA}
     when:
       event:
       - push
