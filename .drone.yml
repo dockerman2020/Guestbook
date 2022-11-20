@@ -89,21 +89,22 @@ steps:
         from_secret: trivy_server
       
   - name: Build Status Nofification
-    image: plugins/slack-blame
+    image: plugins/slack
     settings:
       token:
         from_secret: drone_slack_token
       webhook:
         from_secret: slack_webhook
-      channel: k8s  
+      channel: k8s
+      image_url: https://unsplash.it/256/256/?random
+      icon_url: https://unsplash.it/256/256/?random
+      link_names: "true"
       template: >
         {{#success build.status}} {{ else }} :x: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
         Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
         Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
         Author: {{ build.author }}      
         Build: <{{ build.link }}| Drone Build {{ build.number }}>
-        success_image_attachments: http://i.imgur.com/TP4PIxc.jpg
-        failure_image_attachments: http://cdn.meme.am/instances/51000361.jpg
     when:
       status: [ success, failure ]
 
