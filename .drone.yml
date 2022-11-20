@@ -51,7 +51,7 @@ steps:
       DOCKER_USERNAME:
         from_secret: docker_username
     commands:
-    - docker login -u="absiplant+guestbook_robot" -p=${QUAY_TOKEN} quay.io
+    - docker login -u="absiplant+guestbook_robot" -p=$${{QUAY_TOKEN}} quay.io
     - docker tag quay.io/absiplant/guestbook:$${DRONE_COMMIT_SHA} quay.io/absiplant/guestbook:$${DRONE_COMMIT_SHA}
     - docker push quay.io/absiplant/guestbook:$${DRONE_COMMIT_SHA}
     tags:
