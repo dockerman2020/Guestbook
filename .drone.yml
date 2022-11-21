@@ -96,7 +96,8 @@ steps:
       webhook:
         from_secret: slack_webhook
       channel: k8s
-      image_url: https://unsplash.it/256/256/?random
+      alt_text: "cute cat"
+      image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
       icon_url: https://unsplash.it/256/256/?random
       link_names: "true"
       template: >
@@ -104,7 +105,7 @@ steps:
         Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
         Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
         Author: {{ build.author }}      
-        Build: <{{ build.link }}| Drone Build {{ build.number }}>
+        Build: {{ build.link }}| Drone Build {{ build.number }} Done :tada:
     when:
       status: [ success, failure ]
 
