@@ -101,7 +101,7 @@ steps:
       icon_url: https://unsplash.it/256/256/?random
       link_names: "true"
       template: >
-        {{#success build.status}} {{ else }} :x: {{/success}} :magnifying_glass: {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
+        {{#success build.status}} {{ else }} :x: {{/success}} {{ uppercasefirst build.status }}: :magnifying_glass: Build #{{ build.number }} * (type: `{{ build.event }}`)
         Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
         Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
         Author: {{ build.author }}      
