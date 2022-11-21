@@ -105,7 +105,7 @@ steps:
         Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
         Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
         Author: {{ build.author }}      
-        Build: {{ build.link }}| Drone Build {{ build.number }} Sucessful :tada: :magnifying_glass:
+        Build: {{ build.link }}| Drone Build {{ build.number }} Sucessful :tada: :thumbs_up:
     when:
       status: [ success, failure ]
 
