@@ -42,7 +42,7 @@ steps:
       dockerfile: guestbook/php-redis/Dockerfile
       context: guestbook/php-redis
       username:
-        from_secret: docker_username-testing-failure
+        from_secret: docker_username
       password:
         from_secret: docker_password
       tags:
