@@ -51,8 +51,6 @@ steps:
     environment:
       DRONE_STEP_NAME_1: ${DRONE_STEP_NAME}
       DRONE_STEP_NUMBER: ${DRONE_STEP_NUMBER}
-    commands:
-      - env
 
     when:
       event:
