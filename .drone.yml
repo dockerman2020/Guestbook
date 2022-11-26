@@ -82,21 +82,6 @@ steps:
                 Author: {{ build.author }}\n
                 Build: <{{ build.link }}| Drone Build {{ build.number }}> Sucessful :mag: :package: :tada:' >/drone/src/slack_results.out
       "
-    # - echo $DRONE_STEP_NAME
-    # - echo $DRONE_STEP_NUMBER
-    # - echo DRONE_BUILD_STATUS:$DRONE_BUILD_STATUS
-    # - echo DRONE_STAGE_STATUS:$DRONE_STAGE_STATUS
-    # - echo DRONE_JOB_STATUS:$DRONE_JOB_STATUS
-    # - echo CI_BUILD_STATUS:$CI_BUILD_STATUS
-    # - echo CI_JOB_STATUS:$CI_JOB_STATUS
-    # - echo BUILD_STATUS:$BUILD_STATUS
-    # - echo BUILD_STATUS_2:$BUILD_STATUS_2
-    # - echo BUILD_STATUS_3:$BUILD_STATUS_3
-    # - echo BUILD_STATUS_4:$BUILD_STATUS_4
-    # - echo BUILD_STATUS_5:$BUILD_STATUS_5
-    # - echo BUILD_STATUS_6:$BUILD_STATUS_6
-    # - echo $DRONE_STEP_NAME_1
-    # - echo $DRONE_STEP_NUMBER
     environment:
       ca:
         from_secret: k8s_crt
@@ -108,22 +93,8 @@ steps:
         from_secret: trivy_token
       tserver:
         from_secret: trivy_server
-      # BUILD_STARTED: ${DRONE_BUILD_CREATED}
-      # BUILD_URL: "${DRONE_BUILD_LINK}"
-      # BUILD_BRANCH: ${DRONE_COMMIT_BRANCH}
-      # BUILD_COMMIT: ${DRONE_COMMIT}
-      # BUILD_AUTHOR: ${DRONE_COMMIT_AUTHOR_NAME}
-      # BUILD_STATUS: ${DRONE_BUILD_STATUS}
-      # BUILD_STATUS_2: ${DRONE_STAGE_STATUS}
-      # BUILD_STATUS_3: ${DRONE_JOB_STATUS}
-      # BUILD_STATUS_4: ${CI_BUILD_STATUS}
-      # BUILD_STATUS_5: ${CI_JOB_STATUS}
-      # DRONE_STEP_NUMBER: ${DRONE_STEP_NUMBER}
-      # REPO_NAME: ${DRONE_REPO}
-      # REPO_COMMIT_URL: ${DRONE_COMMIT_LINK}
-      # REPO_URL: ${DRONE_REPO_LINK}
 
-  - name: Build Status Nofification
+  - name: Build Failure Status Nofification
     image: plugins/slack
     settings:
       token:
@@ -133,8 +104,6 @@ steps:
       channel: k8s
       alt_text: "cute cat"
       image_url: "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif"
-      # image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
-      icon_url: https://unsplash.it/256/256/?random
       link_names: "true"
       template: >
         {{#failure build.status}} :x: :rotating_light: :fire_engine: :ambulance: {{/failure}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
@@ -142,12 +111,6 @@ steps:
         Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
         Author: {{ build.author }}      
         Build: {{ build.link }}| Drone Build {{ build.number }} Failed :ghost: 
-      # template: >
-      #   {{#success build.status}}
-      #   image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
-      #   alt_text: "cute cat"
-      #   build {{build.number}} succeeded.
-      #   {{/success}}
     when:
       status:
       - failure 
@@ -160,10 +123,7 @@ steps:
       webhook:
         from_secret: slack_webhook
       channel: k8s
-      alt_text: "cute cat"
-      # image_url: "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif"
       image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
-      # icon_url: https://unsplash.it/256/256/?random
       link_names: "true"
       template: file:///drone/src/slack_results.out
         # {{#success build.status}} {{ else }} :x: :rotating_light: :fire_engine: :ambulance: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
