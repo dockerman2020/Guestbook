@@ -48,10 +48,6 @@ steps:
       tags:
         - latest
         - ${DRONE_COMMIT_SHA}
-    environment:
-      DRONE_STEP_NAME_1: ${DRONE_STEP_NAME}
-      DRONE_STEP_NUMBER: ${DRONE_STEP_NUMBER}
-
     when:
       event:
       - push
@@ -95,7 +91,7 @@ steps:
     - echo BUILD_STATUS_6:$BUILD_STATUS_6
     - echo $DRONE_STEP_NAME_1
     - echo $DRONE_STEP_NUMBER
-    - env
+
     environment:
       ca:
         from_secret: k8s_crt
@@ -136,12 +132,17 @@ steps:
       #image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
       icon_url: https://unsplash.it/256/256/?random
       link_names: "true"
+      # template: >
+      #   {{#success build.status}} {{ else }} :x: :rotating_light: :fire_engine: :ambulance: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
+      #   Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
+      #   Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
+      #   Author: {{ build.author }}      
+      #   Build: {{ build.link }}| Drone Build {{ build.number }} Sucessful :mag: :package: :tada:
       template: >
-        {{#success build.status}} {{ else }} :x: :rotating_light: :fire_engine: :ambulance: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
-        Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
-        Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
-        Author: {{ build.author }}      
-        Build: {{ build.link }}| Drone Build {{ build.number }} Sucessful :mag: :package: :tada:
+        {{#success build.status}}
+        image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
+        build {{build.number}} succeeded.
+        {{/success}}
     when:
       status: [ success, failure ]
 
