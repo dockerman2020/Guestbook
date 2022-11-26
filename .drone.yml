@@ -48,13 +48,19 @@ steps:
       tags:
         - latest
         - ${DRONE_COMMIT_SHA}
+    environment:
+      DRONE_STEP_NAME_1: ${DRONE_STEP_NAME}
+      DRONE_STEP_NUMBER: ${DRONE_STEP_NUMBER}
+    commands:
+      - env
+
     when:
       event:
       - push
       - pull_request
       - custom
 
-  - name: Scan demo guest book redis follower deployment Image
+  - name: Scan demo guest book Image
     #image: aquasec/trivy:0.32.0
     image: dockerman2002/trivy-client:v0.0.16
     commands:
@@ -99,7 +105,7 @@ steps:
       BUILD_STATUS_3: ${DRONE_JOB_STATUS}
       BUILD_STATUS_4: ${CI_BUILD_STATUS}
       BUILD_STATUS_5: ${CI_JOB_STATUS}
-      DRONE_STEP_NAME: ${DRONE_STEP_NAME}
+      DRONE_STEP_NAME_1: ${DRONE_STEP_NAME}
       DRONE_STEP_NUMBER: ${DRONE_STEP_NUMBER}
       REPO_NAME: ${DRONE_REPO}
       REPO_COMMIT_URL: ${DRONE_COMMIT_LINK}
@@ -116,9 +122,8 @@ steps:
       - echo BUILD_STATUS_4:$BUILD_STATUS_4
       - echo BUILD_STATUS_5:$BUILD_STATUS_5
       - echo BUILD_STATUS_6:$BUILD_STATUS_6
-      - echo $DRONE_STEP_NAME
+      - echo $DRONE_STEP_NAME_1
       - echo $DRONE_STEP_NUMBER
-
       - env
       
   - name: Build Status Nofification
