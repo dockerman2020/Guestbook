@@ -118,7 +118,6 @@ steps:
       REPO_COMMIT_URL: ${DRONE_COMMIT_LINK}
       REPO_URL: ${DRONE_REPO_LINK}
 
-      
   - name: Build Status Nofification
     image: plugins/slack
     settings:
@@ -128,24 +127,48 @@ steps:
         from_secret: slack_webhook
       channel: k8s
       alt_text: "cute cat"
-      #image_url: "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif"
+      # image_url: "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif"
+      image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
+      icon_url: https://unsplash.it/256/256/?random
+      link_names: "true"
+      template: >
+        {{#failure build.status}} :x: :rotating_light: :fire_engine: :ambulance: {{/failure}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
+        Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
+        Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
+        Author: {{ build.author }}      
+        Build: {{ build.link }}| Drone Build {{ build.number }} Failed :ghost:
+      # template: >
+      #   {{#success build.status}}
+      #   image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
+      #   alt_text: "cute cat"
+      #   build {{build.number}} succeeded.
+      #   {{/success}}
+    when:
+      status:
+      - failure 
+
+  - name: Build Status Nofification success
+    image: plugins/slack
+    settings:
+      token:
+        from_secret: drone_slack_token
+      webhook:
+        from_secret: slack_webhook
+      channel: k8s
+      alt_text: "cute cat"
+      image_url: "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif"
       #image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
       icon_url: https://unsplash.it/256/256/?random
       link_names: "true"
-      # template: >
-      #   {{#success build.status}} {{ else }} :x: :rotating_light: :fire_engine: :ambulance: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
-      #   Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
-      #   Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
-      #   Author: {{ build.author }}      
-      #   Build: {{ build.link }}| Drone Build {{ build.number }} Sucessful :mag: :package: :tada:
       template: >
-        {{#success build.status}}
-        image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
-        alt_text: "cute cat"
-        build {{build.number}} succeeded.
-        {{/success}}
+        {{#success build.status}} {{ else }} :x: :rotating_light: :fire_engine: :ambulance: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
+        Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
+        Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
+        Author: {{ build.author }}      
+        Build: {{ build.link }}| Drone Build {{ build.number }} Sucessful :mag: :package: :tada:
     when:
-      status: [ success, failure ]
+      status: 
+      - success
 
 ---
 kind: pipeline
