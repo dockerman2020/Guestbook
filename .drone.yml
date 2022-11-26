@@ -39,7 +39,7 @@ steps:
     image: plugins/docker
     settings:
       repo: dockerman2002/guestbook-demo
-      dockerfile: guestbook/php-redis/Dockerfile---
+      dockerfile: guestbook/php-redis/Dockerfile
       context: guestbook/php-redis
       username:
         from_secret: docker_username
@@ -66,10 +66,11 @@ steps:
       --severity MEDIUM,HIGH,CRITICAL \
       dockerman2002/guestbook-demo:${DRONE_COMMIT_SHA} \
       -f json 
-      -o /tmp/scan_results.out"
+      -o /drone/src/scan_results.out"
+      
     - "
-      VULNFOUND=`/bin/grep Vulnerabilities /tmp/scan_results.out`
-      [ ! -z $VULNFOUND ] && /bin/cat /tmp/scan_results.out |\
+      VULNFOUND=`/bin/grep Vulnerabilities /drone/src/scan_results.out`
+      [ ! -z $VULNFOUND ] && /bin/cat /drone/src/scan_results.out |\
       /usr/bin/jq '.Results[0] .Vulnerabilities[] |
       {VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, 
       FixedVersion: .FixedVersion, Severity: .Severity, PrimaryURL: .PrimaryURL,
