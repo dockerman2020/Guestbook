@@ -75,7 +75,7 @@ steps:
       {VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, 
       FixedVersion: .FixedVersion, Severity: .Severity, PrimaryURL: .PrimaryURL,
       Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' \
-      || echo \"WHOOO HOOO! Clean image built!. |tee /drone/src/slack_msg.txt \"
+      || echo \"WHOOO HOOO! Clean image built!. > /drone/src/slack_msg.txt \"
       "
     # - echo $DRONE_STEP_NAME
     # - echo $DRONE_STEP_NUMBER
