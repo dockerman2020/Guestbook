@@ -76,11 +76,11 @@ steps:
       Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' \
       || echo 'WHOOO HOOO! Clean image built!.\n
                {{#success build.status}} 
-             {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)\n
-                Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>\n
-                Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>\n
-                Author: {{ build.author }}\n
-                Build: <{{ build.link }}| Drone Build {{ build.number }}> Sucessful :mag: :package: :tada:' >/drone/src/slack_results.out
+               {{/success}} {{uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)\n
+              Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>\n
+              Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>\n
+              Author: {{ build.author }}\n
+              Build: <{{ build.link }}| Drone Build {{ build.number }}> Sucessful :mag: :package: :tada:' >/drone/src/slack_results.out
       "
     environment:
       ca:
