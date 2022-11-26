@@ -82,6 +82,20 @@ steps:
       "
     - echo $DRONE_STEP_NAME
     - echo $DRONE_STEP_NUMBER
+    - echo DRONE_BUILD_STATUS:$DRONE_BUILD_STATUS
+    - echo DRONE_STAGE_STATUS:$DRONE_STAGE_STATUS
+    - echo DRONE_JOB_STATUS:$DRONE_JOB_STATUS
+    - echo CI_BUILD_STATUS:$CI_BUILD_STATUS
+    - echo CI_JOB_STATUS:$CI_JOB_STATUS
+    - echo BUILD_STATUS:$BUILD_STATUS
+    - echo BUILD_STATUS_2:$BUILD_STATUS_2
+    - echo BUILD_STATUS_3:$BUILD_STATUS_3
+    - echo BUILD_STATUS_4:$BUILD_STATUS_4
+    - echo BUILD_STATUS_5:$BUILD_STATUS_5
+    - echo BUILD_STATUS_6:$BUILD_STATUS_6
+    - echo $DRONE_STEP_NAME_1
+    - echo $DRONE_STEP_NUMBER
+    - env
     environment:
       ca:
         from_secret: k8s_crt
@@ -107,21 +121,7 @@ steps:
       REPO_NAME: ${DRONE_REPO}
       REPO_COMMIT_URL: ${DRONE_COMMIT_LINK}
       REPO_URL: ${DRONE_REPO_LINK}
-    commands:
-      - echo DRONE_BUILD_STATUS:$DRONE_BUILD_STATUS
-      - echo DRONE_STAGE_STATUS:$DRONE_STAGE_STATUS
-      - echo DRONE_JOB_STATUS:$DRONE_JOB_STATUS
-      - echo CI_BUILD_STATUS:$CI_BUILD_STATUS
-      - echo CI_JOB_STATUS:$CI_JOB_STATUS
-      - echo BUILD_STATUS:$BUILD_STATUS
-      - echo BUILD_STATUS_2:$BUILD_STATUS_2
-      - echo BUILD_STATUS_3:$BUILD_STATUS_3
-      - echo BUILD_STATUS_4:$BUILD_STATUS_4
-      - echo BUILD_STATUS_5:$BUILD_STATUS_5
-      - echo BUILD_STATUS_6:$BUILD_STATUS_6
-      - echo $DRONE_STEP_NAME_1
-      - echo $DRONE_STEP_NUMBER
-      - env
+
       
   - name: Build Status Nofification
     image: plugins/slack
