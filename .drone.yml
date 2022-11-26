@@ -76,6 +76,8 @@ steps:
       Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' \
       || echo \"WHOOO HOOO! Clean image built!.\"
       "
+    - echo $DRONE_STEP_NAME
+    - echo $DRONE_STEP_NUMBER
     environment:
       ca:
         from_secret: k8s_crt
@@ -112,6 +114,9 @@ steps:
       - echo BUILD_STATUS_4:$BUILD_STATUS_4
       - echo BUILD_STATUS_5:$BUILD_STATUS_5
       - echo BUILD_STATUS_6:$BUILD_STATUS_6
+      - echo $DRONE_STEP_NAME
+      - echo $DRONE_STEP_NUMBER
+
       - env
       
   - name: Build Status Nofification
