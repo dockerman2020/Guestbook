@@ -66,7 +66,7 @@ steps:
       --severity LOW,MEDIUM,HIGH,CRITICAL \
       dockerman2002/guestbook-demo:${DRONE_COMMIT_SHA} \
       -f json 
-      -o /drone/src/scan_results.out |jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}'
+      -o /drone/src/scan_results.out |jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}'"
     # - cat /drone/src/scan_results.out
     # - "
     #   VULNFOUND=`/bin/grep Vulnerabilities /drone/src/scan_results.out`
