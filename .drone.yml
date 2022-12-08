@@ -66,22 +66,22 @@ steps:
       --severity LOW,MEDIUM,HIGH,CRITICAL \
       dockerman2002/guestbook-demo:${DRONE_COMMIT_SHA} \
       -f json 
-      -o /drone/src/scan_results.out"
-    - cat /drone/src/scan_results.out
-    - "
-      VULNFOUND=`/bin/grep Vulnerabilities /drone/src/scan_results.out`
-      [ ! -z $VULNFOUND ] && /bin/cat /drone/src/scan_results.out |\
-      /usr/bin/jq '.Results[0] .Vulnerabilities[] |
-      {VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, 
-      FixedVersion: .FixedVersion, Severity: .Severity, PrimaryURL: .PrimaryURL,
-      Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' \
-      || echo 'WHOOO HOOO! Clean image built!.\n
-               {{#success build.status}} 
-               {{/success}}{{uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)\n
-                Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>\n
-                Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>\n
-                Author: {{ build.author }}\n
-                Build: <{{ build.link }}| Drone Build {{ build.number }}> Sucessful :mag: :package: :tada:' >/drone/src/slack_results.out
+      -o /drone/src/scan_results.out |jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}'
+    # - cat /drone/src/scan_results.out
+    # - "
+    #   VULNFOUND=`/bin/grep Vulnerabilities /drone/src/scan_results.out`
+    #   [ ! -z $VULNFOUND ] && /bin/cat /drone/src/scan_results.out |\
+    #   /usr/bin/jq '.Results[0] .Vulnerabilities[] |
+    #   {VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, 
+    #   FixedVersion: .FixedVersion, Severity: .Severity, PrimaryURL: .PrimaryURL,
+    #   Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' \
+    #   || echo 'WHOOO HOOO! Clean image built!.\n
+    #            {{#success build.status}} 
+    #            {{/success}}{{uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)\n
+    #             Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>\n
+    #             Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>\n
+    #             Author: {{ build.author }}\n
+    #             Build: <{{ build.link }}| Drone Build {{ build.number }}> Sucessful :mag: :package: :tada:' >/drone/src/slack_results.out
       "
     environment:
       ca:
