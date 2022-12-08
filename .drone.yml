@@ -67,6 +67,7 @@ steps:
       dockerman2002/guestbook-demo:${DRONE_COMMIT_SHA} \
       -f json 
       -o /drone/src/scan_results.out"
+    - cat /drone/src/scan_results.out
     - "
       VULNFOUND=`/bin/grep Vulnerabilities /drone/src/scan_results.out`
       [ ! -z $VULNFOUND ] && /bin/cat /drone/src/scan_results.out |\
