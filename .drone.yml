@@ -47,7 +47,6 @@ steps:
       password:
         from_secret: guestbook_robot_password
       tags:
-        - latest
         - ${DRONE_COMMIT_SHA}
     when:
       event:
