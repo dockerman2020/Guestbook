@@ -62,6 +62,7 @@ steps:
     image: quay.io/absiplant/scanner:f845c5963fe7f246b9f49173838328971f53e498
     commands:
     # - trivy --version
+    - "python -V"
     - "trivy image \
       --token $ttoken \
       --ignore-unfixed \
@@ -69,9 +70,8 @@ steps:
       --security-checks vuln \
       --severity LOW,MEDIUM,HIGH,CRITICAL \
       quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} \
-      -f json"
-      # -f json |jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}'\
-      # |tee -a /drone/src/slack_results.out"
+      -f json |jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}'\
+      |tee -a /drone/src/slack_results.out"
     # - cat /drone/src/scan_results.out
     # - "
     #   VULNFOUND=`/bin/grep Vulnerabilities /drone/src/scan_results.out`
