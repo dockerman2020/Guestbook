@@ -67,7 +67,7 @@ steps:
       --server $tserver \
       --security-checks vuln \
       --severity LOW,MEDIUM,HIGH,CRITICAL \
-      dockerman2002/guestbook-demo:${DRONE_COMMIT_SHA} \
+      quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} \
       -f json"
       # -f json |jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}'\
       # |tee -a /drone/src/slack_results.out"
