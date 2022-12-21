@@ -38,13 +38,14 @@ steps:
   - name: Build docker image
     image: plugins/docker
     settings:
-      repo: dockerman2002/guestbook-demo
+      registry: quay.io
+      repo: quay.io/absiplant/guestbook-demo
       dockerfile: guestbook/php-redis/Dockerfile
       context: guestbook/php-redis
       username:
-        from_secret: docker_username
+        from_secret: guestbook_robot
       password:
-        from_secret: docker_password
+        from_secret: guestbook_robot_password
       tags:
         - latest
         - ${DRONE_COMMIT_SHA}
@@ -58,7 +59,6 @@ steps:
     ##image: aquasec/trivy:0.32.0
     settings:
       registry: quay.io
-      # repo: quay.io/absiplant/scanner
     # image: dockerman2002/trivy-client:v0.0.16
     image: quay.io/absiplant/scanner:ff11150ff6dfd283eb63099832f9c6a0c5914af1
     commands:
