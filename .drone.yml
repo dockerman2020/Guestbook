@@ -59,7 +59,7 @@ steps:
     settings:
       registry: quay.io
     # image: dockerman2002/trivy-client:v0.0.16
-    image: quay.io/absiplant/scanner:ff11150ff6dfd283eb63099832f9c6a0c5914af1
+    image: quay.io/absiplant/scanner:f845c5963fe7f246b9f49173838328971f53e498
     commands:
     # - trivy --version
     - "trivy image \
