@@ -32,7 +32,8 @@ spec:
     spec:
       containers:
       - name: php-redis
-        image: juanluisbaptiste/guestbook-demo:latest
+        # image: juanluisbaptiste/guestbook-demo:latest
+        image: quay.io/absiplant/guestbook:latest
         imagePullPolicy: Always
         env:
         - name: GET_HOSTS_FROM

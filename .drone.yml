@@ -47,6 +47,7 @@ steps:
       password:
         from_secret: guestbook_robot_password
       tags:
+        - latest
         - ${DRONE_COMMIT_SHA}
     when:
       event:
@@ -211,6 +212,7 @@ steps:
   - name: Deploy frontend deployment
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
+      registry: quay.io
       image_tag: ${DRONE_TAG}
       template: guestbook/frontend-deployment.yaml
       namespace: guestbook-demo
