@@ -39,7 +39,7 @@ steps:
     image: plugins/docker
     settings:
       registry: quay.io
-      repo: quay.io/absiplant/guestbook-demo
+      repo: quay.io/absiplant/guestbook
       dockerfile: guestbook/php-redis/Dockerfile
       context: guestbook/php-redis
       username:
