@@ -101,12 +101,6 @@ steps:
         from_secret: trivy_token
       tserver:
         from_secret: trivy_server
-    when:
-      branch:
-        include:
-        - main
-        # - feature/*
-      event: [push, pull_request]
 
   # - name: Build Failure Status Nofification
   #   image: plugins/slack
@@ -146,12 +140,6 @@ steps:
         # Author: {{ build.author }}
         # file:///drone/src/slack_msg.txt      
         # Build: {{ build.link }}| Drone Build {{ build.number }} Sucessful :mag: :package: :tada:
-    when:
-      branch:
-        include:
-        - main
-        # - feature/*
-      event: [push, pull_request]
       status: 
       - failure
       - success
