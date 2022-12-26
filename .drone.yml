@@ -49,12 +49,12 @@ steps:
       tags:
         - latest
         - ${DRONE_COMMIT_SHA}
-    when:
-      branch:
-        include:
-        - main
-        # - feature/*
-      event: [push, pull_request]
+      when:
+        branch:
+          include:
+          - main
+          # - feature/*
+        event: [push, pull_request]
 
   - name: Scan demo guest book Image
     ##image: aquasec/trivy:0.32.0
