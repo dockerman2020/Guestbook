@@ -165,8 +165,6 @@ steps:
   - name: Deploy demo guest book redis follower deployment
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
-      registry: quay.io
-      repo: quay.io/absiplant/guestbook
       template: guestbook/redis-follower-deployment.yaml
       namespace: guestbook-demo
       ca:
