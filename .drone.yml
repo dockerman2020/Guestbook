@@ -63,7 +63,7 @@ steps:
     # image: dockerman2002/trivy-client:v0.0.16
     image: quay.io/absiplant/scanner:f845c5963fe7f246b9f49173838328971f53e498
     commands:
-    # - trivy --version
+    - trivy --version
     - "python -V"
     - "trivy image \
       --token $ttoken \
