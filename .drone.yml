@@ -150,17 +150,17 @@ type: kubernetes
 name: deploy
 
 steps:
-  - name: Deploy redis follower service
-    image: danielgormly/drone-plugin-kube:0.2.0
-    settings:
-      template: guestbook/redis-follower-service.yaml
-      namespace: guestbook-demo
-      ca:
-        from_secret: k8s_crt
-      server:
-        from_secret: k8s_server
-      token:
-        from_secret: k8s_token
+  # - name: Deploy redis follower service
+  #   image: danielgormly/drone-plugin-kube:0.2.0
+  #   settings:
+  #     template: guestbook/redis-follower-service.yaml
+  #     namespace: guestbook-demo
+  #     ca:
+  #       from_secret: k8s_crt
+  #     server:
+  #       from_secret: k8s_server
+  #     token:
+  #       from_secret: k8s_token
 
   - name: Deploy demo guest book redis follower deployment
     image: danielgormly/drone-plugin-kube:0.2.0
@@ -214,7 +214,8 @@ steps:
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
       registry: quay.io
-      image_tag: ${DRONE_TAG}
+      # image_tag: ${DRONE_TAG}
+      image_tag: ${DRONE_COMMIT_SHA}
       template: guestbook/frontend-deployment.yaml
       namespace: guestbook-demo
       ca:
