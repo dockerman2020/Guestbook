@@ -54,7 +54,7 @@ steps:
           include:
           - main
           # - feature/*
-        event: [push, pull_request]
+        event: [pull_request]
 
   - name: Scan demo guest book Image
     ##image: aquasec/trivy:0.32.0
