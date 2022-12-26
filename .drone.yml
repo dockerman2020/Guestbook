@@ -50,9 +50,11 @@ steps:
         - latest
         - ${DRONE_COMMIT_SHA}
     when:
-      event:
-      - push
-      - pull_request
+      branch:
+        include:
+        - main
+        # - feature/*
+      event: [push, pull_request]
 
   - name: Scan demo guest book Image
     ##image: aquasec/trivy:0.32.0
@@ -99,6 +101,12 @@ steps:
         from_secret: trivy_token
       tserver:
         from_secret: trivy_server
+    when:
+      branch:
+        include:
+        - main
+        # - feature/*
+      event: [push, pull_request]
 
   # - name: Build Failure Status Nofification
   #   image: plugins/slack
@@ -139,6 +147,11 @@ steps:
         # file:///drone/src/slack_msg.txt      
         # Build: {{ build.link }}| Drone Build {{ build.number }} Sucessful :mag: :package: :tada:
     when:
+      branch:
+        include:
+        - main
+        # - feature/*
+      event: [push, pull_request]
       status: 
       - failure
       - success
