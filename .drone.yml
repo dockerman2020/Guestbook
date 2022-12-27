@@ -58,26 +58,22 @@ steps:
 
   - name: Scan demo guest book Image
     ##image: aquasec/trivy:0.32.0
-    settings:
-      registry: quay.io
+    # settings:
+    #   registry: quay.io
     # image: dockerman2002/trivy-client:v0.0.16
     image: quay.io/absiplant/scanner:f845c5963fe7f246b9f49173838328971f53e498
     commands:
     - trivy --version
     - "python -V"
     - "trivy image \
-      --token trivy-server-0.trivy-server.trivy-redis.svc.cluster.local \
+      --token $ttoken \
       --ignore-unfixed \
       --server $tserver \
       --security-checks vuln \
       --severity LOW,MEDIUM,HIGH,CRITICAL \
-        quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} -f json"
-    # - "trivy image --token 5b633747beb3e1907c55d5d3ffebc377 --ignore-unfixed \
-    #   --severity MEDIUM,HIGH,CRITICAL --server trivy-server.trivy-redis.svc.cluster.local
-    #   quay.io/thanos/thanos:v0.23.0 -f json"
-      # quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} \
-      # -f json |jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' \
-      # |tee -a /drone/src/slack_results.out"
+      quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} \
+      -f json |jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' \
+      |tee -a /drone/src/slack_results.out"
     # - cat /drone/src/scan_results.out
     # - "
     #   VULNFOUND=`/bin/grep Vulnerabilities /drone/src/scan_results.out`
