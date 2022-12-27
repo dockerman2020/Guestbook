@@ -66,9 +66,9 @@ steps:
     - trivy --version
     - "python -V"
     - "trivy image \
-      --token $ttoken \
+      --token 5b633747beb3e1907c55d5d3ffebc377 \
       --ignore-unfixed \
-      --server $tserver \
+      --server http://trivy-server.trivy-redis.svc.cluster.local:4954 \
       --security-checks vuln \
       --severity LOW,MEDIUM,HIGH,CRITICAL \
       quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} -f json"
