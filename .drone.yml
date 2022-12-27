@@ -57,7 +57,6 @@ steps:
         event: [pull_request]
 
   - name: Scan demo guest book Image
-    ##image: aquasec/trivy:0.32.0
     image: quay.io/absiplant/scanner:f845c5963fe7f246b9f49173838328971f53e498
     commands:
     - trivy --version
@@ -71,20 +70,6 @@ steps:
       quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} \
       -f json |jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' |\
       tee /drone/src/scan_results.out "
-    #   VULNFOUND=`/bin/grep Vulnerabilities /drone/src/scan_results.out`
-    #   [ ! -z $VULNFOUND ] && /bin/cat /drone/src/scan_results.out |\
-    #   /usr/bin/jq '.Results[0] .Vulnerabilities[] |
-    #   {VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, 
-    #   FixedVersion: .FixedVersion, Severity: .Severity, PrimaryURL: .PrimaryURL,
-    #   Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' \
-    #   || echo 'WHOOO HOOO! Clean image built!.\n
-    #            {{#success build.status}} 
-    #            {{/success}}{{uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)\n
-    #             Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>\n
-    #             Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>\n
-    #             Author: {{ build.author }}\n
-    #             Build: <{{ build.link }}| Drone Build {{ build.number }}> Sucessful :mag: :package: :tada:' >/drone/src/slack_results.out
-    #   "
     environment:
       ca:
         from_secret: k8s_crt
@@ -97,27 +82,6 @@ steps:
       tserver:
         from_secret: trivy_server
 
-  # - name: Build Failure Status Nofification
-  #   image: plugins/slack
-  #   settings:
-  #     token:
-  #       from_secret: drone_slack_token
-  #     webhook:
-  #       from_secret: slack_webhook
-  #     channel: k8s
-  #     alt_text: "cute cat"
-  #     image_url: "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif"
-  #     link_names: "true"
-  #     template: >
-  #       {{#failure build.status}} :x: :rotating_light: :fire_engine: :ambulance: {{/failure}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
-  #       Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
-  #       Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
-  #       Author: {{ build.author }}      
-  #       Build: {{ build.link }}| Drone Build {{ build.number }} Failed :ghost: 
-  #   when:
-  #     status:
-  #     - failure 
-
   - name: Build Status Nofification success
     image: plugins/slack
     settings:
@@ -126,7 +90,8 @@ steps:
       webhook:
         from_secret: slack_webhook
       channel: k8s
-      image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
+      # image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
+      image_url: "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif"
       link_names: "true"
       template: file:///drone/src/scan_results.out
         # {{#success build.status}} {{ else }} :x: :rotating_light: :fire_engine: :ambulance: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
@@ -145,17 +110,17 @@ type: kubernetes
 name: deploy
 
 steps:
-  # - name: Deploy redis follower service
-  #   image: danielgormly/drone-plugin-kube:0.2.0
-  #   settings:
-  #     template: guestbook/redis-follower-service.yaml
-  #     namespace: guestbook-demo
-  #     ca:
-  #       from_secret: k8s_crt
-  #     server:
-  #       from_secret: k8s_server
-  #     token:
-  #       from_secret: k8s_token
+  - name: Deploy redis follower service
+    image: danielgormly/drone-plugin-kube:0.2.0
+    settings:
+      template: guestbook/redis-follower-service.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
 
   - name: Deploy demo guest book redis follower deployment
     image: danielgormly/drone-plugin-kube:0.2.0
@@ -208,8 +173,6 @@ steps:
   - name: Deploy frontend deployment
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
-      registry: quay.io
-      # image_tag: ${DRONE_TAG}
       image_tag: ${DRONE_COMMIT_SHA}
       template: guestbook/frontend-deployment.yaml
       namespace: guestbook-demo
