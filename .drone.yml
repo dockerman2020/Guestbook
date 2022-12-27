@@ -72,8 +72,8 @@ steps:
       --security-checks vuln \
       --severity LOW,MEDIUM,HIGH,CRITICAL \
       quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} \
-      -f json |tee -a /drone/src/scan_results.out |jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' \
-      "
+      -f json |jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' |\
+      tee /drone/src/scan_results.out"
     # - cat /drone/src/scan_results.out
     #   VULNFOUND=`/bin/grep Vulnerabilities /drone/src/scan_results.out`
     #   [ ! -z $VULNFOUND ] && /bin/cat /drone/src/scan_results.out |\
