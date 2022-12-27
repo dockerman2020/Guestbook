@@ -58,9 +58,6 @@ steps:
 
   - name: Scan demo guest book Image
     ##image: aquasec/trivy:0.32.0
-    # settings:
-    #   registry: quay.io
-    # image: dockerman2002/trivy-client:v0.0.16
     image: quay.io/absiplant/scanner:f845c5963fe7f246b9f49173838328971f53e498
     commands:
     - trivy --version
@@ -74,8 +71,6 @@ steps:
       quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} \
       -f json |jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' |\
       tee /drone/src/scan_results.out "
-    - echo "Below is the scan_results.out file contents."
-    - ls -lrt /drone/src/scan_results.out
     #   VULNFOUND=`/bin/grep Vulnerabilities /drone/src/scan_results.out`
     #   [ ! -z $VULNFOUND ] && /bin/cat /drone/src/scan_results.out |\
     #   /usr/bin/jq '.Results[0] .Vulnerabilities[] |
@@ -133,7 +128,7 @@ steps:
       channel: k8s
       image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
       link_names: "true"
-      template: file:///drone/src/slack_results.out
+      template: file:///drone/src/scan_results.out
         # {{#success build.status}} {{ else }} :x: :rotating_light: :fire_engine: :ambulance: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
         # Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
         # Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
