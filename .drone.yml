@@ -65,6 +65,7 @@ steps:
     commands:
     - trivy --version
     - "python -V"
+    - pwd
     - "trivy image \
       --token $ttoken \
       --ignore-unfixed \
