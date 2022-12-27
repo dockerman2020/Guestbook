@@ -65,7 +65,6 @@ steps:
     commands:
     - trivy --version
     - "python -V"
-    - pwd
     - "trivy image \
       --token $ttoken \
       --ignore-unfixed \
@@ -76,7 +75,7 @@ steps:
       -f json |jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' |\
       tee /drone/src/scan_results.out "
     - echo "Below is the scan_results.out file contents."
-    - cat /drone/src/scan_results.out
+    - ls -lrt /drone/src/scan_results.out
     #   VULNFOUND=`/bin/grep Vulnerabilities /drone/src/scan_results.out`
     #   [ ! -z $VULNFOUND ] && /bin/cat /drone/src/scan_results.out |\
     #   /usr/bin/jq '.Results[0] .Vulnerabilities[] |
