@@ -66,7 +66,7 @@ steps:
     - trivy --version
     - "python -V"
     - "trivy image \
-      --token $ttoken \
+      --token trivy-server-0.trivy-server.trivy-redis.svc.cluster.local \
       --ignore-unfixed \
       --server $tserver \
       --security-checks vuln \
