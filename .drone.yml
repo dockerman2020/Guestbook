@@ -69,7 +69,7 @@ steps:
       --severity LOW,MEDIUM,HIGH,CRITICAL \
       quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} -f json |\
       jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' |\
-      awk '{gsub(\"{\",\"===============================\");gsub(\"}\",\"\"); print}' |\
+      awk '{gsub(\"{\",\"\t===============================\");gsub(\"}\",\"\"); print}' |\
       tee /drone/src/scan_results.out "
     environment:
       ca:
