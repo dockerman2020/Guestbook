@@ -91,7 +91,7 @@ steps:
       webhook:
         from_secret: slack_webhook
       channel: 
-        from_secret: channel
+        from_secret: channel_id
       # image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
       image_url: "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif"
       link_names: "true"
