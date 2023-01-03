@@ -59,6 +59,7 @@ steps:
   - name: Scan demo guest book Image
     image: quay.io/absiplant/scanner:f845c5963fe7f246b9f49173838328971f53e498
     commands:
+    - echo $DRONE_BUILD_STATUS $DRONE_COMMIT_AUTHOR_NAME $DRONE_BUILD_LINK
     - trivy --version
     - "python -V"
     - "trivy image \
