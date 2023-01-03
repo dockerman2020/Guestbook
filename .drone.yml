@@ -47,7 +47,7 @@ steps:
       password:
         from_secret: guestbook_robot_password
       tags:
-        - latest
+        # - latest
         - ${DRONE_COMMIT_SHA}
       when:
         branch:
@@ -68,7 +68,8 @@ steps:
       --security-checks vuln \
       --severity LOW,MEDIUM,HIGH,CRITICAL \
       quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} \
-      -f json |jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' |\
+      -f json |\
+      jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' |\
       awk '{gsub(\"{\",\"===============================\");gsub(\"}\",\"\"); print}' |\
       tee /drone/src/scan_results.out "
     environment:
