@@ -90,7 +90,8 @@ steps:
         from_secret: drone_slack_token
       webhook:
         from_secret: slack_webhook
-      channel: k8s
+      channel: 
+        from_secret: channel
       # image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
       image_url: "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif"
       link_names: "true"
