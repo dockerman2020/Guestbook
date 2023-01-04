@@ -118,7 +118,7 @@ steps:
     - "python -V"
     - "pip3 list" 
     - "export BUILD_LINK=$BUILD_LINK; export BUILD_AUTHOR=$BUILD_AUTHOR; export DRONE_BUILD_NUMBER=$DRONE_BUILD_NUMBER;
-     export BUILD_STATE_NEW=$BUILD_STATE_NEW; export DRONE_BUILD_EVENT=$DRONE_BUILD_EVENT"
+     export BUILD_STATUS=$BUILD_STATUS; export DRONE_BUILD_EVENT=$DRONE_BUILD_EVENT"
     - "python3 notification.py"  
 
 ---
