@@ -188,16 +188,16 @@ steps:
       token:
         from_secret: k8s_token
 
-  # - name: Deploy frontend deployment
-  #   image: danielgormly/drone-plugin-kube:0.2.0
-  #   settings:
-  #     image_tag: ${DRONE_COMMIT_SHA}
-  #     template: guestbook/frontend-deployment.yaml
-  #     namespace: guestbook-demo
-  #     ca:
-  #       from_secret: k8s_crt
-  #     server:
-  #       from_secret: k8s_server
-  #     token:
-  #       from_secret: k8s_token
+  - name: Deploy frontend deployment
+    image: danielgormly/drone-plugin-kube:0.2.0
+    settings:
+      image_tag: quay.io/absiplant/guestbook:latest
+      template: guestbook/frontend-deployment.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
     
