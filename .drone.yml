@@ -114,13 +114,36 @@ steps:
         from_secret: slack_bot_token
       channel: 
         from_secret: channel_id
+      BUILD_STARTED: ${DRONE_BUILD_CREATED}
+      BUILD_URL: "${DRONE_BUILD_LINK}"
+      BUILD_BRANCH: ${DRONE_COMMIT_BRANCH}
+      BUILD_COMMIT: ${DRONE_COMMIT}
+      BUILD_AUTHOR: ${DRONE_COMMIT_AUTHOR_NAME}
+      BUILD_STATUS: ${DRONE_BUILD_STATUS}
+      BUILD_STATUS_2: ${DRONE_STAGE_STATUS}
+      BUILD_STATUS_3: ${DRONE_JOB_STATUS}
+      BUILD_STATUS_4: ${CI_BUILD_STATUS}
+      BUILD_STATUS_5: ${CI_JOB_STATUS}
+      REPO_NAME: ${DRONE_REPO}
+      REPO_COMMIT_URL: ${DRONE_COMMIT_LINK}
+      REPO_URL: ${DRONE_REPO_LINK}
     commands:
     - "python -V"
     - "pip3 list" 
     # - "echo ${BUILD_LINK} ${BUILD_AUTHOR} ${DRONE_BUILD_NUMBER} ${BUILD_STATUS} ${DRONE_BUILD_EVENT} $SLACK_BOT_TOKEN"
-    - "export BUILD_LINK=$${BUILD_LINK}; export BUILD_AUTHOR=${BUILD_AUTHOR}; export DRONE_BUILD_NUMBER=${DRONE_BUILD_NUMBER};
-     export BUILD_STATUS=${BUILD_STATUS}; export DRONE_BUILD_EVENT=${DRONE_BUILD_EVENT}; python notification.py"
-    # - "python3 notification.py"  
+    - echo DRONE_BUILD_STATUS:$DRONE_BUILD_STATUS
+    - echo DRONE_STAGE_STATUS:$DRONE_STAGE_STATUS
+    - echo DRONE_JOB_STATUS:$DRONE_JOB_STATUS
+    - echo CI_BUILD_STATUS:$CI_BUILD_STATUS
+    - echo CI_JOB_STATUS:$CI_JOB_STATUS
+    - echo BUILD_STATUS:$BUILD_STATUS
+    - echo BUILD_STATUS_2:$BUILD_STATUS_2
+    - echo BUILD_STATUS_3:$BUILD_STATUS_3
+    - echo BUILD_STATUS_4:$BUILD_STATUS_4
+    - echo BUILD_STATUS_5:$BUILD_STATUS_5
+    - echo BUILD_STATUS_6:$BUILD_STATUS_6
+    - env
+    - ls -lrt notification.py
 
 ---
 kind: pipeline
