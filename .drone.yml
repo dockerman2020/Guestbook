@@ -117,6 +117,7 @@ steps:
     commands:
     - "python -V"
     - "pip3 list" 
+    - "echo $BUILD_LINK $BUILD_AUTHOR $DRONE_BUILD_NUMBER $BUILD_STATUS $DRONE_BUILD_EVENT $SLACK_BOT_TOKEN"
     - "export BUILD_LINK=$BUILD_LINK; export BUILD_AUTHOR=$BUILD_AUTHOR; export DRONE_BUILD_NUMBER=$DRONE_BUILD_NUMBER;
      export BUILD_STATUS=$BUILD_STATUS; export DRONE_BUILD_EVENT=$DRONE_BUILD_EVENT; python notification.py"
     # - "python3 notification.py"  
