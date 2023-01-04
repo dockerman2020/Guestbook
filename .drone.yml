@@ -110,8 +110,8 @@ steps:
   - name: Build Status Notification WebApi
     image: quay.io/absiplant/slack_notify:latest
     environment:
-      token:
-        from_secret: drone_slack_token
+      SLACK_BOT_TOKEN:
+        from_secret: slack_bot_token
       channel: 
         from_secret: channel_id
     commands:
