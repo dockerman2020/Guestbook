@@ -144,6 +144,13 @@ steps:
     - echo BUILD_STATUS_6:$BUILD_STATUS_6
     - env
     - ls -lrt notification.py
+    - export BUILD_LINK=`echo $BUILD_LINK`
+    - export BUILD_AUTHOR=`echo $BUILD_AUTHOR`
+    - export BUILD_NUMBER=`echo $BUILD_NUMBER`
+    - export BUILD_STATUS=`echo $BUILD_STATUS`
+    - export DRONE_BUILD_EVENT=`echo $DRONE_BUILD_EVENT`
+    - export SLACK_BOT_TOKEN=`echo $SLACK_BOT_TOKEN`
+    - python notification.py
 
 ---
 kind: pipeline
