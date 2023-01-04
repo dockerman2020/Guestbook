@@ -59,7 +59,7 @@ steps:
   - name: Scan demo guest book Image
     image: quay.io/absiplant/scanner:f845c5963fe7f246b9f49173838328971f53e498
     commands:
-    - echo $DRONE_BUILD_STATUS $DRONE_COMMIT_AUTHOR_NAME $DRONE_BUILD_LINK
+    # - echo $DRONE_BUILD_STATUS $DRONE_COMMIT_AUTHOR_NAME $DRONE_BUILD_LINKx
     - trivy --version
     - "python -V"
     - "trivy image \
@@ -71,7 +71,7 @@ steps:
       quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} -f json |\
       jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' |\
       awk '{gsub(\"{\",\"  <*===============================*>\");gsub(\"}\",\"\"); print}' |\
-      tee /drone/src/scan_results.out "
+      tee /drone/src/scan_results.json "
     environment:
       ca:
         from_secret: k8s_crt
@@ -106,6 +106,18 @@ steps:
       status: 
       - failure
       - success
+
+  - name: Build Status Notification WebApi
+    image: quay.io/absiplant/slack_notify:latest
+    environment:
+      token:
+        from_secret: drone_slack_token
+      channel: 
+        from_secret: channel_id
+    commands:
+    - "python -V"
+    - "pip3 list" 
+    - "python3 notification.py"  
 
 ---
 kind: pipeline
