@@ -84,28 +84,28 @@ steps:
       tserver:
         from_secret: trivy_server
 
-  - name: Build Status Nofification success
-    image: plugins/slack
-    settings:
-      token:
-        from_secret: drone_slack_token
-      webhook:
-        from_secret: slack_webhook
-      channel: 
-        from_secret: channel_id
-      # image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
-      image_url: "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif"
-      link_names: "true"
-      template: file:///drone/src/scan_results.json
-        # {{#success build.status}} {{ else }} :x: :rotating_light: :fire_engine: :ambulance: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
-        # Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
-        # Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
-        # Author: {{ build.author }}
-        # file:///drone/src/slack_msg.txt      
-        # Build: {{ build.link }}| Drone Build {{ build.number }} Sucessful :mag: :package: :tada:
-      status: 
-      - failure
-      - success
+  # - name: Build Status Nofification success
+  #   image: plugins/slack
+  #   settings:
+  #     token:
+  #       from_secret: drone_slack_token
+  #     webhook:
+  #       from_secret: slack_webhook
+  #     channel: 
+  #       from_secret: channel_id
+  #     # image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
+  #     image_url: "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif"
+  #     link_names: "true"
+  #     template: file:///drone/src/scan_results.json
+  #       # {{#success build.status}} {{ else }} :x: :rotating_light: :fire_engine: :ambulance: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
+  #       # Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
+  #       # Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
+  #       # Author: {{ build.author }}
+  #       # file:///drone/src/slack_msg.txt      
+  #       # Build: {{ build.link }}| Drone Build {{ build.number }} Sucessful :mag: :package: :tada:
+  #     status: 
+  #     - failure
+  #     - success
 
   - name: Build Status Notification WebApi
     image: quay.io/absiplant/slack_notify:latest
@@ -118,8 +118,8 @@ steps:
     - "python -V"
     - "pip3 list" 
     - "export BUILD_LINK=$BUILD_LINK; export BUILD_AUTHOR=$BUILD_AUTHOR; export DRONE_BUILD_NUMBER=$DRONE_BUILD_NUMBER;
-     export BUILD_STATUS=$BUILD_STATUS; export DRONE_BUILD_EVENT=$DRONE_BUILD_EVENT"
-    - "python3 notification.py"  
+     export BUILD_STATUS=$BUILD_STATUS; export DRONE_BUILD_EVENT=$DRONE_BUILD_EVENT; python notification.py"
+    # - "python3 notification.py"  
 
 ---
 kind: pipeline
