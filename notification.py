@@ -14,7 +14,7 @@ file_name = filepath
 BUILD_LINK = os.getenv("BUILD_LINK")
 BUILD_AUTHOR = os.getenv("BUILD_AUTHOR")
 DRONE_BUILD_NUMBER = os.getenv("DRONE_BUILD_NUMBER")
-BUILD_STATE_NEW = os.getenv("BUILD_STATUS")
+BUILD_STATUS = os.getenv("BUILD_STATUS")
 DRONE_BUILD_EVENT = os.getenv("DRONE_BUILD_EVENT")
 
 
