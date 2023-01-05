@@ -135,6 +135,7 @@ steps:
     - export BUILD_STATUS=`echo $BUILD_STATUS`
     - export DRONE_BUILD_EVENT=`echo $DRONE_BUILD_EVENT`
     - export SLACK_BOT_TOKEN=`echo $SLACK_BOT_TOKEN`
+    - chmod 755 notification.py
     - python notification.py
 
 ---
