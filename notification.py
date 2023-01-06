@@ -19,7 +19,7 @@ BUILD_STATUS = os.getenv("BUILD_STATUS")
 DRONE_BUILD_EVENT = os.getenv("DRONE_BUILD_EVENT")
 SLACK_BOT = os.getenv("SLACK_BOT_TOKEN")
 
-print(BUILD_AUTHOR, BUILD_LINK, BUILD_STATUS, DRONE_BUILD_EVENT, DRONE_BUILD_NUMBER, SLACK_BOT)
+# print(BUILD_AUTHOR, BUILD_LINK, BUILD_STATUS, DRONE_BUILD_EVENT, DRONE_BUILD_NUMBER, SLACK_BOT)
 
 async def post_message():
     try:
@@ -62,7 +62,7 @@ async def post_message():
                     }
                 ]
             )
-            print(DRONE_BUILD_EVENT)
+            print(f"{DRONE_BUILD_EVENT}")
             response = await client.files_upload_v2(channel=channel_id,
                                                     file=file_name,
                                                     initial_comment="Vulnerability report for test :robot_face:",

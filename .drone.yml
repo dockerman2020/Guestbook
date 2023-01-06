@@ -122,6 +122,7 @@ steps:
     commands:
     - "python -V"
     - "pip3 list" 
+    - "find / -name activate"
     # - "echo ${BUILD_LINK} ${BUILD_AUTHOR} ${DRONE_BUILD_NUMBER} ${BUILD_STATUS} ${DRONE_BUILD_EVENT} $SLACK_BOT_TOKEN"
     - echo BUILD_STATUS:$BUILD_STATUS
     - echo BUILD_AUTHOR:$BUILD_AUTHOR
