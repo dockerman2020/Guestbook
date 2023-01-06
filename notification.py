@@ -9,7 +9,7 @@ from slack_sdk.web.async_client import AsyncWebClient
 from slack_sdk.errors import SlackApiError
 
 client = AsyncWebClient(token=os.environ['SLACK_BOT_TOKEN'])
-channel_id = os.getenv('channel_id')
+channel_id = os.getenv('CHANNEL_ID')
 filepath = "/drone/src/scan_results.json"
 file_name = filepath
 BUILD_LINK = os.getenv("BUILD_LINK")
