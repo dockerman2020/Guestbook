@@ -128,15 +128,15 @@ steps:
     - echo BUILD_LINK:$BUILD_LINK
     - echo DRONE_BUILD_NUMBER:$DRONE_BUILD_NUMBER
     - echo DRONE_BUILD_NUMBER:$DRONE_BUILD_NUMBER
+    - echo SLACK_BOT_TOKEN:$SLACK_BOT_TOKEN
     - env
     - export BUILD_LINK=`echo $BUILD_LINK`
     - export BUILD_AUTHOR=`echo $BUILD_AUTHOR`
     - export DRONE_BUILD_NUMBER=`echo $DRONE_BUILD_NUMBER`
     - export BUILD_STATUS=`echo $BUILD_STATUS`
     - export DRONE_BUILD_EVENT=`echo $DRONE_BUILD_EVENT`
-    - export SLACK_BOT_TOKEN=`echo $SLACK_BOT_TOKEN`
-    - find / -name activate
-    - python notification.py
+    - export SLACK_BOT_TOKEN=`echo $SLACK_BOT_TOKEN`; python notification.py
+    # - python notification.py
 
 ---
 kind: pipeline
