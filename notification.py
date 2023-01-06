@@ -21,7 +21,7 @@ DRONE_BUILD_NUMBER = os.getenv("DRONE_BUILD_NUMBER")
 BUILD_STATUS = os.getenv("BUILD_STATUS")
 DRONE_BUILD_EVENT = os.getenv("DRONE_BUILD_EVENT")
 SLACK_BOT = os.getenv("SLACK_BOT_TOKEN")
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 # Determine vulnerabilities status.
 # Open scan_results.json in read mode
 with open('/drone/src/scan_results.json', 'r') as f:
