@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Function is to send Slack notification and response to thread with build status and
 Trivy scanning results.
@@ -23,6 +22,7 @@ SLACK_BOT = os.getenv("SLACK_BOT_TOKEN")
 
 async def post_message():
     try:
+        print(BUILD_AUTHOR, BUILD_LINK)
         if f"{BUILD_STATUS}" == "failure":
             thread = await client.chat_postMessage(
                 channel=channel_id,

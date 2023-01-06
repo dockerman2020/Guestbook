@@ -109,36 +109,6 @@ steps:
 
   - name: Build Status Notification WebApi
     image: quay.io/absiplant/slack_notify:latest
-    # environment:
-    #   SLACK_BOT_TOKEN:
-    #     from_secret: slack_bot_token
-    #   channel: 
-    #     from_secret: channel_id
-    #   BUILD_LINK: ${DRONE_BUILD_LINK}
-    #   BUILD_AUTHOR: ${DRONE_COMMIT_AUTHOR_NAME}
-    #   BUILD_STATUS: ${DRONE_BUILD_STATUS}
-    #   DRONE_BUILD_NUMBER: ${DRONE_BUILD_NUMBER}
-    #   DRONE_BUILD_EVENT: ${DRONE_BUILD_EVENT}
-    commands:
-    - "python -V"
-    - "pip3 list" 
-    - "find / -name activate"
-    - "find / -name scan_results.json"
-    # - "echo ${BUILD_LINK} ${BUILD_AUTHOR} ${DRONE_BUILD_NUMBER} ${BUILD_STATUS} ${DRONE_BUILD_EVENT} $SLACK_BOT_TOKEN"
-    - echo BUILD_STATUS:$BUILD_STATUS
-    - echo BUILD_AUTHOR:$BUILD_AUTHOR
-    - echo BUILD_LINK:$BUILD_LINK
-    - echo DRONE_BUILD_NUMBER:$DRONE_BUILD_NUMBER
-    - echo DRONE_BUILD_NUMBER:$DRONE_BUILD_NUMBER
-    - echo SLACK_BOT_TOKEN:$SLACK_BOT_TOKEN
-    # - env
-    - export BUILD_LINK=`echo $BUILD_LINK`
-    - export BUILD_AUTHOR=`echo $BUILD_AUTHOR`
-    - export DRONE_BUILD_NUMBER=`echo $DRONE_BUILD_NUMBER`
-    - export BUILD_STATUS=`echo $BUILD_STATUS`
-    - export DRONE_BUILD_EVENT=`echo $DRONE_BUILD_EVENT`
-    # - export SLACK_BOT_TOKEN=`echo $SLACK_BOT_TOKEN`; python notification.py
-    - "source /usr/lib/python3.10/venv/scripts/common/activate; python notification.py"
     environment:
       SLACK_BOT_TOKEN:
         from_secret: slack_bot_token
@@ -149,6 +119,24 @@ steps:
       BUILD_STATUS: ${DRONE_BUILD_STATUS}
       DRONE_BUILD_NUMBER: ${DRONE_BUILD_NUMBER}
       DRONE_BUILD_EVENT: ${DRONE_BUILD_EVENT}
+    commands:
+    - "python -V"
+    - "pip3 list" 
+    # - "echo ${BUILD_LINK} ${BUILD_AUTHOR} ${DRONE_BUILD_NUMBER} ${BUILD_STATUS} ${DRONE_BUILD_EVENT} $SLACK_BOT_TOKEN"
+    - echo BUILD_STATUS:$BUILD_STATUS
+    - echo BUILD_AUTHOR:$BUILD_AUTHOR
+    - echo BUILD_LINK:$BUILD_LINK
+    - echo DRONE_BUILD_NUMBER:$DRONE_BUILD_NUMBER
+    - echo DRONE_BUILD_NUMBER:$DRONE_BUILD_NUMBER
+    # - env
+    - export BUILD_LINK=`echo $BUILD_LINK`
+    - export BUILD_AUTHOR=`echo $BUILD_AUTHOR`
+    - export DRONE_BUILD_NUMBER=`echo $DRONE_BUILD_NUMBER`
+    - export BUILD_STATUS=`echo $BUILD_STATUS`
+    - export DRONE_BUILD_EVENT=`echo $DRONE_BUILD_EVENT`
+    # - export SLACK_BOT_TOKEN=`echo $SLACK_BOT_TOKEN`; python notification.py
+    - "source /usr/lib/python3.10/venv/scripts/common/activate; python notification.py"
+
 
 ---
 kind: pipeline
