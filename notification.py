@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 Function is to send Slack notification and response to thread with build status and
 Trivy scanning results.
@@ -61,6 +62,7 @@ async def post_message():
                     }
                 ]
             )
+            print(DRONE_BUILD_EVENT)
             response = await client.files_upload_v2(channel=channel_id,
                                                     file=file_name,
                                                     initial_comment="Vulnerability report for test :robot_face:",

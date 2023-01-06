@@ -129,7 +129,7 @@ steps:
     - echo DRONE_BUILD_NUMBER:$DRONE_BUILD_NUMBER
     - echo DRONE_BUILD_NUMBER:$DRONE_BUILD_NUMBER
     - echo SLACK_BOT_TOKEN:$SLACK_BOT_TOKEN
-    - env
+    # - env
     - export BUILD_LINK=`echo $BUILD_LINK`
     - export BUILD_AUTHOR=`echo $BUILD_AUTHOR`
     - export DRONE_BUILD_NUMBER=`echo $DRONE_BUILD_NUMBER`
