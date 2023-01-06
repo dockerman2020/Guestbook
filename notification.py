@@ -21,7 +21,8 @@ DRONE_BUILD_NUMBER = os.getenv("DRONE_BUILD_NUMBER")
 BUILD_STATUS = os.getenv("BUILD_STATUS")
 DRONE_BUILD_EVENT = os.getenv("DRONE_BUILD_EVENT")
 SLACK_BOT = os.getenv("SLACK_BOT_TOKEN")
-logging.basicConfig(level=logging.WARNING)
+logging.basicConfig(level=logging.INFO)
+
 # Determine vulnerabilities status.
 # Open scan_results.json in read mode
 with open('/drone/src/scan_results.json', 'r') as f:
@@ -37,7 +38,7 @@ logger = logging.getLogger(__name__)
 
 
 async def post_message():
-    logger.debug("Running post_message debug")
+    logger.info("Running post_message info")
     try:
         if f"{VULNERABILITY}" == "failure":
             thread = await client.chat_postMessage(
