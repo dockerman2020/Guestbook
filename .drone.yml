@@ -47,10 +47,7 @@ steps:
       password:
         from_secret: guestbook_robot_password
       tags:
-<<<<<<< HEAD
-=======
         # - latest
->>>>>>> 90d3514 (Feature/kes 01 (#15))
         - ${DRONE_COMMIT_SHA}
       when:
         branch:
@@ -69,18 +66,11 @@ steps:
       --server $tserver \
       --security-checks vuln \
       --severity LOW,MEDIUM,HIGH,CRITICAL \
-<<<<<<< HEAD
-      quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} -f json |\
-      jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' |\
-      awk '{gsub(\"{\",\"  <*===============================*>\");gsub(\"}\",\"\"); print}' |\
-      tee /drone/src/scan_results.json "
-=======
       quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} \
       -f json |\
       jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' |\
       awk '{gsub(\"{\",\"===============================\");gsub(\"}\",\"\"); print}' |\
       tee /drone/src/scan_results.out "
->>>>>>> 90d3514 (Feature/kes 01 (#15))
     environment:
       ca:
         from_secret: k8s_crt
@@ -93,29 +83,6 @@ steps:
       tserver:
         from_secret: trivy_server
 
-<<<<<<< HEAD
-  - name: Build Status Notification WebApi
-    image: quay.io/absiplant/slack_notify:latest
-    environment:
-      SLACK_BOT_TOKEN:
-        from_secret: slack_bot_token
-      CHANNEL_ID: 
-        from_secret: channel_id
-      BUILD_LINK: ${DRONE_BUILD_LINK}
-      BUILD_AUTHOR: ${DRONE_COMMIT_AUTHOR_NAME}
-      BUILD_STATUS: ${DRONE_BUILD_STATUS}
-      DRONE_BUILD_NUMBER: ${DRONE_BUILD_NUMBER}
-      DRONE_BUILD_EVENT: ${DRONE_BUILD_EVENT}
-    commands:
-    - export BUILD_LINK=`echo $BUILD_LINK`
-    - export BUILD_AUTHOR=`echo $BUILD_AUTHOR`
-    - export DRONE_BUILD_NUMBER=`echo $DRONE_BUILD_NUMBER`
-    - export BUILD_STATUS=`echo $BUILD_STATUS`
-    - export DRONE_BUILD_EVENT=`echo $DRONE_BUILD_EVENT`
-    - export SLACK_BOT_TOKEN=`echo $SLACK_BOT_TOKEN`
-    - export CHANNEL_ID=`echo $CHANNEL_ID`
-    - "python3 /drone/src/notification.py"
-=======
   - name: Build Status Nofification success
     image: plugins/slack
     settings:
@@ -137,7 +104,6 @@ steps:
       status: 
       - failure
       - success
->>>>>>> 90d3514 (Feature/kes 01 (#15))
 
 ---
 kind: pipeline
@@ -208,11 +174,7 @@ steps:
   - name: Deploy frontend deployment
     image: danielgormly/drone-plugin-kube:0.2.0
     settings:
-<<<<<<< HEAD
-      image_tag: quay.io/absiplant/guestbook:latest
-=======
       image_tag: ${DRONE_COMMIT_SHA}
->>>>>>> 90d3514 (Feature/kes 01 (#15))
       template: guestbook/frontend-deployment.yaml
       namespace: guestbook-demo
       ca:
