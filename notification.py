@@ -2,7 +2,7 @@
 Function post_message sends Slack notification and response to thread with build status and
 Trivy scanning results.
 It looks for a scan_results.json file - this file is produced by the Scan Image step in the pipeline.
-E Mamudu
+E M
 """
 import os
 import asyncio
