@@ -134,8 +134,9 @@ steps:
     - export DRONE_BUILD_NUMBER=`echo $DRONE_BUILD_NUMBER`
     - export BUILD_STATUS=`echo $BUILD_STATUS`
     - export DRONE_BUILD_EVENT=`echo $DRONE_BUILD_EVENT`
-    # - export SLACK_BOT_TOKEN=`echo $SLACK_BOT_TOKEN`; python notification.py
-    - "source /usr/lib/python3.10/venv/scripts/common/activate; python3 /drone/src/notification.py"
+    - export SLACK_BOT_TOKEN=`echo $SLACK_BOT_TOKEN`
+    - "source /usr/lib/python3.10/venv/scripts/common/activate"
+    - "python3 /drone/src/notification.py"
 
 
 ---

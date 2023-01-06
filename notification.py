@@ -4,6 +4,7 @@ Trivy scanning results.
 """
 import os
 import asyncio
+import logging
 from slack_sdk.web.async_client import AsyncWebClient
 from slack_sdk.errors import SlackApiError
 
@@ -17,10 +18,14 @@ DRONE_BUILD_NUMBER = os.getenv("DRONE_BUILD_NUMBER")
 BUILD_STATUS = os.getenv("BUILD_STATUS")
 DRONE_BUILD_EVENT = os.getenv("DRONE_BUILD_EVENT")
 SLACK_BOT = os.getenv("SLACK_BOT_TOKEN")
+logging.basicConfig(level=logging.DEBUG)
+# Create a logger
+logger = logging.getLogger(__name__)
 
 # print(BUILD_AUTHOR, BUILD_LINK, BUILD_STATUS, DRONE_BUILD_EVENT, DRONE_BUILD_NUMBER, SLACK_BOT)
 
 async def post_message():
+    logger.debug("Running post_message debug")
     try:
         if f"{BUILD_STATUS}" == "failure":
             thread = await client.chat_postMessage(
