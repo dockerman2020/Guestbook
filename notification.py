@@ -1,6 +1,8 @@
 """
-Function is to send Slack notification and response to thread with build status and
+Function post_message sends Slack notification and response to thread with build status and
 Trivy scanning results.
+It looks for a scan_results.json file - this file is produced by the Scan Image step in the pipeline.
+E Mamudu
 """
 import os
 import asyncio
@@ -8,6 +10,7 @@ import logging
 from slack_sdk.web.async_client import AsyncWebClient
 from slack_sdk.errors import SlackApiError
 
+# Define the variables.
 client = AsyncWebClient(token=os.environ['SLACK_BOT_TOKEN'])
 channel_id = os.getenv('CHANNEL_ID')
 filepath = "/drone/src/scan_results.json"
@@ -19,15 +22,24 @@ BUILD_STATUS = os.getenv("BUILD_STATUS")
 DRONE_BUILD_EVENT = os.getenv("DRONE_BUILD_EVENT")
 SLACK_BOT = os.getenv("SLACK_BOT_TOKEN")
 logging.basicConfig(level=logging.DEBUG)
+# Determine vulnerabilities status.
+# Open scan_results.json in read mode
+with open('/drone/src/scan_results.json', 'r') as f:
+    scan_results = f.read()
+if "VulnerabilityID" in scan_results:
+    VULNERABILITY = "failure"
+elif "VulnerabilityID" not in scan_results:
+    VULNERABILITY = "success"
+else:
+    VULNERABILITY = "unknown"
 # Create a logger
 logger = logging.getLogger(__name__)
 
-# print(BUILD_AUTHOR, BUILD_LINK, BUILD_STATUS, DRONE_BUILD_EVENT, DRONE_BUILD_NUMBER, SLACK_BOT)
 
 async def post_message():
     logger.debug("Running post_message debug")
     try:
-        if f"{BUILD_STATUS}" == "failure":
+        if f"{VULNERABILITY}" == "failure":
             thread = await client.chat_postMessage(
                 channel=channel_id,
                 text="Hof build fall back message",
@@ -72,7 +84,7 @@ async def post_message():
                                                     initial_comment="Vulnerability report for test :robot_face:",
                                                     title="Test File Upload",
                                                     thread_ts=thread["message"]["ts"])
-        elif f"{BUILD_STATUS}" == "success":
+        elif f"{VULNERABILITY}" == "success":
             thread_success = await client.chat_postMessage(
                 channel=channel_id,
                 text="Hof build success!",

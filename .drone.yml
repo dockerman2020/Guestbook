@@ -47,19 +47,16 @@ steps:
       password:
         from_secret: guestbook_robot_password
       tags:
-        # - latest
         - ${DRONE_COMMIT_SHA}
       when:
         branch:
           include:
           - main
-          # - feature/*
         event: [pull_request]
 
   - name: Scan demo guest book Image
     image: quay.io/absiplant/scanner:f845c5963fe7f246b9f49173838328971f53e498
     commands:
-    # - echo $DRONE_BUILD_STATUS $DRONE_COMMIT_AUTHOR_NAME $DRONE_BUILD_LINKx
     - trivy --version
     - "python -V"
     - "trivy image \
@@ -84,29 +81,6 @@ steps:
       tserver:
         from_secret: trivy_server
 
-  # - name: Build Status Nofification success
-  #   image: plugins/slack
-  #   settings:
-  #     token:
-  #       from_secret: drone_slack_token
-  #     webhook:
-  #       from_secret: slack_webhook
-  #     channel: 
-  #       from_secret: channel_id
-  #     # image_url: "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif"
-  #     image_url: "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif"
-  #     link_names: "true"
-  #     template: file:///drone/src/scan_results.json
-  #       # {{#success build.status}} {{ else }} :x: :rotating_light: :fire_engine: :ambulance: {{/success}} {{ uppercasefirst build.status }}: Build #{{ build.number }} * (type: `{{ build.event }}`)
-  #       # Commit: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commit/{{ build.commit }}|{{ truncate build.commit 8 }}>
-  #       # Branch: <https://github.com/{{ repo.owner }}/{{ repo.name }}/commits/{{ build.branch }}|{{ build.branch }}>
-  #       # Author: {{ build.author }}
-  #       # file:///drone/src/slack_msg.txt      
-  #       # Build: {{ build.link }}| Drone Build {{ build.number }} Sucessful :mag: :package: :tada:
-  #     status: 
-  #     - failure
-  #     - success
-
   - name: Build Status Notification WebApi
     image: quay.io/absiplant/slack_notify:latest
     environment:
@@ -120,15 +94,6 @@ steps:
       DRONE_BUILD_NUMBER: ${DRONE_BUILD_NUMBER}
       DRONE_BUILD_EVENT: ${DRONE_BUILD_EVENT}
     commands:
-    - "python -V"
-    - "pip3 list" 
-    # - "echo ${BUILD_LINK} ${BUILD_AUTHOR} ${DRONE_BUILD_NUMBER} ${BUILD_STATUS} ${DRONE_BUILD_EVENT} $SLACK_BOT_TOKEN"
-    # - echo BUILD_STATUS:$BUILD_STATUS
-    # - echo BUILD_AUTHOR:$BUILD_AUTHOR
-    # - echo BUILD_LINK:$BUILD_LINK
-    # - echo DRONE_BUILD_NUMBER:$DRONE_BUILD_NUMBER
-    # - echo DRONE_BUILD_NUMBER:$DRONE_BUILD_NUMBER
-    # - env
     - export BUILD_LINK=`echo $BUILD_LINK`
     - export BUILD_AUTHOR=`echo $BUILD_AUTHOR`
     - export DRONE_BUILD_NUMBER=`echo $DRONE_BUILD_NUMBER`
@@ -136,9 +101,7 @@ steps:
     - export DRONE_BUILD_EVENT=`echo $DRONE_BUILD_EVENT`
     - export SLACK_BOT_TOKEN=`echo $SLACK_BOT_TOKEN`
     - export CHANNEL_ID=`echo $CHANNEL_ID`
-    - "source /usr/lib/python3.10/venv/scripts/common/activate"
     - "python3 /drone/src/notification.py"
-
 
 ---
 kind: pipeline
