@@ -35,6 +35,7 @@ else:
     VULNERABILITY = "unknown"
 # Create a logger
 logger = logging.getLogger(__name__)
+VULNERABILITY = "success"   #For testing purposes.
 
 
 async def post_message():
