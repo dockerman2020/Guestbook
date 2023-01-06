@@ -1,0 +1,183 @@
+---
+kind: secret
+name: docker_username
+get:
+  path: docker
+  name: username
+---
+kind: secret
+name: docker_password
+get:
+  path: docker
+  name: password
+---
+kind: secret
+name: k8s_crt
+get:
+  path: k8s
+  name: ca_crt
+---
+kind: secret
+name: k8s_server
+get:
+  path: k8s
+  name: server
+---
+kind: secret
+name: k8s_token
+get:
+  path: k8s
+  name: token
+
+---
+kind: pipeline
+type: kubernetes
+name: build
+
+steps:
+  - name: Build docker image
+    image: plugins/docker
+    settings:
+      registry: quay.io
+      repo: quay.io/absiplant/guestbook
+      dockerfile: guestbook/php-redis/Dockerfile
+      context: guestbook/php-redis
+      username:
+        from_secret: guestbook_robot
+      password:
+        from_secret: guestbook_robot_password
+      tags:
+        - ${DRONE_COMMIT_SHA}
+      when:
+        branch:
+          include:
+          - main
+        event: [pull_request]
+
+  - name: Scan demo guest book Image
+    image: quay.io/absiplant/scanner:f845c5963fe7f246b9f49173838328971f53e498
+    commands:
+    - trivy --version
+    - "python -V"
+    - "trivy image \
+      --token $ttoken \
+      --ignore-unfixed \
+      --server $tserver \
+      --security-checks vuln \
+      --severity LOW,MEDIUM,HIGH,CRITICAL \
+      quay.io/absiplant/guestbook:${DRONE_COMMIT_SHA} -f json |\
+      jq '.Results[0] .Vulnerabilities[] |{VulnerabilityID: .VulnerabilityID, PkgName: .PkgName, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion,Severity: .Severity, PrimaryURL: .PrimaryURL,Title: .Title, PublishedDate: .PublishedDate, LastModifiedDate: .LastModifiedDate}' |\
+      awk '{gsub(\"{\",\"  <*===============================*>\");gsub(\"}\",\"\"); print}' |\
+      tee /drone/src/scan_results.json "
+    environment:
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+      ttoken:
+        from_secret: trivy_token
+      tserver:
+        from_secret: trivy_server
+
+  - name: Build Status Notification WebApi
+    image: quay.io/absiplant/slack_notify:latest
+    environment:
+      SLACK_BOT_TOKEN:
+        from_secret: slack_bot_token
+      CHANNEL_ID: 
+        from_secret: channel_id
+      BUILD_LINK: ${DRONE_BUILD_LINK}
+      BUILD_AUTHOR: ${DRONE_COMMIT_AUTHOR_NAME}
+      BUILD_STATUS: ${DRONE_BUILD_STATUS}
+      DRONE_BUILD_NUMBER: ${DRONE_BUILD_NUMBER}
+      DRONE_BUILD_EVENT: ${DRONE_BUILD_EVENT}
+    commands:
+    - export BUILD_LINK=`echo $BUILD_LINK`
+    - export BUILD_AUTHOR=`echo $BUILD_AUTHOR`
+    - export DRONE_BUILD_NUMBER=`echo $DRONE_BUILD_NUMBER`
+    - export BUILD_STATUS=`echo $BUILD_STATUS`
+    - export DRONE_BUILD_EVENT=`echo $DRONE_BUILD_EVENT`
+    - export SLACK_BOT_TOKEN=`echo $SLACK_BOT_TOKEN`
+    - export CHANNEL_ID=`echo $CHANNEL_ID`
+    - "python3 /drone/src/notification.py"
+
+---
+kind: pipeline
+type: kubernetes
+name: deploy
+
+steps:
+  - name: Deploy redis follower service
+    image: danielgormly/drone-plugin-kube:0.2.0
+    settings:
+      template: guestbook/redis-follower-service.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+
+  - name: Deploy demo guest book redis follower deployment
+    image: danielgormly/drone-plugin-kube:0.2.0
+    settings:
+      template: guestbook/redis-follower-deployment.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+
+  - name: Deploy redis leader service
+    image: danielgormly/drone-plugin-kube:0.2.0
+    settings:
+      template: guestbook/redis-leader-service.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+
+  - name: Deploy demo guest book redis leader deployment
+    image: danielgormly/drone-plugin-kube:0.2.0
+    settings:
+      template: guestbook/redis-leader-deployment.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+
+  - name: Deploy frontend service
+    image: danielgormly/drone-plugin-kube:0.2.0
+    settings:
+      template: guestbook/frontend-service.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
+
+  - name: Deploy frontend deployment
+    image: danielgormly/drone-plugin-kube:0.2.0
+    settings:
+      image_tag: quay.io/absiplant/guestbook:latest
+      template: guestbook/frontend-deployment.yaml
+      namespace: guestbook-demo
+      ca:
+        from_secret: k8s_crt
+      server:
+        from_secret: k8s_server
+      token:
+        from_secret: k8s_token
