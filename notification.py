@@ -67,7 +67,8 @@ async def post_message():
                         "accessory": {
                             "type": "image",
                             # "image_url": "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif",
-                            "image_url": "https://media0.giphy.com/media/l4FGlGcaAQbr7idTW/200.gif?cid=6104955er1czpbufdv159jkvrn2g4uoaol1l14b1vghyano1&rid=200.gif&ct=s",
+                            "image_url": "https://media3.giphy.com/media/26ybwvTX4DTkwst6U/200.gif?cid=6104955eoota1jfxhigqy3nb0a8e4mwpmxo36n6fjlblfnkh&rid=200.gif&ct=g",
+                            # "image_url": "https://media0.giphy.com/media/l4FGlGcaAQbr7idTW/200.gif?cid=6104955er1czpbufdv159jkvrn2g4uoaol1l14b1vghyano1&rid=200.gif&ct=s",
                             "alt_text": "cute cat"
                         }
                     },
