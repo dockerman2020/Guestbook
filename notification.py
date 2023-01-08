@@ -2,7 +2,8 @@
 Function post_message sends Slack notification and response to thread with build status and
 Trivy scanning results.
 It looks for a scan_results.json file - this file is produced by the Scan Image step in the pipeline.
-E M
+JH 
+EM
 """
 import os
 import asyncio
@@ -35,6 +36,7 @@ else:
     VULNERABILITY = "unknown"
 # Create a logger
 logger = logging.getLogger(__name__)
+VULNERABILITY = "failure"   # For testing purposes, remove this when testing completes.
 
 
 async def post_message():
@@ -64,7 +66,8 @@ async def post_message():
                         },
                         "accessory": {
                             "type": "image",
-                            "image_url": "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif",
+                            # "image_url": "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif",
+                            "image_url": "https://media0.giphy.com/media/l4FGlGcaAQbr7idTW/200.gif?cid=6104955er1czpbufdv159jkvrn2g4uoaol1l14b1vghyano1&rid=200.gif&ct=s",
                             "alt_text": "cute cat"
                         }
                     },

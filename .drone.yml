@@ -54,7 +54,7 @@ steps:
           - main
         event: [pull_request, push]
 
-  - name: Scan demo guest book Image
+  - name: Trivy scan guest book image
     image: quay.io/absiplant/scanner:f845c5963fe7f246b9f49173838328971f53e498
     commands:
     - trivy --version
