@@ -74,8 +74,12 @@ async def post_message():
                             # "image_url": "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif", # No Way! GIF
                             "image_url": "https://media3.giphy.com/media/26ybwvTX4DTkwst6U/200.gif?cid=6104955eoota1jfxhigqy3nb0a8e4mwpmxo36n6fjlblfnkh&rid=200.gif&ct=g",
                             # "image_url": "https://media0.giphy.com/media/l4FGlGcaAQbr7idTW/200.gif?cid=6104955er1czpbufdv159jkvrn2g4uoaol1l14b1vghyano1&rid=200.gif&ct=s", #Pixeled GIF
+<<<<<<< HEAD
 >>>>>>> feature/kes-01
                             "alt_text": "cute cat"
+=======
+                            "alt_text": "Not good enough, try again"
+>>>>>>> feature/kes-01
                         }
                     },
                     {
@@ -83,7 +87,7 @@ async def post_message():
                         "fields": [
                             {
                                 "type": "mrkdwn",
-                                "text": "Hof build completes."
+                                "text": "Hof build Scan found vulnerabilities.\n See below for more information"
                             }
                         ]
                     }
@@ -156,3 +160,4 @@ async def post_message():
 
 
 asyncio.run(post_message())
+
