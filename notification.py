@@ -17,12 +17,12 @@ channel_id = os.getenv('CHANNEL_ID')
 filepath = "/drone/src/scan_results.json"
 file_name = filepath
 BUILD_LINK = os.getenv("BUILD_LINK")
-BUILD_AUTHOR = os.getenv("BUILD_AUTHOR")
+BUILD_AUTHOR = os.getenv("BUILD_COMMIT_AUTHOR")
 DRONE_BUILD_NUMBER = os.getenv("DRONE_BUILD_NUMBER")
 BUILD_STATUS = os.getenv("BUILD_STATUS")
 DRONE_BUILD_EVENT = os.getenv("DRONE_BUILD_EVENT")
 SLACK_BOT = os.getenv("SLACK_BOT_TOKEN")
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 # Determine vulnerabilities status.
 # Open scan_results.json in read mode
@@ -59,16 +59,22 @@ async def post_message():
                         "text": {
                             "type": "mrkdwn",
                             "text": f"{BUILD_LINK} "
-                                    "Build Pipeline> \n :x: :ambulance: :rotating-light-red: "
+                                    "Build Pipeline \n :x: :ambulance: :rotating-light-red: "
                                     ":fire_engine: \n Vulnerabilities found in Image!. \n" +
                                     f"Failure: Build {DRONE_BUILD_NUMBER} * (type: `{DRONE_BUILD_EVENT}`) \n" +
                                     f"Author: {BUILD_AUTHOR}"
                         },
                         "accessory": {
                             "type": "image",
+<<<<<<< HEAD
                             # "image_url": "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif",
                             "image_url": "https://media3.giphy.com/media/26ybwvTX4DTkwst6U/200.gif?cid=6104955eoota1jfxhigqy3nb0a8e4mwpmxo36n6fjlblfnkh&rid=200.gif&ct=g",
                             # "image_url": "https://media0.giphy.com/media/l4FGlGcaAQbr7idTW/200.gif?cid=6104955er1czpbufdv159jkvrn2g4uoaol1l14b1vghyano1&rid=200.gif&ct=s",
+=======
+                            # "image_url": "https://media.giphy.com/media/26tPjmWwr36k1OkYE/giphy.gif", # No Way! GIF
+                            "image_url": "https://media3.giphy.com/media/26ybwvTX4DTkwst6U/200.gif?cid=6104955eoota1jfxhigqy3nb0a8e4mwpmxo36n6fjlblfnkh&rid=200.gif&ct=g",
+                            # "image_url": "https://media0.giphy.com/media/l4FGlGcaAQbr7idTW/200.gif?cid=6104955er1czpbufdv159jkvrn2g4uoaol1l14b1vghyano1&rid=200.gif&ct=s", #Pixeled GIF
+>>>>>>> feature/kes-01
                             "alt_text": "cute cat"
                         }
                     },
