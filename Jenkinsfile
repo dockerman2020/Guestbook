@@ -51,9 +51,16 @@ pipeline{
     
         stage("Checkout from SCM"){
             steps {
-                git branch: 'main', credentialsId: 'github-1', url: 'https://github.com/dockerman2020/e2e.git'
+                git branch: 'main', credentialsId: 'github-1', url: 'https://github.com/dockerman2020/Guestbook.git'
             }
-        }    
+        }
+
+    stage('SonarQube Analysis') {
+        def scannerHome = tool 'SonarScanner';
+        withSonarQubeEnv() {
+        sh "${scannerHome}/bin/sonar-scanner"
+        }
+    }
 
         stage("Build Application"){
             steps {
@@ -72,7 +79,7 @@ pipeline{
         stage("Sonarqube Analysis") {
             steps {
                 script {
-                    withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') {
+                    withSonarQubeEnv(credentialsId: 'guestbook-sonar') {
                         sh 'mvn sonar:sonar'
                     }
                 }
@@ -82,7 +89,7 @@ pipeline{
         stage("Quality Gate") {
             steps {
                 script {
-                    waitForQualityGate abortPipeline: false, credentialsId: 'jenkins-sonarqube-token'
+                    waitForQualityGate abortPipeline: false, credentialsId: 'guestbook-sonar'
                 }
             }
         }
