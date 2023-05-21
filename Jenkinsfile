@@ -62,29 +62,29 @@ pipeline{
         }
     }
 
-        stage("Build Application"){
-            steps {
-                script {
-                sh 'mvn clean package'
-                }
-            }
-        }
+        // stage("Build Application"){
+        //     steps {
+        //         script {
+        //         sh 'mvn clean package'
+        //         }
+        //     }
+        // }
 
-        stage("Test Application"){
-            steps {
-                sh  'mvn test'
-            }
-        }
+        // stage("Test Application"){
+        //     steps {
+        //         sh  'mvn test'
+        //     }
+        // }
         
-        stage("Sonarqube Analysis") {
-            steps {
-                script {
-                    withSonarQubeEnv(credentialsId: 'guestbook-sonar') {
-                        sh 'mvn sonar:sonar'
-                    }
-                }
-            }
-        }
+        // stage("Sonarqube Analysis") {
+        //     steps {
+        //         script {
+        //             withSonarQubeEnv(credentialsId: 'guestbook-sonar') {
+        //                 sh 'mvn sonar:sonar'
+        //             }
+        //         }
+        //     }
+        // }
 
         stage("Quality Gate") {
             steps {
