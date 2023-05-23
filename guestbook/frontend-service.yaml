@@ -22,7 +22,8 @@ metadata:
     app: guestbook
     tier: frontend
 spec:
-  type: LoadBalancer
+  # type: LoadBalancer
+  type: ClusterIP
   ports:
     # the port that this service should serve on
   - port: 80
