@@ -1,6 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  labels:
+    app: guestbook
+    app.kubernetes.io/instance: guestbook
+    tier: frontend
   name: guestbook-absi-ingress
   namespace: guestbook
 spec:
