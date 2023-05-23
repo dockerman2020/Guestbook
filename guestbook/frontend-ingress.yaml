@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/instance: guestbook
     tier: frontend
   name: guestbook-absi-ingress
-  namespace: guestbook
+  namespace: guestbook-demo
 spec:
   ingressClassName: nginx
   rules:
